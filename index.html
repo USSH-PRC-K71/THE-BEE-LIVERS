@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="vi" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -90,7 +90,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            z-index: -15; /* Nằm giữa lớp phấn hoa và lớp cây 3D */
+            z-index: -15;
             pointer-events: none;
             overflow: hidden;
         }
@@ -207,8 +207,8 @@
     </header>
 
     <main class="pt-28 pb-20">
+        <!-- Hero Section -->
         <section class="relative overflow-hidden min-h-[65vh] flex items-center justify-center text-center px-4">
-            <!-- Glow effect to separate text from background vines -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vh] bg-white/70 blur-[80px] rounded-full z-0 pointer-events-none"></div>
 
             <div class="max-w-5xl mx-auto relative z-10 flex flex-col items-center">
@@ -233,56 +233,95 @@
                     Thanh Xuân <br /> Không Khói Thuốc
                 </h1>
                 
-                <p class="max-w-3xl text-lg sm:text-2xl text-brand-brown font-medium mb-12 bg-white/90 backdrop-blur-sm p-6 rounded-3xl border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311]">
-                    Thuốc lá không chỉ đốt cháy tuổi trẻ mà còn tàn phá tương lai cộng đồng. 
-                    Hãy cùng tuổi trẻ USSH lan tỏa thông điệp mạnh mẽ, thức tỉnh nhận thức và xây dựng một lối sống lành mạnh.
-                </p>
+                <!-- Video Tuyên Truyền Thay Thế Đoạn Văn Cũ -->
+                <div class="w-full max-w-4xl mx-auto rounded-3xl overflow-hidden border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311] bg-white p-2 mb-12">
+                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
+                        <video controls class="w-full h-full object-cover" poster="https://placehold.co/1280x720/5a3311/fef08a?text=Video+Tuyen+Truyen+Thanh+Xuan+Khong+Khoi+Thuoc">
+                            <source src="images/tuyentruyen.mp4" type="video/mp4">
+                            <source src="images/video.mp4" type="video/mp4">
+                            Trình duyệt của bạn không hỗ trợ thẻ video.
+                        </video>
+                    </div>
+                    <p class="text-brand-brown font-bold text-sm sm:text-base py-3 px-2 text-center">
+                        🎥 Video tài liệu & Phóng sự tuyên truyền chiến dịch phòng chống khói thuốc học đường.
+                    </p>
+                </div>
             </div>
         </section>
 
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
+        <!-- Section 1: Tại sao biết nguy hiểm nhưng con người vẫn sử dụng thuốc lá? -->
+        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
             <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Vai Trò Của Thanh Niên</h2>
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Tại sao biết nguy hiểm nhưng con người vẫn sử dụng thuốc lá?</h2>
                 <div class="w-32 h-3 bg-brand-green mx-auto border-2 border-brand-brown rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-20 h-20 bg-brand-yellow rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-brand-brown text-3xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-bullhorn"></i>
+            <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-6 text-brand-brown text-lg font-medium leading-relaxed">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]">1</div>
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Cơ Chế Gây Nghiện Sinh Học Mạnh Mẽ (Nicotine Trap)</h3>
+                        <p>Nicotine tác động lên não bộ cực kỳ nhanh chóng chỉ sau vài giây hít vào, kích hoạt giải phóng dopamine — chất dẫn truyền thần kinh tạo cảm giác hưng phấn, sảng khoái và giảm stress tạm thời. Khi lượng nicotine giảm xuống, não bộ lập tức phát tín hiệu "đói", gây ra hội chứng cai nghiện (bứt rứt, cáu gắt, mất tập trung). Con người tiếp tục hút không phải vì thích, mà để khỏa lấp cảm giác khó chịu do chính nicotine gây ra.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">Tiên Phong Tuyên Truyền</h3>
-                    <p class="text-brand-brown/80 font-medium">
-                        Sử dụng mạng xã hội và tư duy sáng tạo để lan tỏa thông điệp phòng chống thuốc lá đến tận tay giới trẻ một cách gần gũi, mạnh mẽ nhất.
-                    </p>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-brand-green text-3xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-shield-alt"></i>
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]">2</div>
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Tâm Lý Chủ Quan và Hiệu Ứng "Nó Sẽ Trừ Mình Ra"</h3>
+                        <p>Bộ não con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">Gương Mẫu Lối Sống</h3>
-                    <p class="text-brand-brown/80 font-medium">
-                        Nói không với thuốc lá và thuốc lá điện tử, xây dựng môi trường học đường và không gian sống xanh sạch, văn minh và an toàn.
-                    </p>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-3xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-lightbulb"></i>
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]">3</div>
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Áp Lực Xã Hội và Thói Quen Giao Tiếp</h3>
+                        <p>Đặc biệt trong giới trẻ, thuốc lá hay thuốc lá điện tử đôi khi bị gắn mác sai lầm là "biểu tượng của sự trưởng thành", "phong cách sành điệu" hoặc là công cụ kết nối trong các buổi giao lưu bạn bè. Sự ép buộc vô hình từ nhóm bạn cùng trang lứa khiến nhiều người dễ dàng lún sâu vào cạm bẫy khói thuốc dù ban đầu chỉ thử cho biết.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">Đổi Mới Sáng Tạo</h3>
-                    <p class="text-brand-brown/80 font-medium">
-                        Ứng dụng công nghệ, nghệ thuật và các phương thức truyền thông mới để tạo tiếng vang lớn, thay đổi hành vi tích cực trong cộng đồng.
-                    </p>
                 </div>
             </div>
         </section>
 
+        <!-- Section 2: Làm thế nào để thức tỉnh những người nghiện thuốc lá? -->
+        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Làm thế nào để thức tỉnh những người nghiện thuốc lá?</h2>
+                <div class="w-32 h-3 bg-red-400 mx-auto border-2 border-brand-brown rounded-full"></div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-6 text-brand-brown text-lg font-medium leading-relaxed">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-red-600 text-xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-heart"></i></div>
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Thay Đổi Cách Tiếp Cận: Dùng Sự Thấu Cảm Thay Vì Chỉ Trích</h3>
+                        <p>Việc la mắng, chì chiết hay kỳ thị người nghiện thuốc lá thường chỉ đẩy họ vào tâm lý phòng thủ và tìm đến điếu thuốc nhiều hơn để giải tỏa căng thẳng. Thay vào đó, hãy kiên nhẫn lắng nghe, thấu hiểu rằng họ đang là nạn nhân của một chứng bệnh nghiện sinh học thực thụ, và bày tỏ sự lo lắng chân thành vì sức khỏe của chính họ và những người thân yêu.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-amber-700 text-xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-bullseye"></i></div>
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Đánh Trúng Vào Động Lực Gần Gũi Nhất</h3>
+                        <p>Mỗi người sẽ có một "nút thắt" riêng để từ bỏ thuốc lá. Với người trẻ, đó có thể là ngoại hình (da dẻ lão hóa, răng ố vàng, hôi miệng) hay tài chính. Với người đã làm cha mẹ, đó chính là tấm gương cho con cái và nỗi sợ hãi bỏ lại gia đình trước bệnh tật. Khơi gợi đúng nỗi trăn trở cá nhân sẽ tạo ra động lực mạnh mẽ hơn ngàn lời răn đe lý thuyết.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-hands-helping"></i></div>
+                    <div>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Đồng Hành Khoa Học và Hỗ Trợ Tâm Lý</h3>
+                        <p>Bỏ thuốc lá không chỉ cần ý chí đơn thuần mà còn cần phương pháp. Hãy khích lệ họ sử dụng các liệu pháp thay thế nicotine (kẹo ngậm, miếng dán), tập thể dục để tái tạo dopamine tự nhiên, thay đổi thói quen sinh hoạt và tìm kiếm sự hỗ trợ y tế từ các chuyên gia khi cần thiết. Sự đồng hành bền bỉ từ gia đình và cộng đồng là chìa khóa vàng giúp họ chiến thắng cơn nghiện.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Tác Hại Của Thuốc Lá -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
             <div class="text-center mb-12">
                 <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Tác Hại Của Thuốc Lá</h2>
-                <div class="w-32 h-3 bg-red-400 mx-auto border-2 border-brand-brown rounded-full"></div>
+                <div class="w-32 h-3 bg-brand-green mx-auto border-2 border-brand-brown rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -329,8 +368,9 @@
         </section>
     </main>
 
+    <!-- Footer với thông tin liên hệ đầy đủ -->
     <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             <div class="flex items-center gap-4">
                 <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
                 <div class="flex flex-col text-left">
@@ -339,11 +379,11 @@
                 </div>
             </div>
             
-            <div class="flex flex-col text-left md:text-center text-brand-light font-medium">
-                <h4 class="font-heading font-bold text-xl text-brand-yellow mb-3 uppercase tracking-wide">Liên Hệ</h4>
-                <a href="#" class="flex items-center gap-3 mb-2 hover:text-brand-yellow transition-colors"><i class="fas fa-envelope text-brand-green w-5 text-center"></i> ussh.k71prc@gmail.com</a>
-                <a href="#" class="flex items-center gap-3 mb-2 hover:text-brand-yellow transition-colors"><i class="fas fa-phone-alt text-brand-green w-5 text-center"></i> 0987 654 321</a>
-                <a href="#" class="flex items-center gap-3 hover:text-brand-yellow transition-colors"><i class="fab fa-facebook-f text-brand-green w-5 text-center"></i> fb.com/ussh.k71prc</a>
+            <div class="flex flex-col text-left text-brand-light font-medium">
+                <h4 class="font-heading font-bold text-xl text-brand-yellow mb-3 uppercase tracking-wide">Thông Tin Liên Hệ</h4>
+                <a href="mailto:ussh.k71prc@gmail.com" class="flex items-center gap-3 mb-2 hover:text-brand-yellow transition-colors"><i class="fas fa-envelope text-brand-green w-5 text-center"></i> ussh.k71prc@gmail.com</a>
+                <a href="tel:0987654321" class="flex items-center gap-3 mb-2 hover:text-brand-yellow transition-colors"><i class="fas fa-phone-alt text-brand-green w-5 text-center"></i> 0987 654 321</a>
+                <a href="https://facebook.com" target="_blank" class="flex items-center gap-3 hover:text-brand-yellow transition-colors"><i class="fab fa-facebook-f text-brand-green w-5 text-center"></i> fb.com/ussh.k71prc</a>
             </div>
 
             <div class="text-left md:text-right font-medium text-brand-light">
@@ -356,6 +396,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
+            /* 1. POLLEN PARTICLES BACKGROUND */
             const canvas = document.getElementById('pollen-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -371,10 +412,10 @@
                 constructor() {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 4 + 2; // Increased size
-                    this.speedX = Math.random() * 1.5 - 0.75; // Increased horizontal speed
-                    this.speedY = Math.random() * -1.5 - 0.5; // Increased upward speed
-                    this.opacity = Math.random() * 0.9 + 0.3; // Increased opacity
+                    this.size = Math.random() * 4 + 2;
+                    this.speedX = Math.random() * 1.5 - 0.75;
+                    this.speedY = Math.random() * -1.5 - 0.5;
+                    this.opacity = Math.random() * 0.9 + 0.3;
                 }
                 update() {
                     this.x += this.speedX;
@@ -396,7 +437,7 @@
 
             function initParticles() {
                 particles = [];
-                let numParticles = (canvas.width * canvas.height) / 7000; // Increased density of pollen
+                let numParticles = (canvas.width * canvas.height) / 7000;
                 for (let i = 0; i < numParticles; i++) particles.push(new Particle());
             }
             initParticles();
@@ -408,29 +449,27 @@
             }
             animatePollen();
 
+            /* 2. FLOATING CLOUDS BACKGROUND */
             const cloudsContainer = document.getElementById('clouds-container');
             const numClouds = 8;
             for(let i=0; i<numClouds; i++) {
                 let cloud = document.createElement('div');
                 cloud.className = 'cloud';
                 
-                let size = 100 + Math.random() * 200; // Random width
+                let size = 100 + Math.random() * 200;
                 cloud.style.width = size + 'px';
                 cloud.style.height = (size * 0.35) + 'px';
-                cloud.style.top = (Math.random() * 90) + 'vh'; // Random vertical position
+                cloud.style.top = (Math.random() * 90) + 'vh';
                 
-                let duration = 40 + Math.random() * 60; // 40-100s to cross screen
-                let delay = -(Math.random() * 60); // Start already partially on screen
+                let duration = 40 + Math.random() * 60;
+                let delay = -(Math.random() * 60);
                 
                 cloud.style.animation = `float-cloud ${duration}s linear ${delay}s infinite`;
-                
-                // Flip some clouds for natural variation
                 if(Math.random() > 0.5) cloud.style.transform = 'scaleX(-1)';
                 
                 cloudsContainer.appendChild(cloud);
             }
             
-            // Add keyframes for clouds dynamically
             const styleSheet = document.createElement('style');
             styleSheet.innerHTML = `
                 @keyframes float-cloud {
@@ -440,10 +479,10 @@
             `;
             document.head.appendChild(styleSheet);
 
+            /* 3. THREE.JS 3D VINES, LEAVES & FLOWERS */
             const container = document.getElementById('three-container');
             const scene = new THREE.Scene();
             
-            // Using Orthographic Camera to easily map 3D units to screen pixels (1:1 ratio)
             const w = window.innerWidth;
             const h = window.innerHeight;
             const camera = new THREE.OrthographicCamera(w / -2, w / 2, h / 2, h / -2, -1000, 1000);
@@ -451,10 +490,9 @@
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(w, h);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // optimize performance
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            // Lighting to make the 3D models pop
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
             
@@ -462,22 +500,18 @@
             dirLight.position.set(200, 300, 400);
             scene.add(dirLight);
 
-            const dirLight2 = new THREE.DirectionalLight(0xaaddff, 0.4);
-            dirLight2.position.set(-200, -100, 200);
-            scene.add(dirLight2);
-
             const stemMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x5a3311, // brand-brown
+                color: 0x5a3311,
                 roughness: 0.8,
                 metalness: 0.1
             });
 
             const leafMaterials = [
-                new THREE.MeshStandardMaterial({ color: 0x65a30d, roughness: 0.6, side: THREE.DoubleSide }), // brand-green
-                new THREE.MeshStandardMaterial({ color: 0x4d7c0f, roughness: 0.7, side: THREE.DoubleSide }), // darker green
-                new THREE.MeshStandardMaterial({ color: 0x84cc16, roughness: 0.5, side: THREE.DoubleSide }), // lighter green
-                new THREE.MeshStandardMaterial({ color: 0xa3e635, roughness: 0.6, side: THREE.DoubleSide }), // yellow-green
-                new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.8, side: THREE.DoubleSide })  // forest green
+                new THREE.MeshStandardMaterial({ color: 0x65a30d, roughness: 0.6, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ color: 0x4d7c0f, roughness: 0.7, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ color: 0x84cc16, roughness: 0.5, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ color: 0xa3e635, roughness: 0.6, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.8, side: THREE.DoubleSide })
             ];
 
             const petalMaterial = new THREE.MeshStandardMaterial({
@@ -487,11 +521,10 @@
             });
 
             const stamenMaterial = new THREE.MeshStandardMaterial({
-                color: 0xfef08a, // brand-yellow
+                color: 0xfef08a,
                 roughness: 0.9
             });
 
-            // Create a chunky 3D leaf geometry
             const leafShape = new THREE.Shape();
             leafShape.moveTo(0, 0);
             leafShape.quadraticCurveTo(15, 10, 0, 35);
@@ -499,31 +532,25 @@
             
             const extrudeSettings = { depth: 1.5, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 0.5, bevelThickness: 0.5 };
             const leafGeometry = new THREE.ExtrudeGeometry(leafShape, extrudeSettings);
-            // Center geometry to pivot at base
             leafGeometry.translate(0, 0, -0.75);
 
-            // Array to hold objects we want to animate (sway in the wind)
             const animatedFoliage = [];
 
             function createFlower() {
                 const flower = new THREE.Group();
-                
-                // Center stamen
                 const stamen = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 16), stamenMaterial);
                 flower.add(stamen);
 
-                // Petals
                 const petalGeo = new THREE.CylinderGeometry(4, 0.5, 18, 8);
-                petalGeo.translate(0, 9, 0); // shift pivot
-                petalGeo.scale(1, 1, 0.2); // flatten into petal shape
+                petalGeo.translate(0, 9, 0);
+                petalGeo.scale(1, 1, 0.2);
 
                 for(let i = 0; i < 5; i++) {
                     const petal = new THREE.Mesh(petalGeo, petalMaterial);
                     petal.rotation.z = (Math.PI * 2 / 5) * i;
-                    petal.rotation.x = -0.3; // bend outward
+                    petal.rotation.x = -0.3;
                     flower.add(petal);
                 }
-                
                 flower.scale.set(0.7, 0.7, 0.7);
                 return flower;
             }
@@ -534,14 +561,11 @@
                 const endY = (h / 2) - totalHeight - 200;
                 const baseX = isLeft ? -w / 2 + 50 : w / 2 - 50;
                 
-                // 1. Create the twisted stem curve
                 const points = [];
-                // Enforce a minimum of 2 segments so CatmullRomCurve3 always has at least 3 points
                 const segments = Math.max(2, Math.floor(totalHeight / 30));
                 for (let i = 0; i <= segments; i++) {
                     const t = i / segments;
                     const y = THREE.MathUtils.lerp(startY, endY, t);
-                    // Add organic sine wave wobbles
                     const xOffset = Math.sin(y * 0.015 + (isLeft ? 0 : Math.PI)) * 25;
                     const zOffset = Math.cos(y * 0.01) * 15;
                     points.push(new THREE.Vector3(baseX + xOffset, y, zOffset));
@@ -552,17 +576,12 @@
                 const stem = new THREE.Mesh(tubeGeometry, stemMaterial);
                 vineGroup.add(stem);
 
-                // 2. Add leaves and flowers along the path
-                const decorationCount = Math.floor(totalHeight / 12); // Tăng cường mật độ sinh trưởng (càng nhỏ càng dày)
+                const decorationCount = Math.floor(totalHeight / 10); // Mật độ lá hoa cực dày
                 for (let i = 1; i < decorationCount; i++) {
                     const t = i / decorationCount;
                     const pt = curve.getPointAt(t);
-                    const tangent = curve.getTangentAt(t);
                     
-                    // Branch outward from center
-                    const outDir = isLeft ? 1 : -1;
-                    
-                    const isFlower = Math.random() > 0.85; // 15% hoa, 85% lá
+                    const isFlower = Math.random() > 0.75; // 25% là hoa
                     let mesh;
                     
                     if (isFlower) {
@@ -570,31 +589,25 @@
                         const fScale = 0.8 + Math.random() * 0.5;
                         mesh.scale.set(fScale, fScale, fScale);
                     } else {
-                        // Chọn ngẫu nhiên 1 trong các màu lá đã tạo
                         const randomMat = leafMaterials[Math.floor(Math.random() * leafMaterials.length)];
                         mesh = new THREE.Mesh(leafGeometry, randomMat);
-                        
-                        // Kích thước ngẫu nhiên đa dạng để tạo các lá to nhỏ khác nhau
-                        const scale = 0.3 + Math.random() * 1.5; 
+                        const scale = 0.3 + Math.random() * 1.6; // Đa dạng lá to nhỏ
                         mesh.scale.set(scale, scale, scale);
                     }
 
-                    // Thêm nhiễu ngẫu nhiên vào vị trí gốc để bụi cây trông tỏa đều và xum xuê hơn
                     const noiseOffset = new THREE.Vector3(
-                        (Math.random() - 0.5) * 20,
-                        (Math.random() - 0.5) * 20,
-                        (Math.random() - 0.5) * 20
+                        (Math.random() - 0.5) * 25,
+                        (Math.random() - 0.5) * 25,
+                        (Math.random() - 0.5) * 25
                     );
                     mesh.position.copy(pt).add(noiseOffset);
                     
-                    // Rotate to face outward and slightly upwards/downwards
                     const baseRotZ = isLeft ? -Math.PI/4 + (Math.random()-0.5) : Math.PI/4 + (Math.random()-0.5);
                     const baseRotX = (Math.random() - 0.5) * Math.PI/2;
                     const baseRotY = isLeft ? Math.random()*0.5 : -Math.random()*0.5;
 
                     mesh.rotation.set(baseRotX, baseRotY, baseRotZ);
 
-                    // Save base rotation and random offset for animation
                     mesh.userData = {
                         baseRotX: baseRotX,
                         baseRotZ: baseRotZ,
@@ -620,7 +633,7 @@
                 const docHeight = Math.max(
                     document.body.scrollHeight, 
                     document.documentElement.scrollHeight,
-                    window.innerHeight // Fallback to window height to ensure valid curve length
+                    window.innerHeight
                 );
 
                 leftVine = buildProceduralVine(true, docHeight);
@@ -630,16 +643,12 @@
                 scene.add(rightVine);
             }
 
-            // Initial build
-            setTimeout(initVines, 100); // slight delay to ensure fonts/layout calculate correct height
+            setTimeout(initVines, 100);
 
-            // Sync camera Y position with scroll for perfect parallax
             window.addEventListener('scroll', () => {
-                // Orthographic camera mapping: scrolling down means camera moves down in world space (negative Y)
                 camera.position.y = -window.scrollY;
             });
 
-            // Handle window resize
             let resizeTimer3D;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer3D);
@@ -654,8 +663,6 @@
                     camera.updateProjectionMatrix();
                     
                     renderer.setSize(newW, newH);
-                    
-                    // Rebuild vines to match new height/width
                     initVines();
                 }, 300);
             });
@@ -663,10 +670,8 @@
             const clock = new THREE.Clock();
             function animateThree() {
                 requestAnimationFrame(animateThree);
-                
                 const time = clock.getElapsedTime();
                 
-                // Gently sway leaves and flowers
                 animatedFoliage.forEach(obj => {
                     obj.rotation.z = obj.userData.baseRotZ + Math.sin(time * obj.userData.speed + obj.userData.animOffset) * 0.1;
                     obj.rotation.x = obj.userData.baseRotX + Math.cos(time * obj.userData.speed + obj.userData.animOffset) * 0.05;
@@ -676,7 +681,7 @@
             }
             animateThree();
 
-
+            /* 4. AUTONOMOUS BEE SWARM */
             const beesContainer = document.getElementById('bees-container');
             const beeTemplate = document.getElementById('bee-template');
             const numBees = 4;
