@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Xuân Không Khói Thuốc | USSH - K71 PRC</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Baloo 2 -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        heading: ['"Baloo 2"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            yellow: '#fef08a',
+                            green: '#65a30d',
+                            brown: '#5a3311',
+                            dark: '#1e1b18',
+                            light: '#fdfbf7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fdfbf7;
+            color: #1e1b18;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #fef08a; }
+        ::-webkit-scrollbar-thumb { background: #65a30d; border-radius: 5px; border: 2px solid #fef08a; }
+        
+        .glass-nav {
+            background: rgba(253, 251, 247, 0.92);
+            backdrop-filter: blur(10px);
+        }
+
+        .ngo-card {
+            border: 4px solid #5a3311;
+            box-shadow: 6px 6px 0px #5a3311;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .ngo-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0px #5a3311;
+        }
+
+        /* Canvas backgrounds */
+        #pollen-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -20;
+            pointer-events: none;
+        }
+        
+        /* Vine Side Borders Container */
+        .vine-container {
+            position: absolute;
+            top: 0;
+            width: 120px;
+            height: 100%;
+            z-index: -10;
+            pointer-events: none;
+            overflow: visible;
+        }
+        #left-vine { left: 0; }
+        #right-vine { right: 0; }
+
+        /* Bee Swarm Styling */
+        #bees-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .bee-entity {
+            position: absolute;
+            top: 0; left: 0;
+            width: 38px;
+            height: 38px;
+            will-change: transform;
+        }
+        
+        @keyframes wing-flap {
+            0%, 100% { transform: rotate(12deg); }
+            50% { transform: rotate(-55deg); }
+        }
+        .wing-front {
+            transform-origin: 35px 25px;
+            animation: wing-flap 0.05s linear infinite alternate;
+        }
+        .wing-back {
+            transform-origin: 45px 20px;
+            animation: wing-flap 0.05s linear infinite alternate-reverse;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <canvas id="pollen-canvas"></canvas>
+    
+    <svg id="left-vine" class="vine-container" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <g id="c-leaf">
+                <path d="M 0 0 C 25 -15, 45 -5, 50 20 C 25 25, 5 15, 0 0 Z" fill="#65a30d" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" />
+                <path d="M 0 0 C 15 5, 30 10, 45 15" fill="none" stroke="#5a3311" stroke-width="3" stroke-linecap="round" />
+            </g>
+            <g id="c-flower">
+                <g stroke="#5a3311" stroke-width="3" stroke-linejoin="round">
+                    <circle cx="-12" cy="-12" r="12" fill="white" />
+                    <circle cx="12" cy="-12" r="12" fill="white" />
+                    <circle cx="12" cy="12" r="12" fill="white" />
+                    <circle cx="-12" cy="12" r="12" fill="white" />
+                    <circle cx="0" cy="0" r="16" fill="white" />
+                </g>
+                <circle cx="0" cy="0" r="10" fill="#fef08a" stroke="#5a3311" stroke-width="3" />
+            </g>
+        </defs>
+    </svg>
+
+    <svg id="right-vine" class="vine-container" xmlns="http://www.w3.org/2000/svg">
+        <use href="#c-leaf" x="-1000" y="-1000" />
+    </svg>
+
+    <div id="bees-container"></div>
+
+    <template id="bee-template">
+        <div class="bee-entity drop-shadow-md">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                <ellipse cx="45" cy="20" rx="15" ry="25" fill="#FFFFFF" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" class="wing-back" />
+                <ellipse cx="50" cy="55" rx="35" ry="28" fill="#fef08a" stroke="#5a3311" stroke-width="4" />
+                <path d="M 35 29 Q 45 55 30 80 A 35 28 0 0 1 20 50 A 35 28 0 0 1 35 29 Z" fill="#5a3311" />
+                <path d="M 60 28 Q 70 55 55 82 A 35 28 0 0 0 45 83 Q 60 55 50 28 A 35 28 0 0 1 60 28 Z" fill="#5a3311" />
+                <ellipse cx="35" cy="25" rx="18" ry="28" fill="#FFFFFF" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" class="wing-front" />
+                <circle cx="70" cy="48" r="4.5" fill="#5a3311" />
+                <circle cx="82" cy="50" r="4.5" fill="#5a3311" />
+                <path d="M 70 58 Q 76 64 82 58" stroke="#5a3311" stroke-width="3" stroke-linecap="round" fill="none" />
+                <circle cx="66" cy="55" r="3.5" fill="#FF7B7B" opacity="0.8" />
+                <circle cx="85" cy="57" r="3.5" fill="#FF7B7B" opacity="0.8" />
+                <path d="M 16 55 L -2 58 L 16 63 Z" fill="#5a3311" stroke="#5a3311" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </template>
+
+    <header class="fixed w-full top-0 z-40 glass-nav border-b-4 border-brand-brown transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="flex items-center gap-3 group relative z-10">
+                    <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-14 w-14 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12">
+                    <div class="flex flex-col">
+                        <span class="font-heading font-black text-2xl text-brand-brown tracking-tight">USSH - K71 PRC</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-28 pb-20">
+        <section class="relative overflow-hidden min-h-[65vh] flex items-center justify-center text-center px-4">
+            <div class="max-w-5xl mx-auto relative z-10 flex flex-col items-center">
+                
+                <!-- 3 Logo Containers Centered -->
+                <div class="flex justify-center items-center gap-4 sm:gap-8 mb-8">
+                    <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform -rotate-6 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#5a3311]">
+                        <img src="images/logo1.jpg" onerror="this.src='https://placehold.co/200x200/fef08a/5a3311?text=Logo+1'" alt="Campaign Logo 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-24 h-24 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform translate-y-4 hover:translate-y-0 transition-transform z-10 shadow-[6px_6px_0px_#5a3311]">
+                        <img src="images/logo2.jpg" onerror="this.src='https://placehold.co/200x200/65a30d/ffffff?text=Logo+2'" alt="Campaign Logo 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform rotate-6 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#5a3311]">
+                        <img src="images/logo3.jpg" onerror="this.src='https://placehold.co/200x200/fef08a/5a3311?text=Logo+3'" alt="Campaign Logo 3" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <span class="inline-block py-2 px-6 rounded-full bg-brand-yellow text-brand-brown font-extrabold text-sm mb-6 border-4 border-brand-brown uppercase tracking-wider shadow-[3px_3px_0px_#5a3311]">
+                    Chiến Dịch Phòng Chống Khói Thuốc
+                </span>
+                
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-heading font-black text-brand-brown tracking-tight mb-8 uppercase" style="text-shadow: 4px 4px 0 #65a30d;">
+                    Thanh Xuân <br /> Không Khói Thuốc
+                </h1>
+                
+                <p class="max-w-3xl text-lg sm:text-2xl text-brand-brown font-medium mb-12 bg-white p-6 rounded-3xl border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311]">
+                    Thuốc lá không chỉ đốt cháy tuổi trẻ mà còn tàn phá tương lai cộng đồng. 
+                    Hãy cùng tuổi trẻ USSH lan tỏa thông điệp mạnh mẽ, thức tỉnh nhận thức và xây dựng một lối sống lành mạnh.
+                </p>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-5xl font-heading font-black text-brand-brown uppercase mb-4">Vai Trò Của Thanh Niên</h2>
+                <div class="w-32 h-3 bg-brand-green mx-auto border-2 border-brand-brown rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-brand-yellow rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-brand-brown text-3xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">Tiên Phong Tuyên Truyền</h3>
+                    <p class="text-brand-brown/80 font-medium">
+                        Sử dụng mạng xã hội và tư duy sáng tạo để lan tỏa thông điệp phòng chống thuốc lá đến tận tay giới trẻ một cách gần gũi, mạnh mẽ nhất.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-brand-green text-3xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">Gương Mẫu Lối Sống</h3>
+                    <p class="text-brand-brown/80 font-medium">
+                        Nói không với thuốc lá và thuốc lá điện tử, xây dựng môi trường học đường và không gian sống xanh sạch, văn minh và an toàn.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-3xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">Đổi Mới Sáng Tạo</h3>
+                    <p class="text-brand-brown/80 font-medium">
+                        Ứng dụng công nghệ, nghệ thuật và các phương thức truyền thông mới để tạo tiếng vang lớn, thay đổi hành vi tích cực trong cộng đồng.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-5xl font-heading font-black text-brand-brown uppercase mb-4">Tác Hại Của Thuốc Lá</h2>
+                <div class="w-32 h-3 bg-red-400 mx-auto border-2 border-brand-brown rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-lungs"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
+                    <p class="text-lg text-brand-brown/80 font-medium">
+                        Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
+                    <p class="text-lg text-brand-brown/80 font-medium">
+                        Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
+                    <p class="text-lg text-brand-brown/80 font-medium">
+                        Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
+                    <p class="text-lg text-brand-brown/80 font-medium">
+                        Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
+                <span class="font-heading font-black text-2xl tracking-wider">USSH - K71 PRC</span>
+            </div>
+            <div class="text-center md:text-right font-medium text-brand-light">
+                <p>&copy; 2026 USSH - K71 PRC. Chiến dịch thanh niên phòng chống khói thuốc.</p>
+                <p class="text-brand-yellow text-sm mt-1">Đại học Khoa học Xã hội & Nhân văn, Hà Nội</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* 1. POLLEN PARTICLES BACKGROUND */
+            const canvas = document.getElementById('pollen-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 1 - 0.5;
+                    this.speedY = Math.random() * -1 - 0.2;
+                    this.opacity = Math.random() * 0.6 + 0.2;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.y < -10) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; }
+                    if (this.x < -10) this.x = canvas.width + 10;
+                    if (this.x > canvas.width + 10) this.x = -10;
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(254, 240, 138, ${this.opacity})`;
+                    ctx.strokeStyle = `rgba(90, 51, 17, ${this.opacity * 0.6})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                let numParticles = (canvas.width * canvas.height) / 14000;
+                for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+            }
+            initParticles();
+
+            function animatePollen() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animatePollen);
+            }
+            animatePollen();
+
+            /* 2. CONTINUOUS SEAMLESS CONNECTED VINES */
+            const leftVine = document.getElementById('left-vine');
+            const rightVine = document.getElementById('right-vine');
+            
+            function generateVines() {
+                const docHeight = Math.max(
+                    document.body.scrollHeight, document.documentElement.scrollHeight,
+                    document.body.offsetHeight, document.documentElement.offsetHeight
+                );
+                
+                leftVine.innerHTML = leftVine.querySelector('defs').outerHTML;
+                rightVine.innerHTML = '';
+                
+                leftVine.setAttribute('viewBox', `0 0 120 ${docHeight}`);
+                rightVine.setAttribute('viewBox', `0 0 120 ${docHeight}`);
+                
+                buildContinuousVine(leftVine, docHeight, true);
+                buildContinuousVine(rightVine, docHeight, false);
+            }
+
+            function buildContinuousVine(svgElem, totalHeight, isLeft) {
+                let htmlStr = '';
+                let pathD = `M ${isLeft ? 40 : 80} -50 `;
+                const step = 20;
+                const frequency = 160;
+                const amplitude = 22;
+                const baseX = isLeft ? 40 : 80;
+                let points = [];
+
+                for (let y = -50; y <= totalHeight + 50; y += step) {
+                    let xOffset = Math.sin(y / frequency + (isLeft ? 0 : Math.PI)) * amplitude;
+                    let x = baseX + xOffset;
+                    pathD += `L ${x} ${y} `;
+                    points.push({x, y});
+                }
+
+                htmlStr += `<path d="${pathD}" fill="none" stroke="#5a3311" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>`;
+                htmlStr += `<path d="${pathD}" fill="none" stroke="#65a30d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+                const spacing = 110; 
+                for (let i = 5; i < points.length - 5; i++) {
+                    const pt = points[i];
+                    if (pt.y % spacing < step && pt.y > 0 && pt.y < totalHeight) {
+                        let baseAngle = isLeft ? 0 : Math.PI;
+                        let angleRandomness = (Math.random() - 0.5) * (Math.PI / 1.5);
+                        let twigAngle = baseAngle + angleRandomness;
+                        
+                        let length = 28 + Math.random() * 18;
+                        let endX = pt.x + Math.cos(twigAngle) * length;
+                        let endY = pt.y + Math.sin(twigAngle) * length;
+
+                        htmlStr += `<line x1="${pt.x}" y1="${pt.y}" x2="${endX}" y2="${endY}" stroke="#5a3311" stroke-width="7" stroke-linecap="round"/>`;
+                        
+                        let rotation = (twigAngle * 180 / Math.PI);
+                        let isFlower = Math.random() > 0.65;
+                        let scale = 0.55 + Math.random() * 0.35;
+                        let useId = isFlower ? '#c-flower' : '#c-leaf';
+                        
+                        htmlStr += `<use href="${useId}" x="${endX}" y="${endY}" transform="rotate(${rotation}, ${endX}, ${endY}) scale(${scale})" transform-origin="${endX} ${endY}" />`;
+                    }
+                }
+                svgElem.innerHTML += htmlStr;
+            }
+
+            generateVines();
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(generateVines, 250);
+            });
+
+            /* 3. AUTONOMOUS BEE SWARM */
+            const beesContainer = document.getElementById('bees-container');
+            const beeTemplate = document.getElementById('bee-template');
+            const numBees = 4;
+            const bees = [];
+
+            class AutonomousBee {
+                constructor() {
+                    this.el = beeTemplate.content.cloneNode(true).querySelector('.bee-entity');
+                    beesContainer.appendChild(this.el);
+                    
+                    this.x = Math.random() * window.innerWidth;
+                    this.y = Math.random() * window.innerHeight;
+                    this.targetX = this.x;
+                    this.targetY = this.y;
+                    this.speed = 1.0 + Math.random() * 1.2;
+                    this.currentScaleX = 1;
+                    this.pickNewTarget();
+                }
+
+                pickNewTarget() {
+                    const margin = 80;
+                    this.targetX = margin + Math.random() * (window.innerWidth - margin * 2);
+                    this.targetY = margin + Math.random() * (window.innerHeight - margin * 2);
+                }
+
+                update() {
+                    const dx = this.targetX - this.x;
+                    const dy = this.targetY - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 15) {
+                        if (!this.waiting) {
+                            this.waiting = true;
+                            setTimeout(() => {
+                                this.pickNewTarget();
+                                this.waiting = false;
+                            }, 800 + Math.random() * 2000);
+                        }
+                    } else {
+                        this.x += (dx / distance) * this.speed;
+                        this.y += (dy / distance) * this.speed;
+                    }
+
+                    if (Math.abs(dx) > 1) {
+                        this.currentScaleX = dx > 0 ? 1 : -1;
+                    }
+
+                    const hoverOffset = Math.sin(Date.now() / 250 + this.speed * 50) * 4;
+                    this.el.style.transform = `translate(${this.x}px, ${this.y + hoverOffset}px) scaleX(${this.currentScaleX})`;
+                }
+            }
+
+            for (let i = 0; i < numBees; i++) {
+                bees.push(new AutonomousBee());
+            }
+
+            function animateBees() {
+                bees.forEach(bee => bee.update());
+                requestAnimationFrame(animateBees);
+            }
+            animateBees();
+        });
+    </script>
+</body>
+</html>
