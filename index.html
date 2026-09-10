@@ -1,749 +1,1237 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Change- Breath Free | USSH - K71 PRC</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Baloo 2 -->
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Three.js CDN -->
+    <title>The Rabbit Experience</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                        heading: ['"Baloo 2"', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            yellow: '#fef08a',
-                            green: '#65a30d',
-                            brown: '#5a3311',
-                            dark: '#1e1b18',
-                            light: '#fdfbf7'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        body {
-            background-color: #fdfbf7;
-            color: #1e1b18;
-            overflow-x: hidden;
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+            user-select: none;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+            image-rendering: pixelated; 
+            image-rendering: crisp-edges; 
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        /* --- STREAMING_CHUNK: Setting up Overlays and Canvas --- */
+        #eye-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 22; 
+        }
+
+        #crt-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+            z-index: 100; 
+            opacity: 0.6;
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.9); 
+        }
+
+        #noise-overlay {
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            pointer-events: none;
+            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            animation: tv-noise 0.12s infinite;
+            opacity: 0.15; 
+            z-index: 99;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes tv-noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-1%, -1%); }
+            20% { transform: translate(1%, 2%); }
+            30% { transform: translate(-2%, -1%); }
+            40% { transform: translate(1%, 1%); }
+            50% { transform: translate(-1%, 2%); }
+            60% { transform: translate(2%, -1%); }
+            70% { transform: translate(-1%, -2%); }
+            80% { transform: translate(1%, -1%); }
+            90% { transform: translate(2%, 1%); }
+        }
+
+        #rabbit-hand-overlay {
+            position: absolute;
+            top: 62%; left: 84%;
+            transform: translate(-35%, -45%);
+            width: 48vw;
+            max-width: 550px;
+            height: auto;
+            z-index: 25;
+            pointer-events: none;
+            transition: opacity 0.6s ease-in-out;
+            opacity: 0;
+        }
+        #rabbit-hand-overlay.visible { opacity: 1 !important; }
+        #rabbit-hand-overlay img {
+            width: 50%; 
+            transform: scale(2); 
+            transform-origin: bottom right;
+            height: auto;
+            display: block;
+            mix-blend-mode: screen;
+            image-rendering: pixelated; 
+            filter: drop-shadow(-2px -2px 5px rgba(0,0,0,0.8)) sepia(0.3) contrast(1.5) grayscale(0.2);
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 10;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background-color: transparent;
+            color: #fff;
+            text-align: center;
+        }
+        
+        .menu-bg {
+            background-color: rgba(0, 0, 0, 0.85); 
+            position: absolute;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .hidden { display: none !important; }
+
+        @keyframes flicker {
+            0% { opacity: 1; text-shadow: 3px 3px 0 #500000; }
+            5% { opacity: 0.2; text-shadow: none; }
+            10% { opacity: 1; text-shadow: 3px 3px 0 #500000; }
+            15% { opacity: 0.1; }
+            25% { opacity: 1; text-shadow: 3px 3px 0 #500000; }
+            80% { opacity: 1; text-shadow: 3px 3px 0 #500000; }
+            82% { opacity: 0.5; }
+            84% { opacity: 1; text-shadow: 3px 3px 0 #500000; }
+            100% { opacity: 1; text-shadow: 3px 3px 0 #500000; }
+        }
+        
+        @keyframes fast-flicker {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes blink-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        .blinking { animation: blink-slow 1.2s infinite; }
+
+        /* --- STREAMING_CHUNK: Styling UI text and Blood Drips --- */
+        h1 {
+            font-size: 7rem;
+            color: #fff; 
+            margin-bottom: 50px;
+            font-family: 'Caveat', cursive;
+            animation: flicker 4s infinite;
             position: relative;
         }
-        
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #fef08a; }
-        ::-webkit-scrollbar-thumb { background: #65a30d; border-radius: 5px; border: 2px solid #fef08a; }
-        
-        .glass-nav {
-            background: rgba(253, 251, 247, 0.92);
-            backdrop-filter: blur(10px);
-        }
 
-        .ngo-card {
-            border: 4px solid #5a3311;
-            box-shadow: 6px 6px 0px #5a3311;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .ngo-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 9px 9px 0px #5a3311;
-        }
-
-        /* Text Pop Styles */
-        .title-pop {
+        .rabbit-text {
             color: #ffffff;
-            -webkit-text-stroke: 3px #5a3311;
-            text-shadow: 5px 5px 0px #65a30d, 8px 8px 0px #5a3311;
-        }
-        
-        .section-title-pop {
-            color: #ffffff;
-            -webkit-text-stroke: 2px #5a3311;
-            text-shadow: 4px 4px 0px #65a30d;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
         }
 
-        /* 2D Pollen Background */
-        #pollen-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -20;
-            pointer-events: none;
-        }
-        
-        #clouds-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -15;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .cloud {
+        .blood-drop {
             position: absolute;
-            background: #ffffff;
-            border-radius: 100px;
-            opacity: 0.65;
-            box-shadow: 4px 4px 0px rgba(90, 51, 17, 0.05);
-            will-change: left, transform;
+            width: 4px; height: 15px;
+            background: linear-gradient(to bottom, transparent, #cc0000 40%, #7a0000);
+            border-radius: 50px;
+            pointer-events: none;
+            z-index: 20; 
+            opacity: 0;
+            filter: drop-shadow(0 0 3px #ff0000);
         }
-        .cloud::before {
-            content: '';
+
+        .drop-1 { left: 15%; bottom: 10px; animation: drip 3.2s infinite ease-in; }
+        .drop-2 { left: 45%; bottom: 5px; width: 5px; height: 22px; animation: drip 2.7s infinite ease-in 1.2s; }
+        .drop-3 { left: 70%; bottom: 15px; width: 3px; height: 18px; animation: drip 3.8s infinite ease-in 0.5s; }
+        .drop-4 { left: 90%; bottom: 8px; width: 4px; height: 16px; animation: drip 3.0s infinite ease-in 2.1s; }
+
+        @keyframes drip {
+            0% { transform: translateY(0) scaleY(0.5); opacity: 0; }
+            5% { transform: translateY(0) scaleY(1.2); opacity: 1; }
+            95% { opacity: 1; }
+            100% { transform: translateY(100vh) scaleY(2.5); opacity: 0; }
+        }
+
+        .beta-tag {
             position: absolute;
-            top: -50%; left: 15%;
-            width: 50%; height: 100%;
-            background: inherit;
+            bottom: 5px; right: -30px;
+            font-size: 2rem; color: #ff3333;
+            transform: rotate(-15deg);
+            animation: flicker 3s infinite reverse;
+            text-transform: lowercase;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #main-menu button, #pause-menu button, #settings-menu button, #credit-menu button, #donate-menu button {
+            font-family: 'Caveat', cursive;
+            text-transform: none;
+            color: #cc0000;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            font-size: 3rem;
+            padding: 5px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #main-menu button:hover, #pause-menu button:hover, #settings-menu button:hover, #credit-menu button:hover, #donate-menu button:hover {
+            color: #fff;
+            text-shadow: 0 0 15px #f00, 0 0 30px #f00;
+            transform: scale(1.1);
+        }
+
+        .menu-btns-vertical { 
+            display: flex; flex-direction: column; 
+            gap: 10px; align-items: center;
+        }
+
+        #btn-play, #btn-resume { font-size: 4.5rem !important; margin-bottom: 5px; }
+
+        .info-panel {
+            background: rgba(10,10,10,0.95);
+            border: 1px solid #555;
+            padding: 40px;
+            width: 450px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,1);
+        }
+
+        #btn-ingame-menu {
+            position: absolute;
+            top: 20px; left: 20px;
+            font-size: 2.5rem;
+            padding: 5px 15px;
+            z-index: 5;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #555;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex; justify-content: center; align-items: center;
+            color: #fff;
+        }
+        #btn-ingame-menu:hover { background: rgba(200,0,0,0.8); border-color: #f00; }
+
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; font-size: 1.2rem; font-family: 'Courier New', Courier, monospace;}
+        .setting-row input[type="range"] { width: 200px; cursor: pointer; }
+
+        #crosshair {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 6px; height: 6px;
+            background-color: rgba(255, 255, 255, 0.8);
+            transform: translate(-50%, -50%);
+            z-index: 5;
             border-radius: 50%;
+            transition: all 0.2s ease-in-out;
+            pointer-events: none;
         }
-        .cloud::after {
-            content: '';
+        #crosshair.glow { width: 8px; height: 8px; background-color: #ff3333; box-shadow: 0 0 15px #ff0000, 0 0 5px #ff0000; }
+
+        #hover-text {
             position: absolute;
-            top: -30%; right: 15%;
-            width: 40%; height: 80%;
-            background: inherit;
+            top: 55%; left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px #000;
+            pointer-events: none;
+            z-index: 5;
+            font-family: 'Courier New', Courier, monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #fff;
+        }
+
+        #flashlight-ui {
+            position: absolute;
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 70px; height: 70px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid #888; border-radius: 10px;
+            z-index: 5; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.2s;
+        }
+        #flashlight-ui.active { background-color: rgba(255, 255, 200, 0.6); border-color: #fff; box-shadow: 0 0 20px rgba(255, 255, 200, 0.5); }
+        #flashlight-ui img { width: 40px; height: 40px; object-fit: contain; }
+
+        .key-hint {
+            position: absolute;
+            bottom: -5px; right: -5px;
+            width: 24px; height: 24px;
+            background: rgba(200, 0, 0, 0.9);
             border-radius: 50%;
-        }
-
-        /* 3D Three.js Container */
-        #three-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -10;
+            font-size: 14px; font-weight: bold;
+            display: flex; justify-content: center; align-items: center;
+            border: 2px solid #fff; color: white;
+            font-family: 'Courier New', Courier, monospace;
             pointer-events: none;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
+        .esc-hint { width: 30px; height: 30px; font-size: 11px; bottom: -10px; right: -10px; background: rgba(50, 50, 50, 0.9); }
 
-        /* Bee Swarm Styling */
-        #bees-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: 50;
-            pointer-events: none;
-        }
-
-        .bee-entity {
+        #instructions {
             position: absolute;
-            top: 0; left: 0;
-            width: 38px;
-            height: 38px;
-            will-change: transform;
+            top: 20px; right: 20px;
+            color: rgba(255,255,255,0.6);
+            z-index: 5; font-size: 1rem;
+            pointer-events: none;
+            background: rgba(0,0,0,0.3); padding: 10px; border-right: 3px solid #fff;
+            text-align: right; transition: opacity 2s ease-in-out; opacity: 1;
         }
-        
-        @keyframes wing-flap {
-            0%, 100% { transform: rotate(12deg); }
-            50% { transform: rotate(-55deg); }
+
+        #subtitle {
+            position: absolute;
+            top: 10%; left: 50%; transform: translateX(-50%);
+            color: #fff; font-size: 1.5rem; text-shadow: 2px 2px 4px #000;
+            z-index: 6; text-align: center; pointer-events: none;
+            opacity: 0; transition: opacity 0.5s ease-in-out;
+            max-width: 80%; white-space: pre-wrap; 
         }
-        .wing-front {
-            transform-origin: 35px 25px;
-            animation: wing-flap 0.05s linear infinite alternate;
+
+        #fade-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: black;
+            z-index: 20; opacity: 0; pointer-events: none;
+            transition: opacity 3s ease-in-out, background-color 1s;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 3rem; font-weight: bold;
         }
-        .wing-back {
-            transform-origin: 45px 20px;
-            animation: wing-flap 0.05s linear infinite alternate-reverse;
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
+        .shaking { animation: shake 0.1s infinite; }
     </style>
 </head>
-<body class="antialiased">
-
-    <!-- Layer 1: 2D Pollen -->
-    <canvas id="pollen-canvas"></canvas>
-
-    <!-- Layer 1.5: Floating Clouds -->
-    <div id="clouds-container"></div>
+<body>
+    <div id="game-container"></div>
+    <div id="crt-overlay"></div>
+    <div id="noise-overlay"></div>
+    <div id="fade-overlay"><span id="end-text"></span></div>
     
-    <!-- Layer 2: 3D Vines via Three.js -->
-    <div id="three-container"></div>
+    <canvas id="eye-canvas"></canvas>
 
-    <!-- Layer 3: Bees -->
-    <div id="bees-container"></div>
-
-    <template id="bee-template">
-        <div class="bee-entity drop-shadow-md">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                <ellipse cx="45" cy="20" rx="15" ry="25" fill="#FFFFFF" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" class="wing-back" />
-                <ellipse cx="50" cy="55" rx="35" ry="28" fill="#fef08a" stroke="#5a3311" stroke-width="4" />
-                <path d="M 35 29 Q 45 55 30 80 A 35 28 0 0 1 20 50 A 35 28 0 0 1 35 29 Z" fill="#5a3311" />
-                <path d="M 60 28 Q 70 55 55 82 A 35 28 0 0 0 45 83 Q 60 55 50 28 A 35 28 0 0 1 60 28 Z" fill="#5a3311" />
-                <ellipse cx="35" cy="25" rx="18" ry="28" fill="#FFFFFF" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" class="wing-front" />
-                <circle cx="70" cy="48" r="4.5" fill="#5a3311" />
-                <circle cx="82" cy="50" r="4.5" fill="#5a3311" />
-                <path d="M 70 58 Q 76 64 82 58" stroke="#5a3311" stroke-width="3" stroke-linecap="round" fill="none" />
-                <circle cx="66" cy="55" r="3.5" fill="#FF7B7B" opacity="0.8" />
-                <circle cx="85" cy="57" r="3.5" fill="#FF7B7B" opacity="0.8" />
-                <path d="M 16 55 L -2 58 L 16 63 Z" fill="#5a3311" stroke="#5a3311" stroke-width="3" stroke-linejoin="round"/>
-            </svg>
+    <!-- --- STREAMING_CHUNK: HTML HUD and Menus --- -->
+    <div id="hud" class="hidden">
+        <button id="btn-ingame-menu">
+            ☰
+            <div class="key-hint esc-hint">ESC</div>
+        </button>
+        <div id="crosshair"></div>
+        <div id="hover-text" class="hidden"></div>
+        <div id="flashlight-ui">
+            <img src="flashlight.png" onerror="this.onerror=null; this.src='https://placehold.co/50x50/333/fff?text=FL';" alt="Flashlight">
+            <div class="key-hint">F</div>
         </div>
-    </template>
-
-    <!-- UI Overlay -->
-    <header class="fixed w-full top-0 z-40 glass-nav border-b-4 border-brand-brown transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="#" class="flex items-center gap-3 group relative z-10">
-                    <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-14 w-14 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12">
-                    <div class="flex flex-col text-left">
-                        <span class="font-heading font-black text-2xl text-brand-brown tracking-tight leading-none">USSH - K71 PRC</span>
-                        <span class="font-sans font-bold text-sm text-brand-green tracking-widest uppercase mt-1">Bee-Livers</span>
-                    </div>
-                </a>
-            </div>
+        <div id="subtitle"></div>
+        <div id="rabbit-hand-overlay">
+            <img src="Hand.jpg" onerror="this.onerror=null; this.src='https://placehold.co/400x300/111/f00?text=Hand.jpg+Missing';" alt="Holding Rabbit">
         </div>
-    </header>
+        <div id="instructions">
+            [W,A,S,D] Move<br>
+            [Leftclick] Interact<br>
+            [F] Flashlight<br>
+            [ESC] Menu
+        </div>
+    </div>
 
-    <main class="pt-28 pb-20">
-        <!-- Hero Section -->
-        <section class="relative overflow-hidden min-h-[65vh] flex items-center justify-center text-center px-4">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vh] bg-white/70 blur-[80px] rounded-full z-0 pointer-events-none"></div>
+    <!-- Main Menu -->
+    <div id="main-menu" class="ui-layer">
+        <div class="menu-bg"></div>
+        <h1 style="position: relative; z-index: 2;">
+            The <span class="rabbit-text">Rabbit
+                <span class="blood-drop drop-1"></span>
+                <span class="blood-drop drop-2"></span>
+                <span class="blood-drop drop-3"></span>
+                <span class="blood-drop drop-4"></span>
+            </span> Experience
+            <span class="beta-tag">beta</span>
+        </h1>
+        <div class="menu-btns-vertical" style="position: relative; z-index: 2;">
+            <button id="btn-play">Play</button>
+            <button id="btn-credit">Credits</button>
+            <button id="btn-donate">Donate</button>
+        </div>
+    </div>
 
-            <div class="max-w-5xl mx-auto relative z-10 flex flex-col items-center">
-                
-                <div class="flex justify-center items-center gap-4 sm:gap-8 mb-8">
-                    <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform -rotate-6 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#5a3311]">
-                        <img src="images/logo1.jpg" onerror="this.src='https://placehold.co/200x200/fef08a/5a3311?text=Logo+1'" alt="Campaign Logo 1" class="w-full h-full object-cover">
-                    </div>
-                    <div class="w-24 h-24 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform translate-y-4 hover:translate-y-0 transition-transform z-10 shadow-[6px_6px_0px_#5a3311]">
-                        <img src="images/logo2.jpg" onerror="this.src='https://placehold.co/200x200/65a30d/ffffff?text=Logo+2'" alt="Campaign Logo 2" class="w-full h-full object-cover">
-                    </div>
-                    <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform rotate-6 hover:rotate-0 transition-transform shadow-[4px_4px_0px_#5a3311]">
-                        <img src="images/logo3.jpg" onerror="this.src='https://placehold.co/200x200/fef08a/5a3311?text=Logo+3'" alt="Campaign Logo 3" class="w-full h-full object-cover">
-                    </div>
-                </div>
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="ui-layer hidden" style="z-index: 15;">
+        <div class="menu-bg"></div>
+        <h2 style="font-family: 'Caveat', cursive; font-size: 6rem; color: #cc0000; margin-bottom: 30px; animation: flicker 4s infinite;">Paused</h2>
+        <div class="menu-btns-vertical">
+            <button id="btn-resume">Continue</button>
+            <button id="btn-settings">Settings</button>
+            <button id="btn-quit-main">Main Menu</button>
+        </div>
+    </div>
 
-                <span class="inline-block py-2 px-6 rounded-full bg-brand-yellow text-brand-brown font-extrabold text-sm mb-6 border-4 border-brand-brown uppercase tracking-wider shadow-[3px_3px_0px_#5a3311]">
-                    Chiến Dịch Phòng Chống Khói Thuốc
-                </span>
-                
-                <h1 class="text-4xl sm:text-6xl md:text-7xl font-heading font-black tracking-tight mb-8 uppercase title-pop">
-                    Create Change <br /> Breath Free
-                </h1>
-                
-                <!-- Video Tuyên Truyền Thay Thế Đoạn Văn Cũ -->
-                <div class="w-full max-w-4xl mx-auto rounded-3xl overflow-hidden border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311] bg-white p-2 mb-12">
-                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
-                        <video controls class="w-full h-full object-cover" poster="https://placehold.co/1280x720/5a3311/fef08a?text=Video+Tuyen+Truyen+Thanh+Xuan+Khong+Khoi+Thuoc">
-                            <source src="images/tuyentruyen.mp4" type="video/mp4">
-                            <source src="images/video.mp4" type="video/mp4">
-                            Trình duyệt của bạn không hỗ trợ thẻ video.
-                        </video>
-                    </div>
-                    <p class="text-brand-brown font-bold text-sm sm:text-base py-3 px-2 text-center">
-                          Video 
-                    </p>
-                </div>
+    <!-- Settings Menu -->
+    <div id="settings-menu" class="ui-layer hidden" style="z-index: 16;">
+        <div class="menu-bg"></div>
+        <div class="info-panel">
+            <h2 style="font-family: 'Caveat', cursive; font-size: 3rem; color: #cc0000; font-family: 'Courier New', Courier, monospace;">Settings</h2>
+            <div class="setting-row">
+                <label>Volume:</label>
+                <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="1">
             </div>
-        </section>
-
-        <!-- Section 1: Tại sao biết nguy hiểm nhưng con người vẫn sử dụng thuốc lá? -->
-        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl sm:text-4xl md:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Tại sao biết nguy hiểm nhưng con người vẫn sử dụng thuốc lá?</h2>
-                <div class="w-32 h-3 bg-brand-green mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-6 text-brand-brown text-lg font-medium leading-relaxed">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]">1</div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Cơ Chế Gây Nghiện Sinh Học Mạnh Mẽ (Nicotine Trap)</h3>
-                        <p>Nicotine tác động lên não bộ cực kỳ nhanh chóng chỉ sau vài giây hít vào, kích hoạt giải phóng dopamine — chất dẫn truyền thần kinh tạo cảm giác hưng phấn, sảng khoái và giảm stress tạm thời. Khi lượng nicotine giảm xuống, não bộ lập tức phát tín hiệu "đói", gây ra hội chứng cai nghiện (bứt rứt, cáu gắt, mất tập trung). Con người tiếp tục hút không phải vì thích, mà để khỏa lấp cảm giác khó chịu do chính nicotine gây ra.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]">2</div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Tâm Lý Chủ Quan và Hiệu Ứng "Nó Sẽ Trừ Mình Ra"</h3>
-                        <p>Bộ não con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]">3</div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Áp Lực Xã Hội và Thói Quen Giao Tiếp</h3>
-                        <p>Đặc biệt trong giới trẻ, thuốc lá hay thuốc lá điện tử đôi khi bị gắn mác sai lầm là "biểu tượng của sự trưởng thành", "phong cách sành điệu" hoặc là công cụ kết nối trong các buổi giao lưu bạn bè. Sự ép buộc vô hình từ nhóm bạn cùng trang lứa khiến nhiều người dễ dàng lún sâu vào cạm bẫy khói thuốc dù ban đầu chỉ thử cho biết.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Làm thế nào để thức tỉnh những người nghiện thuốc lá? -->
-        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl sm:text-4xl md:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Làm thế nào để thức tỉnh những người nghiện thuốc lá?</h2>
-                <div class="w-32 h-3 bg-red-400 mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-6 text-brand-brown text-lg font-medium leading-relaxed">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-red-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-red-600 text-xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-heart"></i></div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Thay Đổi Cách Tiếp Cận: Dùng Sự Thấu Cảm Thay Vì Chỉ Trích</h3>
-                        <p>Việc la mắng, chì chiết hay kỳ thị người nghiện thuốc lá thường chỉ đẩy họ vào tâm lý phòng thủ và tìm đến điếu thuốc nhiều hơn để giải tỏa căng thẳng. Thay vào đó, hãy kiên nhẫn lắng nghe, thấu hiểu rằng họ đang là nạn nhân của một chứng bệnh nghiện sinh học thực thụ, và bày tỏ sự lo lắng chân thành vì sức khỏe của chính họ và những người thân yêu.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-amber-700 text-xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-bullseye"></i></div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Đánh Trúng Vào Động Lực Gần Gũi Nhất</h3>
-                        <p>Mỗi người sẽ có một "nút thắt" riêng để từ bỏ thuốc lá. Với người trẻ, đó có thể là ngoại hình (da dẻ lão hóa, răng ố vàng, hôi miệng) hay tài chính. Với người đã làm cha mẹ, đó chính là tấm gương cho con cái và nỗi sợ hãi bỏ lại gia đình trước bệnh tật. Khơi gợi đúng nỗi trăn trở cá nhân sẽ tạo ra động lực mạnh mẽ hơn ngàn lời răn đe lý thuyết.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-brand-brown text-xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-hands-helping"></i></div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Đồng Hành Khoa Học và Hỗ Trợ Tâm Lý</h3>
-                        <p>Bỏ thuốc lá không chỉ cần ý chí đơn thuần mà còn cần phương pháp. Hãy khích lệ họ sử dụng các liệu pháp thay thế nicotine (kẹo ngậm, miếng dán), tập thể dục để tái tạo dopamine tự nhiên, thay đổi thói quen sinh hoạt và tìm kiếm sự hỗ trợ y tế từ các chuyên gia khi cần thiết. Sự đồng hành bền bỉ từ gia đình và cộng đồng là chìa khóa vàng giúp họ chiến thắng cơn nghiện.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Tác Hại Của Thuốc Lá -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-16 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Tác Hại Của Thuốc Lá</h2>
-                <div class="w-32 h-3 bg-brand-green mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-lungs"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center">
-                    <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
-                    </p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer với thông tin liên hệ đầy đủ -->
-    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            <div class="flex items-center gap-4">
-                <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
-                <div class="flex flex-col text-left">
-                    <span class="font-heading font-black text-2xl tracking-wider leading-none">USSH - K71 PRC</span>
-                    <span class="font-sans font-bold text-sm text-brand-green tracking-widest uppercase mt-1">Bee-Livers</span>
-                </div>
-            </div>
-            
-            <div class="flex flex-col text-left text-brand-light font-medium">
-                <h4 class="font-heading font-bold text-xl text-brand-yellow mb-3 uppercase tracking-wide">Thông Tin Liên Hệ</h4>
-                <a href="mailto:ussh.k71prc@gmail.com" class="flex items-center gap-3 mb-2 hover:text-brand-yellow transition-colors"><i class="fas fa-envelope text-brand-green w-5 text-center"></i> ussh.k71prc@gmail.com</a>
-                <a href="tel:0987654321" class="flex items-center gap-3 mb-2 hover:text-brand-yellow transition-colors"><i class="fas fa-phone-alt text-brand-green w-5 text-center"></i> 0987 654 321</a>
-                <a href="https://facebook.com" target="_blank" class="flex items-center gap-3 hover:text-brand-yellow transition-colors"><i class="fab fa-facebook-f text-brand-green w-5 text-center"></i> fb.com/ussh.k71prc</a>
-            </div>
-
-            <div class="text-left md:text-right font-medium text-brand-light">
-                <p>&copy; 2026 USSH - K71 PRC. Chiến dịch thanh niên phòng chống khói thuốc.</p>
-                <p class="text-brand-yellow text-sm mt-1">Đại học Khoa học Xã hội & Nhân văn, Hà Nội</p>
+            <div class="setting-row">
+                <label>FOV:</label>
+                <input type="range" id="fov-slider" min="50" max="100" step="5" value="65">
             </div>
         </div>
-    </footer>
+        <button id="btn-settings-back" class="btn-back">Back</button>
+    </div>
+
+    <!-- Credit Menu -->
+    <div id="credit-menu" class="ui-layer hidden">
+        <div class="menu-bg"></div>
+        <div class="info-panel">
+            <h2 style="font-family: 'Caveat', cursive; font-size: 3rem; color: #cc0000; font-family: 'Courier New', Courier, monospace;">Credits</h2>
+            <p style="font-size: 1.2rem; color: #aaa; font-family: 'Courier New', Courier, monospace;">"Toàn đẹp trai" made this shit</p>
+        </div>
+        <button class="btn-back">Back</button>
+    </div>
+
+    <!-- Donate Menu -->
+    <div id="donate-menu" class="ui-layer hidden">
+        <div class="menu-bg"></div>
+        <div class="info-panel">
+            <h2 style="font-family: 'Caveat', cursive; font-size: 3rem; color: #cc0000; font-family: 'Courier New', Courier, monospace;">Donate</h2>
+            <p style="font-family: 'Courier New', Courier, monospace;">[ SCAN TO SUPPORT ]</p>
+            <img src="image_cad759.jpg" onerror="this.onerror=null; this.src='https://placehold.co/300x400/111/f00?text=QR+Code+Missing';" alt="QR Donate" style="width: 300px; max-width: 100%; height: auto; margin: 0 auto; display: block; border: 4px solid #333; border-radius: 10px;">
+        </div>
+        <button class="btn-back">Back</button>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            /* 1. POLLEN PARTICLES BACKGROUND */
-            const canvas = document.getElementById('pollen-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+        // --- STREAMING_CHUNK: Logic Eye Animation and Audio ---
+        const eyeCanvas = document.getElementById('eye-canvas');
+        const eyeCtx = eyeCanvas.getContext('2d');
+        let eyeAnimState = 0; 
+        let eyeAnimTimer = 0;
 
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 4 + 2;
-                    this.speedX = Math.random() * 1.5 - 0.75;
-                    this.speedY = Math.random() * -1.5 - 0.5;
-                    this.opacity = Math.random() * 0.9 + 0.3;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    if (this.y < -10) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; }
-                    if (this.x < -10) this.x = canvas.width + 10;
-                    if (this.x > canvas.width + 10) this.x = -10;
-                }
-                draw() {
-                    ctx.fillStyle = `rgba(254, 240, 138, ${this.opacity})`;
-                    ctx.strokeStyle = `rgba(90, 51, 17, ${this.opacity * 0.6})`;
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();
-                }
-            }
+        function resizeEyeCanvas() {
+            eyeCanvas.width = window.innerWidth;
+            eyeCanvas.height = window.innerHeight;
+            if (eyeAnimState === 0) eyeCtx.clearRect(0, 0, eyeCanvas.width, eyeCanvas.height);
+        }
+        window.addEventListener('resize', resizeEyeCanvas);
+        resizeEyeCanvas();
 
-            function initParticles() {
-                particles = [];
-                let numParticles = (canvas.width * canvas.height) / 7000;
-                for (let i = 0; i < numParticles; i++) particles.push(new Particle());
-            }
-            initParticles();
+        function startEyeWakeUp() {
+            eyeAnimState = 1; eyeAnimTimer = 0; updateEyeAnimation(0); 
+        }
 
-            function animatePollen() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
-                requestAnimationFrame(animatePollen);
-            }
-            animatePollen();
+        function updateEyeAnimation(delta) {
+            if (eyeAnimState === 0) return;
+            eyeAnimTimer += delta; let progress = 0;
+            if (eyeAnimTimer < 0.6) progress = (eyeAnimTimer / 0.6) * 0.25;
+            else if (eyeAnimTimer < 1.0) { let t = (eyeAnimTimer - 0.6) / 0.4; progress = 0.25 - (t * 0.20); } 
+            else if (eyeAnimTimer < 3.5) { let t = (eyeAnimTimer - 1.0) / 2.5; progress = 0.05 + (t * 0.95); } 
+            else { progress = 1; eyeAnimState = 0; }
 
-            /* 2. FLOATING CLOUDS BACKGROUND */
-            const cloudsContainer = document.getElementById('clouds-container');
-            const numClouds = 8;
-            for(let i=0; i<numClouds; i++) {
-                let cloud = document.createElement('div');
-                cloud.className = 'cloud';
-                
-                let size = 100 + Math.random() * 200;
-                cloud.style.width = size + 'px';
-                cloud.style.height = (size * 0.35) + 'px';
-                cloud.style.top = (Math.random() * 90) + 'vh';
-                
-                let duration = 40 + Math.random() * 60;
-                let delay = -(Math.random() * 60);
-                
-                cloud.style.animation = `float-cloud ${duration}s linear ${delay}s infinite`;
-                if(Math.random() > 0.5) cloud.style.transform = 'scaleX(-1)';
-                
-                cloudsContainer.appendChild(cloud);
-            }
-            
-            const styleSheet = document.createElement('style');
-            styleSheet.innerHTML = `
-                @keyframes float-cloud {
-                    0% { left: -300px; }
-                    100% { left: 100vw; }
-                }
-            `;
-            document.head.appendChild(styleSheet);
+            eyeCtx.clearRect(0, 0, eyeCanvas.width, eyeCanvas.height);
+            if (progress >= 1) return; 
 
-            /* 3. THREE.JS 3D VINES, LEAVES & FLOWERS */
-            const container = document.getElementById('three-container');
-            const scene = new THREE.Scene();
-            
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            const camera = new THREE.OrthographicCamera(w / -2, w / 2, h / 2, h / -2, -1000, 1000);
-            camera.position.z = 100;
+            const w = eyeCanvas.width; const h = eyeCanvas.height; const midY = h / 2;
+            const openAmount = progress * h * 0.7; const curveFlatness = progress * h * 0.4; 
 
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(w, h);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(renderer.domElement);
+            eyeCtx.fillStyle = '#000000';
+            eyeCtx.beginPath(); eyeCtx.moveTo(0, 0); eyeCtx.lineTo(0, midY - openAmount);
+            eyeCtx.quadraticCurveTo(w / 2, midY + (h * 0.15) - openAmount - curveFlatness, w, midY - openAmount);
+            eyeCtx.lineTo(w, 0); eyeCtx.fill();
+            eyeCtx.beginPath(); eyeCtx.moveTo(0, h); eyeCtx.lineTo(0, midY + openAmount);
+            eyeCtx.quadraticCurveTo(w / 2, midY - (h * 0.15) + openAmount + curveFlatness, w, midY + openAmount);
+            eyeCtx.lineTo(w, h); eyeCtx.fill();
+        }
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-            scene.add(ambientLight);
-            
-            const dirLight = new THREE.DirectionalLight(0xfff5e6, 0.8);
-            dirLight.position.set(200, 300, 400);
-            scene.add(dirLight);
+        const uiElems = {
+            main: document.getElementById('main-menu'),
+            pause: document.getElementById('pause-menu'),
+            settings: document.getElementById('settings-menu'),
+            credit: document.getElementById('credit-menu'),
+            donate: document.getElementById('donate-menu'),
+            hud: document.getElementById('hud'),
+            subtitle: document.getElementById('subtitle'),
+            fade: document.getElementById('fade-overlay'),
+            endText: document.getElementById('end-text'),
+            ingameMenuBtn: document.getElementById('btn-ingame-menu'),
+            crosshair: document.getElementById('crosshair'),
+            hoverText: document.getElementById('hover-text'),
+            rabbitHand: document.getElementById('rabbit-hand-overlay')
+        };
+        const flashlightBtn = document.getElementById('flashlight-ui');
 
-            const stemMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x5a3311,
-                roughness: 0.8,
-                metalness: 0.1
-            });
+        let currentCycle = 1;
+        let morningTextTriggered = false; let hasTurnedOnLight = false; let isDaytime = false; let isAfternoon = false;
+        let hasScared = false; let hasEnteredHouse = false; let isFlashlightOn = false; let flashlightDead = false;
+        let finalCycleWalkTime = 0; let finalCycleFlags = [false, false, false, false]; let isFinalJumpscare = false; 
+        let finalScareBasePos = new THREE.Vector3(); let isPaused = false; let shakeTimer = 0; let cameraBasePos = new THREE.Vector3();
+        let isNightmare = false; let nightmareDoorOpened = false; let hasSeenBloodInNightmare = false;
+        let knockingInterval = null; let isNightmareChase = false; let rabbitLanded = false; 
+        let roadRabbitState = 0; let roadRabbitTimer = 0;
+        let whiteForestTimer = 0; let isWhiteForest = false; let whiteRabbits = [];
+        let isWakingUp = false; let wakeUpTimer = 0;
 
-            const leafMaterials = [
-                new THREE.MeshStandardMaterial({ color: 0x65a30d, roughness: 0.6, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0x4d7c0f, roughness: 0.7, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0x84cc16, roughness: 0.5, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0xa3e635, roughness: 0.6, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.8, side: THREE.DoubleSide })
-            ];
+        function showRabbitHand() { uiElems.rabbitHand.classList.add('visible'); }
+        function hideRabbitHand() { uiElems.rabbitHand.classList.remove('visible'); }
 
-            const petalMaterial = new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-                roughness: 0.4,
-                side: THREE.DoubleSide
-            });
+        document.getElementById('btn-credit').addEventListener('click', () => { uiElems.main.classList.add('hidden'); uiElems.credit.classList.remove('hidden'); });
+        document.getElementById('btn-donate').addEventListener('click', () => { uiElems.main.classList.add('hidden'); uiElems.donate.classList.remove('hidden'); });
+        document.querySelectorAll('.btn-back').forEach(btn => btn.addEventListener('click', () => {
+            uiElems.credit.classList.add('hidden'); uiElems.donate.classList.add('hidden'); uiElems.settings.classList.add('hidden');
+            if (controlsEnabled) uiElems.pause.classList.remove('hidden'); else uiElems.main.classList.remove('hidden');
+        }));
+        uiElems.ingameMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); document.exitPointerLock(); uiElems.pause.classList.remove('hidden'); uiElems.ingameMenuBtn.classList.add('hidden'); });
+        document.getElementById('btn-resume').addEventListener('click', () => { uiElems.pause.classList.add('hidden'); document.body.requestPointerLock(); });
+        document.getElementById('btn-settings').addEventListener('click', () => { uiElems.pause.classList.add('hidden'); uiElems.settings.classList.remove('hidden'); });
+        document.getElementById('btn-quit-main').addEventListener('click', () => { location.reload(); });
 
-            const stamenMaterial = new THREE.MeshStandardMaterial({
-                color: 0xfef08a,
-                roughness: 0.9
-            });
+        const volSlider = document.getElementById('vol-slider'); const fovSlider = document.getElementById('fov-slider'); let masterVolume = 1.0;
+        const sfx = {
+            path_steps: new Audio('musics/path_steps.mp3'), house_steps: new Audio('musics/house_steps.mp3'),
+            flashlight_on: new Audio('musics/flashlight_on.mp3'), flashlight_off: new Audio('musics/flashlight_off.mp3'),
+            door_open: new Audio('musics/door_open.mp3'), door_close: new Audio('musics/door_close.mp3'),
+            ambient_bg: new Audio('musics/ambient_bg.mp3'), jumpscare_1: new Audio('musics/jumpscare_1.mp3'),
+            jumpscare_final: new Audio('musics/jumpscare_final.mp3'), rain: new Audio('musics/rain.mp3'),
+            knock: new Audio('musics/knock.mp3'), music_3am: new Audio('musics/3AM.mp3'), white_forest: new Audio('musics/white_forest.mp3'),
+            happy_ending: new Audio('musics/happy_ending.mp3'), bad_ending: new Audio('musics/bad_ending.mp3')
+        };
+        sfx.ambient_bg.loop = true; sfx.jumpscare_final.loop = true; sfx.rain.loop = true; sfx.knock.loop = true; sfx.music_3am.loop = true; sfx.white_forest.loop = true;
+        sfx.happy_ending.loop = true; sfx.bad_ending.loop = true;
 
-            const leafShape = new THREE.Shape();
-            leafShape.moveTo(0, 0);
-            leafShape.quadraticCurveTo(15, 10, 0, 35);
-            leafShape.quadraticCurveTo(-15, 10, 0, 0);
-            
-            const extrudeSettings = { depth: 1.5, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 0.5, bevelThickness: 0.5 };
-            const leafGeometry = new THREE.ExtrudeGeometry(leafShape, extrudeSettings);
-            leafGeometry.translate(0, 0, -0.75);
-
-            const animatedFoliage = [];
-
-            function createFlower() {
-                const flower = new THREE.Group();
-                const stamen = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 16), stamenMaterial);
-                flower.add(stamen);
-
-                const petalGeo = new THREE.CylinderGeometry(4, 0.5, 18, 8);
-                petalGeo.translate(0, 9, 0);
-                petalGeo.scale(1, 1, 0.2);
-
-                for(let i = 0; i < 5; i++) {
-                    const petal = new THREE.Mesh(petalGeo, petalMaterial);
-                    petal.rotation.z = (Math.PI * 2 / 5) * i;
-                    petal.rotation.x = -0.3;
-                    flower.add(petal);
-                }
-                flower.scale.set(0.7, 0.7, 0.7);
-                return flower;
-            }
-
-            function buildProceduralVine(isLeft, totalHeight) {
-                const vineGroup = new THREE.Group();
-                const startY = h / 2 + 100; 
-                const endY = (h / 2) - totalHeight - 200;
-                const baseX = isLeft ? -w / 2 + 50 : w / 2 - 50;
-                
-                const points = [];
-                const segments = Math.max(2, Math.floor(totalHeight / 30));
-                for (let i = 0; i <= segments; i++) {
-                    const t = i / segments;
-                    const y = THREE.MathUtils.lerp(startY, endY, t);
-                    const xOffset = Math.sin(y * 0.015 + (isLeft ? 0 : Math.PI)) * 25;
-                    const zOffset = Math.cos(y * 0.01) * 15;
-                    points.push(new THREE.Vector3(baseX + xOffset, y, zOffset));
-                }
-
-                const curve = new THREE.CatmullRomCurve3(points);
-                const tubeGeometry = new THREE.TubeGeometry(curve, segments * 2, 5, 8, false);
-                const stem = new THREE.Mesh(tubeGeometry, stemMaterial);
-                vineGroup.add(stem);
-
-                const decorationCount = Math.floor(totalHeight / 10); // Mật độ lá hoa cực dày
-                for (let i = 1; i < decorationCount; i++) {
-                    const t = i / decorationCount;
-                    const pt = curve.getPointAt(t);
-                    
-                    const isFlower = Math.random() > 0.75; // 25% là hoa
-                    let mesh;
-                    
-                    if (isFlower) {
-                        mesh = createFlower();
-                        const fScale = 0.8 + Math.random() * 0.5;
-                        mesh.scale.set(fScale, fScale, fScale);
-                    } else {
-                        const randomMat = leafMaterials[Math.floor(Math.random() * leafMaterials.length)];
-                        mesh = new THREE.Mesh(leafGeometry, randomMat);
-                        const scale = 0.3 + Math.random() * 1.6; // Đa dạng lá to nhỏ
-                        mesh.scale.set(scale, scale, scale);
-                    }
-
-                    const noiseOffset = new THREE.Vector3(
-                        (Math.random() - 0.5) * 25,
-                        (Math.random() - 0.5) * 25,
-                        (Math.random() - 0.5) * 25
-                    );
-                    mesh.position.copy(pt).add(noiseOffset);
-                    
-                    const baseRotZ = isLeft ? -Math.PI/4 + (Math.random()-0.5) : Math.PI/4 + (Math.random()-0.5);
-                    const baseRotX = (Math.random() - 0.5) * Math.PI/2;
-                    const baseRotY = isLeft ? Math.random()*0.5 : -Math.random()*0.5;
-
-                    mesh.rotation.set(baseRotX, baseRotY, baseRotZ);
-
-                    mesh.userData = {
-                        baseRotX: baseRotX,
-                        baseRotZ: baseRotZ,
-                        animOffset: Math.random() * Math.PI * 2,
-                        speed: 0.5 + Math.random() * 0.5
-                    };
-
-                    animatedFoliage.push(mesh);
-                    vineGroup.add(mesh);
-                }
-
-                return vineGroup;
-            }
-
-            let leftVine, rightVine;
-            
-            function initVines() {
-                if (leftVine) scene.remove(leftVine);
-                if (rightVine) scene.remove(rightVine);
-                
-                animatedFoliage.length = 0;
-
-                const docHeight = Math.max(
-                    document.body.scrollHeight, 
-                    document.documentElement.scrollHeight,
-                    window.innerHeight
-                );
-
-                leftVine = buildProceduralVine(true, docHeight);
-                rightVine = buildProceduralVine(false, docHeight);
-                
-                scene.add(leftVine);
-                scene.add(rightVine);
-            }
-
-            setTimeout(initVines, 100);
-
-            window.addEventListener('scroll', () => {
-                camera.position.y = -window.scrollY;
-            });
-
-            let resizeTimer3D;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer3D);
-                resizeTimer3D = setTimeout(() => {
-                    const newW = window.innerWidth;
-                    const newH = window.innerHeight;
-                    
-                    camera.left = newW / -2;
-                    camera.right = newW / 2;
-                    camera.top = newH / 2;
-                    camera.bottom = newH / -2;
-                    camera.updateProjectionMatrix();
-                    
-                    renderer.setSize(newW, newH);
-                    initVines();
-                }, 300);
-            });
-
-            const clock = new THREE.Clock();
-            function animateThree() {
-                requestAnimationFrame(animateThree);
-                const time = clock.getElapsedTime();
-                
-                animatedFoliage.forEach(obj => {
-                    obj.rotation.z = obj.userData.baseRotZ + Math.sin(time * obj.userData.speed + obj.userData.animOffset) * 0.1;
-                    obj.rotation.x = obj.userData.baseRotX + Math.cos(time * obj.userData.speed + obj.userData.animOffset) * 0.05;
-                });
-
-                renderer.render(scene, camera);
-            }
-            animateThree();
-
-            /* 4. AUTONOMOUS BEE SWARM */
-            const beesContainer = document.getElementById('bees-container');
-            const beeTemplate = document.getElementById('bee-template');
-            const numBees = 4;
-            const bees = [];
-
-            class AutonomousBee {
-                constructor() {
-                    this.el = beeTemplate.content.cloneNode(true).querySelector('.bee-entity');
-                    beesContainer.appendChild(this.el);
-                    
-                    this.x = Math.random() * window.innerWidth;
-                    this.y = Math.random() * window.innerHeight;
-                    this.targetX = this.x;
-                    this.targetY = this.y;
-                    this.speed = 1.0 + Math.random() * 1.2;
-                    this.currentScaleX = 1;
-                    this.pickNewTarget();
-                }
-
-                pickNewTarget() {
-                    const margin = 80;
-                    this.targetX = margin + Math.random() * (window.innerWidth - margin * 2);
-                    this.targetY = margin + Math.random() * (window.innerHeight - margin * 2);
-                }
-
-                update() {
-                    const dx = this.targetX - this.x;
-                    const dy = this.targetY - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 15) {
-                        if (!this.waiting) {
-                            this.waiting = true;
-                            setTimeout(() => {
-                                this.pickNewTarget();
-                                this.waiting = false;
-                            }, 800 + Math.random() * 2000);
-                        }
-                    } else {
-                        this.x += (dx / distance) * this.speed;
-                        this.y += (dy / distance) * this.speed;
-                    }
-
-                    if (Math.abs(dx) > 1) {
-                        this.currentScaleX = dx > 0 ? 1 : -1;
-                    }
-
-                    const hoverOffset = Math.sin(Date.now() / 250 + this.speed * 50) * 4;
-                    this.el.style.transform = `translate(${this.x}px, ${this.y + hoverOffset}px) scaleX(${this.currentScaleX})`;
-                }
-            }
-
-            for (let i = 0; i < numBees; i++) {
-                bees.push(new AutonomousBee());
-            }
-
-            function animateBees() {
-                bees.forEach(bee => bee.update());
-                requestAnimationFrame(animateBees);
-            }
-            animateBees();
+        volSlider.addEventListener('input', (e) => {
+            masterVolume = parseFloat(e.target.value); if (masterGain) masterGain.gain.value = masterVolume;
+            if (isAmbientPlaying && sfx.ambient_bg) { const inHouseCurrent = (camera && camera.position.z < -37 && Math.abs(camera.position.x) < 8); sfx.ambient_bg.volume = (inHouseCurrent && currentCycle !== 2) ? masterVolume * 0.1 : masterVolume; }
+            if (sfx.jumpscare_final) sfx.jumpscare_final.volume = masterVolume; if (sfx.path_steps) sfx.path_steps.volume = masterVolume;
+            if (sfx.house_steps) sfx.house_steps.volume = masterVolume; if (sfx.rain) sfx.rain.volume = masterVolume;
+            if (sfx.knock) sfx.knock.volume = masterVolume; if (sfx.music_3am) sfx.music_3am.volume = masterVolume; if (sfx.white_forest) sfx.white_forest.volume = masterVolume;
+            if (sfx.happy_ending) sfx.happy_ending.volume = masterVolume; if (sfx.bad_ending) sfx.bad_ending.volume = masterVolume;
         });
+
+        let audioCtx; let masterGain; let noiseBuffer; let isAmbientPlaying = false;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)(); masterGain = audioCtx.createGain(); masterGain.gain.value = masterVolume; masterGain.connect(audioCtx.destination);
+                const bufferSize = audioCtx.sampleRate * 0.2; noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = noiseBuffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playContinuousJumpscare() { if (sfx.jumpscare_final) { sfx.jumpscare_final.volume = masterVolume; sfx.jumpscare_final.currentTime = 0; sfx.jumpscare_final.play().catch(e => console.log("Missing jumpscare_final.mp3")); } }
+        function playSound(type) {
+            if (!audioCtx) return;
+            if (sfx[type]) {
+                let sound = sfx[type]; if (['door_open', 'door_close', 'flashlight_on', 'flashlight_off', 'jumpscare_1'].includes(type)) sound = sound.cloneNode();
+                sound.volume = masterVolume; sound.play().catch(e => { playSynthFallback(type); }); return;
+            }
+            playSynthFallback(type);
+        }
+
+        function playSynthFallback(type) {
+            const t = audioCtx.currentTime;
+            if (type === 'ui_blip') {
+                const noiseSource = audioCtx.createBufferSource(); noiseSource.buffer = noiseBuffer;
+                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 400; 
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+                noiseSource.connect(filter); filter.connect(gain); gain.connect(masterGain); noiseSource.start();
+            } 
+            else if (type === 'wood_step') {
+                const osc = audioCtx.createOscillator(); osc.type = 'triangle'; osc.frequency.setValueAtTime(150, t); osc.frequency.exponentialRampToValueAtTime(50, t + 0.1);
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.4, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+                osc.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.1);
+            }
+            else if (type === 'earthquake_thud') {
+                const osc = audioCtx.createOscillator(); osc.type = 'triangle'; osc.frequency.setValueAtTime(80, t); osc.frequency.exponentialRampToValueAtTime(30, t + 0.2);
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(1.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+                osc.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.2);
+            }
+            else if (type === 'click') {
+                const osc = audioCtx.createOscillator(); osc.type = 'square'; osc.frequency.setValueAtTime(800, t);
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.1, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.05);
+                osc.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.05);
+            }
+            else if (type === 'door') {
+                const osc = audioCtx.createOscillator(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, t); osc.frequency.linearRampToValueAtTime(60, t + 0.4);
+                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 800;
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.5, t); gain.gain.linearRampToValueAtTime(0.01, t + 0.4);
+                osc.connect(filter); filter.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.4);
+            }
+            else if (type === 'jumpscare') {
+                const osc = audioCtx.createOscillator(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, t); osc.frequency.exponentialRampToValueAtTime(20, t + 1.5);
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(3, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 1.5);
+                osc.connect(gain); gain.connect(masterGain); osc.start(); osc.stop(t + 1.5);
+            }
+            else if (type === 'thunder') {
+                const bufferSize = audioCtx.sampleRate * 3.0; const thunderBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate); const output = thunderBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+                const noiseSource = audioCtx.createBufferSource(); noiseSource.buffer = thunderBuffer;
+                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.setValueAtTime(1000, t); filter.frequency.exponentialRampToValueAtTime(50, t + 3);
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(1.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 3);
+                noiseSource.connect(filter); filter.connect(gain); gain.connect(masterGain); noiseSource.start(t);
+            }
+            else if (type === 'typewriter') {
+                const osc = audioCtx.createOscillator(); osc.type = 'square'; osc.frequency.setValueAtTime(600 + Math.random() * 200, t); 
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0.015, t); gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+                osc.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.04);
+            }
+            else if (type === 'knock_synth') {
+                const osc = audioCtx.createOscillator(); osc.type = 'triangle'; osc.frequency.setValueAtTime(80, t);
+                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(1.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+                osc.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.1);
+            }
+        }
+        function startAmbientSound() { if (!audioCtx || isAmbientPlaying) return; isAmbientPlaying = true; if (sfx.ambient_bg && !isNightmare) { sfx.ambient_bg.volume = masterVolume; sfx.ambient_bg.play().catch(e => console.log("Missing ambient")); } }
+
+        // --- STREAMING_CHUNK: ThreeJS World Setup ---
+        const container = document.getElementById('game-container');
+        const scene = new THREE.Scene(); scene.background = new THREE.Color(0x060708); scene.fog = new THREE.FogExp2(0x060708, 0.05); 
+        fovSlider.addEventListener('input', (e) => { if (camera) { camera.fov = parseInt(e.target.value); camera.updateProjectionMatrix(); } });
+        const camera = new THREE.PerspectiveCamera(parseInt(fovSlider.value), window.innerWidth / window.innerHeight, 0.1, 2000); camera.position.set(0, 2, 45); 
+        const renderer = new THREE.WebGLRenderer({ antialias: false }); const pixelRatio = 0.15; renderer.setSize(window.innerWidth * pixelRatio, window.innerHeight * pixelRatio, false); container.appendChild(renderer.domElement);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.08); scene.add(ambientLight); let sunLight;
+        
+        const flashlight = new THREE.SpotLight(0xfffaee, 0); flashlight.position.set(0, 0, 0); flashlight.target.position.set(0, 0, -1); flashlight.angle = Math.PI / 7; flashlight.penumbra = 0.1; flashlight.distance = 50; flashlight.decay = 1.5; 
+        camera.add(flashlight); camera.add(flashlight.target); scene.add(camera);
+
+        function toggleFlashlight() {
+            if (flashlightDead) { showSubtitle("lmao, the flashlight is dead", 3000); return; }
+            isFlashlightOn = !isFlashlightOn; playSound(isFlashlightOn ? 'flashlight_on' : 'flashlight_off');
+            const inHouse = (camera.position.z < -37 && Math.abs(camera.position.x) < 8);
+            flashlight.intensity = isFlashlightOn ? (inHouse ? 4 : 15) : 0; 
+            flashlight.distance = isFlashlightOn ? (inHouse ? 10 : 50) : 0;
+            flashlightBtn.classList.toggle('active', isFlashlightOn);
+            if (isFlashlightOn) { pathMat.emissive.setHex(0x2a1a10); pathMat.color.setHex(0x5c4033); } else { pathMat.emissive.setHex(0x000000); pathMat.color.setHex(0x1f140d); }
+        }
+        flashlightBtn.addEventListener('click', (e) => { e.stopPropagation(); if (controlsEnabled) toggleFlashlight(); });
+
+        function createWoodTexture(baseColor, stripeColor) {
+            const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 256; const ctx = canvas.getContext('2d');
+            ctx.fillStyle = baseColor; ctx.fillRect(0, 0, 256, 256);
+            for(let i = 0; i < 200; i++) { ctx.fillStyle = stripeColor; ctx.globalAlpha = Math.random() * 0.15; ctx.fillRect(0, Math.random() * 256, 256, Math.random() * 4 + 1); }
+            const tex = new THREE.CanvasTexture(canvas); tex.wrapS = THREE.RepeatWrapping; tex.wrapT = THREE.RepeatWrapping; tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; return tex;
+        }
+        const woodWallTex = createWoodTexture('#3a2415', '#000000'); const woodFloorTex = createWoodTexture('#2a180c', '#000000'); const woodRoofTex = createWoodTexture('#1c1006', '#000000');
+        const floorGeo = new THREE.PlaneGeometry(300, 3500); const floorMat = new THREE.MeshLambertMaterial({ color: 0x050a05 }); const floor = new THREE.Mesh(floorGeo, floorMat); floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, -300); scene.add(floor);
+        const pathGeo = new THREE.PlaneGeometry(5, 3500); const pathMat = new THREE.MeshLambertMaterial({ color: 0x1f140d }); const path = new THREE.Mesh(pathGeo, pathMat); path.rotation.x = -Math.PI / 2; path.position.set(0, 0.02, -300); scene.add(path);
+
+        const trunkMat = new THREE.MeshLambertMaterial({ color: 0x120c08 }); const branchMat = new THREE.MeshLambertMaterial({ color: 0x18100b }); const leavesMat = new THREE.MeshLambertMaterial({ color: 0x0a140a });
+        const treeCount = 7000; const validTrees = [];
+        for (let i = 0; i < treeCount; i++) {
+            let x; if (Math.random() < 0.65) x = (Math.random() > 0.5 ? 1 : -1) * (3.2 + Math.random() * 15); else x = (Math.random() - 0.5) * 220;
+            const z = (Math.random() * 3200) - 1700; 
+            if (Math.abs(x) < 5.2 && z < 100 && z > -1050) continue; if (Math.abs(x) < 12 && z < -35 && z > -55) continue; 
+            const h = 6 + Math.random() * 8; validTrees.push({ x, z, h });
+        }
+        const trunkGeo = new THREE.BoxGeometry(1.2, 1, 1.2); const branchGeo1 = new THREE.BoxGeometry(2.5, 0.4, 0.4); const branchGeo2 = new THREE.BoxGeometry(0.4, 0.4, 2.5); const leavesGeo = new THREE.BoxGeometry(4.8, 5.5, 4.8);
+        const trunkInst = new THREE.InstancedMesh(trunkGeo, trunkMat, validTrees.length); const branchInst1 = new THREE.InstancedMesh(branchGeo1, branchMat, validTrees.length); const branchInst2 = new THREE.InstancedMesh(branchGeo2, branchMat, validTrees.length); const leavesInst = new THREE.InstancedMesh(leavesGeo, leavesMat, validTrees.length);
+        const dummy = new THREE.Object3D();
+        for (let i = 0; i < validTrees.length; i++) {
+            const t = validTrees[i];
+            dummy.position.set(t.x, t.h / 2, t.z); dummy.scale.set(1, t.h, 1); dummy.updateMatrix(); trunkInst.setMatrixAt(i, dummy.matrix);
+            dummy.position.set(t.x + 0.6, t.h * 0.65, t.z); dummy.scale.set(1, 1, 1); dummy.updateMatrix(); branchInst1.setMatrixAt(i, dummy.matrix);
+            dummy.position.set(t.x, t.h * 0.45, t.z + 0.6); dummy.scale.set(1, 1, 1); dummy.updateMatrix(); branchInst2.setMatrixAt(i, dummy.matrix);
+            dummy.position.set(t.x, t.h + 1, t.z); dummy.scale.set(1, 1, 1); dummy.updateMatrix(); leavesInst.setMatrixAt(i, dummy.matrix);
+        }
+        scene.add(trunkInst); scene.add(branchInst1); scene.add(branchInst2); scene.add(leavesInst);
+
+        const rainCount = 20000; const rainGeo = new THREE.BufferGeometry(); const rainPositions = new Float32Array(rainCount * 3);
+        for(let i = 0; i < rainCount; i++) { rainPositions[i*3] = (Math.random() - 0.5) * 80; rainPositions[i*3+1] = Math.random() * 40; rainPositions[i*3+2] = (Math.random() - 0.5) * 800 - 300; }
+        rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3)); const rainMat = new THREE.PointsMaterial({ color: 0x888888, size: 0.05, transparent: true, opacity: 0.5 }); const rainDrop = new THREE.Points(rainGeo, rainMat); rainDrop.visible = false; scene.add(rainDrop);
+
+        // --- STREAMING_CHUNK: Detailed House Construction ---
+        const bloodGroup = new THREE.Group(); scene.add(bloodGroup);
+        const houseGroup = new THREE.Group(); houseGroup.position.set(0, 0, -45); scene.add(houseGroup); const interactables = []; 
+        const houseLight = new THREE.PointLight(0xffddaa, 0, 20); houseLight.position.set(0, 5, 0); houseGroup.add(houseLight);
+
+        const matWall = new THREE.MeshLambertMaterial({ map: woodWallTex }); const w_W = 16, w_H = 8, w_D = 16;
+        const lw = new THREE.Mesh(new THREE.BoxGeometry(1, w_H, w_D), matWall); lw.position.set(-8, 4, 0); houseGroup.add(lw);
+        const rw = new THREE.Mesh(new THREE.BoxGeometry(1, w_H, w_D), matWall); rw.position.set(8, 4, 0); houseGroup.add(rw);
+        const bw = new THREE.Mesh(new THREE.BoxGeometry(w_W, w_H, 1), matWall); bw.position.set(0, 4, -8); houseGroup.add(bw);
+        const fwLeft = new THREE.Mesh(new THREE.BoxGeometry(6, w_H, 1), matWall); fwLeft.position.set(-5, 4, 8); houseGroup.add(fwLeft);
+        const fwRight = new THREE.Mesh(new THREE.BoxGeometry(6, w_H, 1), matWall); fwRight.position.set(5, 4, 8); houseGroup.add(fwRight);
+        const fwTop = new THREE.Mesh(new THREE.BoxGeometry(4, 2, 1), matWall); fwTop.position.set(0, 7, 8); houseGroup.add(fwTop);
+        const roof = new THREE.Mesh(new THREE.BoxGeometry(18, 1, 18), new THREE.MeshLambertMaterial({map: woodRoofTex})); roof.position.set(0, w_H + 0.5, 0); houseGroup.add(roof);
+        const woodFloor = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), new THREE.MeshLambertMaterial({map: woodFloorTex})); woodFloor.rotation.x = -Math.PI / 2; woodFloor.position.set(0, 0.05, 0); houseGroup.add(woodFloor);
+
+        function createDecorativeWindow() {
+            const winGroup = new THREE.Group(); const frameWoodMat = new THREE.MeshLambertMaterial({ color: 0x221208 }); const glassPaneMat = new THREE.MeshLambertMaterial({ color: 0x1a2b3c, transparent: true, opacity: 0.65, emissive: 0x0a1520, emissiveIntensity: 0.3 });
+            const fW = 3.2, fH = 2.4, fT = 0.15, fD = 0.25;
+            const topBar = new THREE.Mesh(new THREE.BoxGeometry(fW, fT, fD), frameWoodMat); topBar.position.y = fH/2; winGroup.add(topBar);
+            const botBar = new THREE.Mesh(new THREE.BoxGeometry(fW, fT, fD), frameWoodMat); botBar.position.y = -fH/2; winGroup.add(botBar);
+            const leftBar = new THREE.Mesh(new THREE.BoxGeometry(fT, fH, fD), frameWoodMat); leftBar.position.x = -fW/2; winGroup.add(leftBar);
+            const rightBar = new THREE.Mesh(new THREE.BoxGeometry(fT, fH, fD), frameWoodMat); rightBar.position.x = fW/2; winGroup.add(rightBar);
+            const crossHoriz = new THREE.Mesh(new THREE.BoxGeometry(fW, 0.08, 0.12), frameWoodMat); winGroup.add(crossHoriz);
+            const crossVert = new THREE.Mesh(new THREE.BoxGeometry(0.08, fH, 0.12), frameWoodMat); winGroup.add(crossVert);
+            const glass = new THREE.Mesh(new THREE.PlaneGeometry(fW - 0.1, fH - 0.1), glassPaneMat); winGroup.add(glass); return winGroup;
+        }
+        const windowRight = createDecorativeWindow(); windowRight.position.set(7.45, 4.5, 0); windowRight.rotation.y = -Math.PI / 2; houseGroup.add(windowRight);
+        const windowLeft = createDecorativeWindow(); windowLeft.position.set(-7.45, 4.5, 0); windowLeft.rotation.y = Math.PI / 2; houseGroup.add(windowLeft);
+
+        const doorPivot = new THREE.Group(); doorPivot.position.set(-2, 0, 8); houseGroup.add(doorPivot);
+        const doorMesh = new THREE.Mesh(new THREE.BoxGeometry(4, 6, 0.4), new THREE.MeshLambertMaterial({color: 0x4a2a10})); doorMesh.position.set(2, 3, 0); doorMesh.userData = { type: 'door', isOpen: false }; doorPivot.add(doorMesh); interactables.push(doorMesh);
+
+        const bedGroup = new THREE.Group(); bedGroup.position.set(-5, 0, -4);
+        const frameMat = new THREE.MeshLambertMaterial({ color: 0x3e2723 });
+        const bedBase = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.6, 7.2), frameMat); bedBase.position.y = 0.3; bedGroup.add(bedBase);
+        const headboard = new THREE.Mesh(new THREE.BoxGeometry(4.6, 2.2, 0.4), frameMat); headboard.position.set(0, 1.1, -3.4); bedGroup.add(headboard);
+        const footboard = new THREE.Mesh(new THREE.BoxGeometry(4.6, 1.0, 0.4), frameMat); footboard.position.set(0, 0.5, 3.4); bedGroup.add(footboard);
+        const mattressMat = new THREE.MeshLambertMaterial({ color: 0x1e293b }); const mattress = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.6, 6.6), mattressMat); mattress.position.set(0, 0.8, 0); bedGroup.add(mattress);
+        const blanketMat = new THREE.MeshLambertMaterial({ color: 0x991b1b }); const blanket = new THREE.Mesh(new THREE.BoxGeometry(4.25, 0.65, 4.4), blanketMat); blanket.position.set(0, 0.82, 1.0); bedGroup.add(blanket);
+        const pillowMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc }); const pillow1 = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.25, 1.2), pillowMat); pillow1.position.set(0, 1.2, -2.5); pillow1.rotation.x = 0.15; bedGroup.add(pillow1);
+        const bedHitbox = new THREE.Mesh(new THREE.BoxGeometry(4.6, 2.2, 7.2), new THREE.MeshBasicMaterial({ visible: false })); bedHitbox.position.set(0, 1.1, 0); bedHitbox.userData = { type: 'bed' }; bedGroup.add(bedHitbox); houseGroup.add(bedGroup); interactables.push(bedHitbox);
+
+        const nightstandGroup = new THREE.Group(); nightstandGroup.position.set(-2.0, 0, -6.5);
+        const nightstandWoodMat = new THREE.MeshLambertMaterial({ color: 0x2e1c11 }); const nsHandleMat = new THREE.MeshLambertMaterial({ color: 0x888888 });
+        const nsLegGeo = new THREE.BoxGeometry(0.1, 1.2, 0.1);
+        const nsLeg1 = new THREE.Mesh(nsLegGeo, nightstandWoodMat); nsLeg1.position.set(-0.65, 0.6, -0.65); nightstandGroup.add(nsLeg1);
+        const nsLeg2 = new THREE.Mesh(nsLegGeo, nightstandWoodMat); nsLeg2.position.set(0.65, 0.6, -0.65); nightstandGroup.add(nsLeg2);
+        const nsLeg3 = new THREE.Mesh(nsLegGeo, nightstandWoodMat); nsLeg3.position.set(-0.65, 0.6, 0.65); nightstandGroup.add(nsLeg3);
+        const nsLeg4 = new THREE.Mesh(nsLegGeo, nightstandWoodMat); nsLeg4.position.set(0.65, 0.6, 0.65); nightstandGroup.add(nsLeg4);
+        const nsTop = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.1, 1.6), nightstandWoodMat); nsTop.position.set(0, 1.2, 0); nightstandGroup.add(nsTop);
+        const nsDrawer = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.4, 1.4), nightstandWoodMat); nsDrawer.position.set(0, 0.95, 0); nightstandGroup.add(nsDrawer);
+        const nsHandle = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.05, 0.1), nsHandleMat); nsHandle.position.set(0, 0.95, 0.73); nightstandGroup.add(nsHandle);
+        const nsShelf = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.05, 1.4), nightstandWoodMat); nsShelf.position.set(0, 0.4, 0); nightstandGroup.add(nsShelf);
+        houseGroup.add(nightstandGroup);
+
+        const clockCanvas = document.createElement('canvas'); clockCanvas.width = 256; clockCanvas.height = 128; const clockCtx = clockCanvas.getContext('2d'); const clockTex = new THREE.CanvasTexture(clockCanvas); clockTex.minFilter = THREE.LinearFilter; clockTex.magFilter = THREE.LinearFilter;
+        function updateClockTime(timeStr) { clockCtx.fillStyle = '#000000'; clockCtx.fillRect(0, 0, 256, 128); clockCtx.fillStyle = '#ff0000'; clockCtx.font = 'bold 50px "Courier New"'; clockCtx.textAlign = 'center'; clockCtx.textBaseline = 'middle'; clockCtx.shadowColor = '#ff0000'; clockCtx.shadowBlur = 10; clockCtx.fillText(timeStr, 128, 64); clockTex.needsUpdate = true; }
+        updateClockTime("9:00 PM");
+        const clockGroup = new THREE.Group(); const clockBody = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.45, 0.28), new THREE.MeshLambertMaterial({ color: 0x111111 })); const clockFace = new THREE.Mesh(new THREE.PlaneGeometry(0.82, 0.36), new THREE.MeshBasicMaterial({ map: clockTex })); clockFace.position.set(0, 0, 0.15); clockGroup.add(clockBody); clockGroup.add(clockFace);
+        clockGroup.position.set(-2.0, 1.35, -6.5); clockGroup.rotation.x = -0.15; clockGroup.rotation.y = Math.PI / 6; houseGroup.add(clockGroup);
+
+        const tableGroup = new THREE.Group(); const tableWoodMat = new THREE.MeshLambertMaterial({color: 0x3e2723});
+        const tableTopObj = new THREE.Mesh(new THREE.BoxGeometry(5, 0.2, 2.5), tableWoodMat); tableTopObj.position.set(0, 1.4, 0); tableGroup.add(tableTopObj);
+        const tShelf = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.1, 2.3), tableWoodMat); tShelf.position.set(0, 0.5, 0); tableGroup.add(tShelf);
+        const legGeoT = new THREE.BoxGeometry(0.2, 1.5, 0.2);
+        const leg1T = new THREE.Mesh(legGeoT, tableWoodMat); leg1T.position.set(-2.3, 0.75, -1.1); tableGroup.add(leg1T);
+        const leg2T = new THREE.Mesh(legGeoT, tableWoodMat); leg2T.position.set(2.3, 0.75, -1.1); tableGroup.add(leg2T);
+        const leg3T = new THREE.Mesh(legGeoT, tableWoodMat); leg3T.position.set(-2.3, 0.75, 1.1); tableGroup.add(leg3T);
+        const leg4T = new THREE.Mesh(legGeoT, tableWoodMat); leg4T.position.set(2.3, 0.75, 1.1); tableGroup.add(leg4T);
+        tableGroup.position.set(4, 0, -6); houseGroup.add(tableGroup);
+        
+        const tvGroup = new THREE.Group(); const tvCasingMat = new THREE.MeshLambertMaterial({color: 0x4a3b2c}); const tvScreenMat = new THREE.MeshLambertMaterial({color: 0x1a2b2c, emissive: 0x050a0a}); const tvDetailsMat = new THREE.MeshLambertMaterial({color: 0x111111}); 
+        const tvBack = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.4, 1.0), tvDetailsMat); tvBack.position.set(0, 0, -0.6); tvGroup.add(tvBack);
+        const tvFront = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.8, 0.6), tvCasingMat); tvGroup.add(tvFront);
+        const tvHitbox = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.8, 1.6), new THREE.MeshBasicMaterial({visible: false})); tvHitbox.userData = { type: 'tv' }; tvGroup.add(tvHitbox); interactables.push(tvHitbox);
+        const tvScreenObj = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.4, 0.1), tvScreenMat); tvScreenObj.position.set(-0.2, 0, 0.31); tvGroup.add(tvScreenObj);
+        const tvPanel = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.4, 0.1), tvDetailsMat); tvPanel.position.set(1.0, 0, 0.31); tvGroup.add(tvPanel);
+        const powerLed = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.1), new THREE.MeshBasicMaterial({color: 0xff0000})); powerLed.position.set(1.0, 0.5, 0.35); tvGroup.add(powerLed);
+        const knobGeoT = new THREE.CylinderGeometry(0.08, 0.08, 0.15, 16); knobGeoT.rotateX(Math.PI / 2);
+        const knob1T = new THREE.Mesh(knobGeoT, tvDetailsMat); knob1T.position.set(1.0, 0.2, 0.35); tvGroup.add(knob1T); const knob2T = new THREE.Mesh(knobGeoT, tvDetailsMat); knob2T.position.set(1.0, -0.2, 0.35); tvGroup.add(knob2T); const knob3T = new THREE.Mesh(knobGeoT, tvDetailsMat); knob3T.position.set(1.0, -0.5, 0.35); tvGroup.add(knob3T);
+        const antennaBaseT = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.1, 0.4), tvDetailsMat); antennaBaseT.position.set(0, 0.95, 0); tvGroup.add(antennaBaseT);
+        const antennaRodGeoT = new THREE.CylinderGeometry(0.02, 0.02, 1.5, 8); const ant1T = new THREE.Mesh(antennaRodGeoT, new THREE.MeshLambertMaterial({color: 0x888888})); ant1T.position.set(-0.3, 1.6, 0); ant1T.rotation.z = Math.PI / 5; tvGroup.add(ant1T); const ant2T = new THREE.Mesh(antennaRodGeoT, new THREE.MeshLambertMaterial({color: 0x888888})); ant2T.position.set(0.3, 1.6, 0); ant2T.rotation.z = -Math.PI / 5; tvGroup.add(ant2T);
+        tvGroup.position.set(4, 2.4, -6.2); houseGroup.add(tvGroup);
+
+        const chairGroup = new THREE.Group(); const chairWoodMat = new THREE.MeshLambertMaterial({ color: 0x2d1b0e });
+        const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.12, 1.3), chairWoodMat); chairSeat.position.y = 1.1; chairGroup.add(chairSeat);
+        const chairLegGeo = new THREE.BoxGeometry(0.12, 1.1, 0.12);
+        const legFL = new THREE.Mesh(chairLegGeo, chairWoodMat); legFL.position.set(-0.55, 0.55, 0.55); chairGroup.add(legFL); const legFR = new THREE.Mesh(chairLegGeo, chairWoodMat); legFR.position.set(0.55, 0.55, 0.55); chairGroup.add(legFR); const legBL = new THREE.Mesh(chairLegGeo, chairWoodMat); legBL.position.set(-0.55, 0.55, -0.55); chairGroup.add(legBL); const legBR = new THREE.Mesh(chairLegGeo, chairWoodMat); legBR.position.set(0.55, 0.55, -0.55); chairGroup.add(legBR);
+        const backPostGeo = new THREE.BoxGeometry(0.12, 1.3, 0.12); const backPostL = new THREE.Mesh(backPostGeo, chairWoodMat); backPostL.position.set(-0.55, 1.75, -0.55); chairGroup.add(backPostL); const backPostR = new THREE.Mesh(backPostGeo, chairWoodMat); backPostR.position.set(0.55, 1.75, -0.55); chairGroup.add(backPostR);
+        const backTopBar = new THREE.Mesh(new THREE.BoxGeometry(1.22, 0.35, 0.08), chairWoodMat); backTopBar.position.set(0, 2.2, -0.55); chairGroup.add(backTopBar);
+        const slatGeo = new THREE.BoxGeometry(0.08, 0.85, 0.05); for (let s = -0.35; s <= 0.35; s += 0.35) { const slat = new THREE.Mesh(slatGeo, chairWoodMat); slat.position.set(s, 1.65, -0.55); chairGroup.add(slat); }
+        chairGroup.position.set(5.5, 0, 4); chairGroup.rotation.y = -Math.PI / 4; houseGroup.add(chairGroup);
+        const chair2 = chairGroup.clone(); chair2.position.set(2.0, 0, -3.5); chair2.rotation.y = Math.PI / 6; houseGroup.add(chair2);
+
+        const switchMat = new THREE.MeshLambertMaterial({ color: 0xaaaaaa, emissive: 0x0055ff, emissiveIntensity: 1 });
+        const switchBtn = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.5, 0.1), switchMat); switchBtn.position.set(2.5, 4, 7.4); switchBtn.userData = { type: 'switch', isOn: false }; houseGroup.add(switchBtn); interactables.push(switchBtn);
+
+        // --- STREAMING_CHUNK: Rabbits Setup ---
+        const roadRabbitGroup = new THREE.Group(); const roadRMat = new THREE.MeshLambertMaterial({ color: 0xeeeeee });
+        const rBody2 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.5, 0.9), roadRMat); rBody2.position.y = 0.25; roadRabbitGroup.add(rBody2);
+        const rHead2 = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.45, 0.45), roadRMat); rHead2.position.set(0, 0.55, 0.35); roadRabbitGroup.add(rHead2);
+        const rEar1 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.6, 0.12), roadRMat); rEar1.position.set(-0.12, 0.95, 0.3); rEar1.rotation.z = -0.1; roadRabbitGroup.add(rEar1); const rEar2 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.6, 0.12), roadRMat); rEar2.position.set(0.12, 0.95, 0.3); rEar2.rotation.z = 0.1; roadRabbitGroup.add(rEar2);
+        const roadEyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 }); const rEye1 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 0.05), roadEyeMat); rEye1.position.set(-0.12, 0.6, 0.58); roadRabbitGroup.add(rEye1); const rEye2 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 0.05), roadEyeMat); rEye2.position.set(0.12, 0.6, 0.58); roadRabbitGroup.add(rEye2);
+        const rNose = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.05), new THREE.MeshBasicMaterial({ color: 0xffaacc })); rNose.position.set(0, 0.5, 0.58); roadRabbitGroup.add(rNose);
+        roadRabbitGroup.position.set(12, 0, -18); roadRabbitGroup.rotation.y = -Math.PI / 2; roadRabbitGroup.visible = false; scene.add(roadRabbitGroup);
+
+        const rabbitGroup = new THREE.Group(); const rMat = new THREE.MeshLambertMaterial({ color: 0xcccccc }); 
+        const rBody = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 2), rMat); rBody.position.y = 0.5; rabbitGroup.add(rBody);
+        const rHeadGroup = new THREE.Group(); rHeadGroup.position.set(0, 1.2, 0.8); rHeadGroup.userData = { targetTilt: 0 }; rabbitGroup.add(rHeadGroup);
+        const rHead = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), rMat); rHeadGroup.add(rHead);
+        const ear1R = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1, 0.2), rMat); ear1R.position.set(-0.2, 0.6, 0); rHeadGroup.add(ear1R); const ear2R = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1, 0.2), rMat); ear2R.position.set(0.2, 0.6, 0); rHeadGroup.add(ear2R);
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 }); const eye1R = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.15, 0.1), eyeMat); eye1R.position.set(-0.2, 0.1, 0.45); rHeadGroup.add(eye1R); const eye2R = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.15, 0.1), eyeMat); eye2R.position.set(0.2, 0.1, 0.45); rHeadGroup.add(eye2R);
+        const noseMat = new THREE.MeshBasicMaterial({ color: 0xffaacc }); const noseR = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.15, 0.1), noseMat); noseR.position.set(0, -0.1, 0.45); rHeadGroup.add(noseR);
+        const mouthMat = new THREE.MeshBasicMaterial({ color: 0x000000 }); const mouthR = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), mouthMat); mouthR.position.set(0, -0.25, 0.45); rHeadGroup.add(mouthR);
+        const rabbitLight = new THREE.PointLight(0xffffff, 0, 10); rabbitLight.position.set(0, 1.2, 2.5); rabbitGroup.add(rabbitLight);
+        rabbitGroup.position.set(0, -2, 43); rabbitGroup.scale.set(3, 4, 3); rabbitGroup.rotation.y = Math.PI; scene.add(rabbitGroup);
+
+        function createWhiteForestRabbits() {
+            const wrMat = new THREE.MeshLambertMaterial({color: 0x888888});
+            for(let i=0; i<300; i++) {
+                const clone = rabbitGroup.clone();
+                clone.children[0].material = wrMat; clone.children[1].children[0].material = wrMat; clone.children[1].children[1].material = wrMat; clone.children[1].children[2].material = wrMat;
+                let rX = (Math.random() - 0.5) * 300; let rZ = (Math.random() - 0.5) * 300;
+                if(Math.abs(rX) < 10) rX = rX > 0 ? 10 : -10; if(Math.abs(rZ) < 10) rZ = rZ > 0 ? 10 : -10;
+                clone.position.set(camera.position.x + rX, 0, camera.position.z + rZ); scene.add(clone); whiteRabbits.push(clone);
+            }
+        }
+
+        // --- STREAMING_CHUNK: Input, Events and Story Logic ---
+        let controlsEnabled = false; let isFrozen = false; const moveSpeed = 6; let keys = { w: false, a: false, s: false, d: false }; let pitch = 0; let yaw = 0;
+        let typingInterval; let hideTimeout; const TYPE_SPEED = 40; 
+        function showSubtitle(text, duration = 3000) {
+            return new Promise((resolve) => {
+                clearInterval(typingInterval); clearTimeout(hideTimeout); uiElems.subtitle.textContent = ""; uiElems.subtitle.style.opacity = 1; let i = 0;
+                typingInterval = setInterval(() => {
+                    if (i < text.length) { uiElems.subtitle.textContent += text.charAt(i); if (text.charAt(i) !== ' ') playSound('typewriter'); i++; } 
+                    else { clearInterval(typingInterval); if (duration > 0) hideTimeout = setTimeout(() => { hideSubtitle(); resolve(); }, duration); else resolve(); }
+                }, TYPE_SPEED);
+            });
+        }
+        function hideSubtitle() { uiElems.subtitle.style.opacity = 0; }
+
+        document.getElementById('btn-play').addEventListener('click', () => {
+            initAudio(); playSound('thunder'); startAmbientSound(); 
+            uiElems.main.classList.add('hidden'); uiElems.hud.classList.remove('hidden'); document.body.requestPointerLock();
+            showRabbitHand();
+            camera.position.set(0, 2, 45); pitch = 0; yaw = 0; camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+            rabbitGroup.position.set(0, -10, 0); rabbitGroup.scale.set(0.6, 0.6, 0.6);
+            setTimeout(() => { const inst = document.getElementById('instructions'); if (inst) inst.style.opacity = '0'; }, 10000);
+            setTimeout(async () => { await showSubtitle("What a hard day of work, I should go home!", 3000); showSubtitle("My woodenhouse is at the end of this path", 3000); }, 1000);
+        });
+
+        container.addEventListener('click', () => { if (uiElems.main.classList.contains('hidden') && uiElems.pause.classList.contains('hidden') && uiElems.settings.classList.contains('hidden') && uiElems.credit.classList.contains('hidden') && uiElems.donate.classList.contains('hidden') && !isFrozen && !isFinalJumpscare) if (document.pointerLockElement !== document.body) document.body.requestPointerLock(); });
+        
+        document.addEventListener('pointerlockchange', () => {
+            controlsEnabled = (document.pointerLockElement === document.body);
+            if (!controlsEnabled && uiElems.main.classList.contains('hidden') && uiElems.settings.classList.contains('hidden') && uiElems.credit.classList.contains('hidden') && uiElems.donate.classList.contains('hidden') && uiElems.fade.style.pointerEvents !== 'auto' && !isFinalJumpscare) {
+                uiElems.pause.classList.remove('hidden'); uiElems.ingameMenuBtn.classList.add('hidden'); isPaused = true;
+                if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+                if (isAmbientPlaying) sfx.ambient_bg.pause(); if (isFinalJumpscare) sfx.jumpscare_final.pause(); if (sfx.rain && !sfx.rain.paused) sfx.rain.pause(); if (isNightmare && sfx.knock && !sfx.knock.paused) sfx.knock.pause(); if (isNightmare && sfx.music_3am && !sfx.music_3am.paused) sfx.music_3am.pause();
+                if (sfx.happy_ending && !sfx.happy_ending.paused) sfx.happy_ending.pause(); if (sfx.bad_ending && !sfx.bad_ending.paused) sfx.bad_ending.pause();
+            } else if (controlsEnabled) {
+                uiElems.pause.classList.add('hidden'); uiElems.settings.classList.add('hidden'); uiElems.ingameMenuBtn.classList.remove('hidden'); isPaused = false;
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                if (isFinalJumpscare) sfx.jumpscare_final.play().catch(()=>{}); if (isNightmare && sfx.knock && sfx.knock.paused && !nightmareDoorOpened) sfx.knock.play().catch(()=>{});
+                if (isNightmare && !isNightmareChase) { if (sfx.music_3am && sfx.music_3am.paused) sfx.music_3am.play().catch(()=>{}); } else if (!isNightmare && !isAfternoon && !isWhiteForest) { if (isAmbientPlaying) sfx.ambient_bg.play().catch(()=>{}); }
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!controlsEnabled || isFrozen) return;
+            yaw -= (e.movementX || 0) * 0.002; pitch -= (e.movementY || 0) * 0.002; pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch)); camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Escape') {
+                if (!uiElems.main.classList.contains('hidden')) return;
+                if (!uiElems.settings.classList.contains('hidden')) { uiElems.settings.classList.add('hidden'); uiElems.pause.classList.remove('hidden'); return; }
+                if (document.pointerLockElement === document.body) document.exitPointerLock(); else if (!uiElems.pause.classList.contains('hidden')) { uiElems.pause.classList.add('hidden'); document.body.requestPointerLock(); }
+            }
+            if(e.code === 'KeyW' || e.code === 'ArrowUp') keys.w = true; if(e.code === 'KeyA' || e.code === 'ArrowLeft') keys.a = true; if(e.code === 'KeyS' || e.code === 'ArrowDown') keys.s = true; if(e.code === 'KeyD' || e.code === 'ArrowRight') keys.d = true; if(e.code === 'KeyF' && controlsEnabled && !isFrozen) toggleFlashlight();
+        });
+        document.addEventListener('keyup', (e) => { if(e.code === 'KeyW' || e.code === 'ArrowUp') keys.w = false; if(e.code === 'KeyA' || e.code === 'ArrowLeft') keys.a = false; if(e.code === 'KeyS' || e.code === 'ArrowDown') keys.s = false; if(e.code === 'KeyD' || e.code === 'ArrowRight') keys.d = false; });
+
+        function triggerWakeUp(fromNightmare = false) {
+            uiElems.endText.classList.remove('blinking'); uiElems.endText.textContent = ""; hideSubtitle(); 
+            scene.background.setHex(0x87CEEB); scene.fog.color.setHex(0x87CEEB); scene.fog.density = 0.025; 
+            if (!sunLight) { sunLight = new THREE.DirectionalLight(0xffffff, 1.2); sunLight.position.set(10, 20, 10); scene.add(sunLight); } sunLight.intensity = 1.2; ambientLight.intensity = 0.5;
+            flashlightDead = false; isDaytime = true; updateClockTime("5:00 AM"); if (isFlashlightOn) toggleFlashlight(); 
+            startEyeWakeUp(); uiElems.fade.style.opacity = 0; 
+            if (fromNightmare && isAmbientPlaying && sfx.ambient_bg.paused) { sfx.ambient_bg.currentTime = 0; sfx.ambient_bg.play().catch(()=>{}); }
+
+            camera.position.set(-4, 1.0, -45); pitch = -Math.PI / 2.5; yaw = 0; camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+            isFrozen = true; isWakingUp = true; wakeUpTimer = 0;
+            setTimeout(async () => { 
+                isFrozen = false; if (fromNightmare) await showSubtitle("OH my fucking god, It was just a nightmare!", 3500);
+                await showSubtitle("It's morning now, I should get some more sleep...", 3000); 
+            }, 3000); 
+        }
+
+        // --- HÀM MỚI: Thức dậy vào buổi chiều 2:00 PM ---
+        function triggerAfternoonWakeUp() {
+            isFrozen = true; hideSubtitle(); uiElems.fade.style.opacity = 1; 
+            setTimeout(() => {
+                uiElems.endText.textContent = "Zzz..."; uiElems.endText.classList.add('blinking'); 
+                setTimeout(() => {
+                    uiElems.endText.classList.remove('blinking'); uiElems.endText.textContent = ""; 
+                    // Chỉnh bầu trời thành màu cam (Chiều tà)
+                    scene.background.setHex(0xd2691e); 
+                    scene.fog.color.setHex(0xd2691e); 
+                    scene.fog.density = 0.025; 
+                    if (!sunLight) { sunLight = new THREE.DirectionalLight(0xffaa55, 1.0); sunLight.position.set(10, 10, -10); scene.add(sunLight); }
+                    sunLight.color.setHex(0xffaa55); sunLight.intensity = 1.0; ambientLight.intensity = 0.6;
+                    
+                    isAfternoon = true; isDaytime = false; flashlightDead = true; 
+                    updateClockTime("2:00 PM"); if (isFlashlightOn) toggleFlashlight(); 
+                    startEyeWakeUp(); uiElems.fade.style.opacity = 0; 
+
+                    camera.position.set(-4, 1.0, -45); pitch = -Math.PI / 2.5; yaw = 0; camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+                    isWakingUp = true; wakeUpTimer = 0;
+                    setTimeout(async () => { 
+                        isFrozen = false; 
+                        await showSubtitle("I'm bored, let's watch TV!", 4000);
+                    }, 3000); 
+                }, 5000);
+            }, 3000);
+        }
+
+        function triggerHappyEnding() {
+            isFrozen = true; uiElems.fade.style.pointerEvents = 'auto'; uiElems.fade.style.opacity = 1; uiElems.fade.style.transition = "opacity 2s ease-in-out"; uiElems.fade.style.backgroundColor = '#000';
+            if (isAmbientPlaying && sfx.ambient_bg) sfx.ambient_bg.pause();
+            
+            // Bật nhạc Happy Ending
+            if (sfx.happy_ending) { sfx.happy_ending.volume = masterVolume; sfx.happy_ending.play().catch(e => console.log("Missing happy_ending.mp3")); }
+
+            setTimeout(() => {
+                playSynthFallback('ui_blip'); 
+                uiElems.fade.innerHTML = `
+                    <div style="width: 85%; max-width: 900px; background: #000088; border: 15px solid #222; border-radius: 20px; padding: 40px; text-align: left; position: relative; overflow: hidden; box-shadow: 0 0 80px rgba(255,255,255,0.2);">
+                        <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(transparent 50%, rgba(0,0,0,0.4) 50%); background-size: 100% 4px; pointer-events: none; z-index: 2;"></div>
+                        <h1 style="color: yellow; font-family: 'Arial', sans-serif; margin-top: 0; border-bottom: 4px solid white; padding-bottom: 15px; font-size: 3rem; position: relative; z-index: 1;">BREAKING NEWS</h1>
+                        <p style="color: white; font-size: 2rem; font-family: 'Courier New', Courier, monospace; line-height: 1.6; position: relative; z-index: 1;">
+                            There was recently a virus that was originally caused by rabbits.<br><br>
+                            People who touched those who infected might experience extreme hallucination and eventually die!
+                        </p>
+                    </div>`;
+                setTimeout(() => {
+                    uiElems.fade.innerHTML = `
+                        <div style="display:flex; flex-direction:column; align-items:center; z-index: 999; position: relative;">
+                            <span style="color:#00ff00; font-size:6rem; margin-bottom: 20px; font-family: 'Caveat', cursive; text-shadow: 0 0 30px #00ff00; font-weight:bold; animation: fast-flicker 0.1s infinite;">HAPPY ENDING</span>
+                            <span style="color:#fff; font-size:2rem; margin-bottom: 40px; font-family: 'Courier New', monospace;">You chose to stay and survived the apocalypse!</span>
+                            <button id="btn-final-menu" style="font-size:2.5rem; padding:15px 40px; font-family: 'Courier New', monospace; background: rgba(0,0,0,0.8); color: #0f0; border: 4px solid #0f0; cursor: pointer; transition: all 0.3s; font-weight:bold;">MAIN MENU</button>
+                        </div>`;
+                    document.exitPointerLock();
+                    const btnFinal = document.getElementById('btn-final-menu');
+                    btnFinal.addEventListener('mouseover', (e) => { e.target.style.background = '#0f0'; e.target.style.color = '#000'; e.target.style.boxShadow = '0 0 30px #0f0'; });
+                    btnFinal.addEventListener('mouseout', (e) => { e.target.style.background = 'rgba(0,0,0,0.8)'; e.target.style.color = '#0f0'; e.target.style.boxShadow = 'none'; });
+                    btnFinal.addEventListener('click', () => location.reload());
+                }, 8000);
+            }, 2500);
+        }
+
+        function triggerNightmare() {
+            isNightmare = true; flashlightDead = false; hasSeenBloodInNightmare = false; isNightmareChase = false;
+            uiElems.endText.classList.remove('blinking'); uiElems.endText.textContent = ""; updateClockTime("3:00 AM");
+            camera.position.set(-4, 1.0, -45); pitch = -Math.PI / 2.5; yaw = 0; camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+            if (sfx.ambient_bg && !sfx.ambient_bg.paused) sfx.ambient_bg.pause();
+            if (sfx.music_3am) { sfx.music_3am.volume = masterVolume; sfx.music_3am.currentTime = 0; sfx.music_3am.play().catch(e => console.log("Missing 3AM.mp3")); }
+            if (sfx.knock) { sfx.knock.volume = masterVolume; sfx.knock.play().catch(e => { knockingInterval = setInterval(() => playSound('knock_synth'), 400); }); }
+            uiElems.fade.style.opacity = 0; startEyeWakeUp();
+            isFrozen = true; isWakingUp = true; wakeUpTimer = 0;
+            setTimeout(() => { showSubtitle("Who the fuck knocking my door at 3AM? I have to check that nigga out!", 4000); }, 3500);
+        }
+
+        function generateBloodPath() {
+            const bloodMat = new THREE.MeshLambertMaterial({ color: 0x660000, transparent: true, opacity: 0.85 });
+            for (let i = 0; i < 40; i++) { const size = 0.2 + Math.random() * 0.4; const drop = new THREE.Mesh(new THREE.CylinderGeometry(size, size, 0.05, 16), bloodMat); const zPos = -34 + (i * 0.9) + (Math.random() - 0.5); const xPos = (Math.random() - 0.5) * 3; drop.position.set(xPos, 0.05, zPos); bloodGroup.add(drop); }
+        }
+
+        function triggerNightmareChaseSequence() {
+            isFrozen = true; isNightmareChase = true; if (sfx.music_3am) sfx.music_3am.pause();
+            rabbitGroup.scale.set(2.2, 3.5, 2.2); rabbitGroup.position.set(camera.position.x, 0.5, camera.position.z + 55); rabbitGroup.rotation.set(0, Math.PI, 0); 
+            rabbitLight.position.set(0, 1.5, 2.5); rabbitLight.intensity = 15;
+        }
+
+        function resetToNightTime() {
+            scene.background.setHex(0x060708); scene.fog.color.setHex(0x060708); scene.fog.density = 0.05; if (sunLight) sunLight.intensity = 0; ambientLight.intensity = 0.08;
+            isDaytime = false; hasEnteredHouse = false; hasTurnedOnLight = false; hasScared = false; morningTextTriggered = false; currentCycle++; 
+            if (currentCycle === 2) { houseGroup.visible = false; hideRabbitHand(); }
+            switchBtn.userData.isOn = false; switchBtn.material.color.setHex(0xaaaaaa); switchBtn.material.emissive.setHex(0x0055ff); houseLight.intensity = 0;
+            doorMesh.userData.isOpen = false; doorPivot.rotation.y = 0; camera.position.set(0, 2, 45); pitch = 0; yaw = 0; camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+            uiElems.fade.style.opacity = 0; setTimeout(() => { isFrozen = false; }, 3000);
+        }
+
+        const raycaster = new THREE.Raycaster();
+        document.addEventListener('mousedown', (e) => {
+            if (e.button === 0 && controlsEnabled && !isFrozen) {
+                raycaster.setFromCamera(new THREE.Vector2(0, 0), camera); const intersects = raycaster.intersectObjects(interactables);
+                if (currentCycle !== 2 && intersects.length > 0 && intersects[0].distance < 6) {
+                    const obj = intersects[0].object; const type = obj.userData.type;
+                    
+                    if (isAfternoon && type !== 'tv') return; // Buổi chiều chỉ được tương tác TV
+                    if (isDaytime && type !== 'door' && type !== 'bed') return; 
+                    if (isNightmare && type !== 'door') return; 
+
+                    if (type === 'door') {
+                        if (isNightmare) {
+                            if (!nightmareDoorOpened) { nightmareDoorOpened = true; if (sfx.knock) sfx.knock.pause(); if (knockingInterval) clearInterval(knockingInterval); obj.userData.isOpen = true; playSound('door_open'); doorPivot.rotation.y = Math.PI / 2; generateBloodPath(); }
+                        } else if (!isDaytime && hasEnteredHouse) { playSound('door_close'); showSubtitle("I locked the door, no need to get out at night!.", 3000); return;
+                        } else { obj.userData.isOpen = !obj.userData.isOpen; playSound(obj.userData.isOpen ? 'door_open' : 'door_close'); doorPivot.rotation.y = obj.userData.isOpen ? Math.PI / 2 : 0; }
+                    } 
+                    else if (type === 'switch') {
+                        playSound('click'); obj.userData.isOn = true; hasTurnedOnLight = true; houseLight.intensity = 1.2; obj.material.color.setHex(0x00ff00); obj.material.emissive.setHex(0x000000); 
+                        if (currentCycle === 1) showSubtitle("I'm tired, better get some sleep!", 0);
+                    }
+                    else if (type === 'bed') {
+                        // KHI NGỦ Ở 5:00 AM -> KÍCH HOẠT BUỔI CHIỀU THAY VÌ HAPPY ENDING NGAY
+                        if (isDaytime && currentCycle === 1) { triggerAfternoonWakeUp(); return; }
+                        
+                        if (!hasTurnedOnLight) { showSubtitle("I need to find the light switch first...", 3000); } 
+                        else {
+                            if (!isFrozen) { 
+                                isFrozen = true; hideSubtitle(); uiElems.fade.style.opacity = 1; 
+                                setTimeout(() => { uiElems.endText.textContent = "Zzz..."; uiElems.endText.classList.add('blinking'); setTimeout(() => { if (currentCycle === 1 && !isNightmare && !isDaytime) triggerNightmare(); else triggerWakeUp(); }, 5000); }, 3000); 
+                            }
+                        }
+                    }
+                    else if (type === 'tv') { 
+                        if (isAfternoon) {
+                            playSound('click'); 
+                            triggerHappyEnding(); // Đạt Happy Ending sau khi bật TV buổi chiều
+                        } else {
+                            playSound('click'); showSubtitle("I don't wanna use the tv rightnow", 3000); 
+                        }
+                    }
+                }
+            }
+        });
+
+        function triggerJumpscare() {
+            hasScared = true; isFrozen = true; if (roadRabbitGroup) roadRabbitGroup.visible = false; cameraBasePos.copy(camera.position);
+            const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion); const downVec = new THREE.Vector3(0, -1, 0).applyQuaternion(camera.quaternion);
+            rabbitGroup.position.copy(camera.position).add(dir.multiplyScalar(1.5)).add(downVec.multiplyScalar(0.72)); rabbitGroup.quaternion.copy(camera.quaternion);
+            rabbitLight.position.set(0, 1.3, 2.5); rabbitLight.intensity = 6; shakeTimer = 3.0; document.body.classList.add('shaking'); playSound('jumpscare_1');
+            setTimeout(() => { document.body.classList.remove('shaking'); rabbitGroup.position.y = -10; rabbitLight.intensity = 0; camera.position.copy(cameraBasePos); isFrozen = false; showSubtitle("oh, just a stupid rabbit, really creeped me out!", 4000); }, 3000);
+        }
+
+        function triggerFinalJumpscare() {
+            if (isAfternoon) return; // Vô hiệu hóa tính năng đi cuối đường vào buổi chiều
+            isFrozen = true; isFinalJumpscare = true; 
+            if (isAmbientPlaying) { sfx.ambient_bg.pause(); sfx.ambient_bg.currentTime = 0; isAmbientPlaying = false; }
+            if (sfx.path_steps && !sfx.path_steps.paused) sfx.path_steps.pause(); if (sfx.house_steps && !sfx.house_steps.paused) sfx.house_steps.pause(); if (sfx.rain && !sfx.rain.paused) sfx.rain.pause();
+            hideRabbitHand(); scene.fog.density = 0; rMat.emissive.setHex(0x444444);
+            const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion); const downVec = new THREE.Vector3(0, -1, 0).applyQuaternion(camera.quaternion);
+            const SCALE = 6.5; rabbitGroup.scale.set(SCALE, SCALE, SCALE); const dist = 1.25 * SCALE + 2.5;
+            rabbitGroup.position.copy(camera.position).add(dir.multiplyScalar(dist)).add(downVec.multiplyScalar(1.1 * SCALE)); rabbitGroup.quaternion.copy(camera.quaternion); finalScareBasePos.copy(rabbitGroup.position);
+            rabbitLight.position.set(0, 1.5, 1.5); rabbitLight.intensity = 50; document.body.classList.add('shaking'); playContinuousJumpscare();
+
+            setTimeout(() => {
+                isFinalJumpscare = false; isWhiteForest = true; document.body.classList.remove('shaking'); if (sfx.jumpscare_final) sfx.jumpscare_final.pause();
+                scene.background.setHex(0xffffff); scene.fog.color.setHex(0xffffff); scene.fog.density = 0.01; ambientLight.intensity = 1.5;
+                if(!sunLight) { sunLight = new THREE.DirectionalLight(0xffffff, 1.0); scene.add(sunLight); } sunLight.intensity = 1.0; sunLight.position.set(10, 20, 10);
+                trunkInst.visible = false; branchInst1.visible = false; branchInst2.visible = false; leavesInst.visible = false; houseGroup.visible = false; path.visible = false; floor.material.color.setHex(0xeeeeee);
+                rabbitGroup.position.y = -10; rabbitLight.intensity = 0; createWhiteForestRabbits();
+                if (sfx.white_forest) { sfx.white_forest.volume = masterVolume; sfx.white_forest.play().catch(()=>{}); }
+                uiElems.fade.style.opacity = 0; isFrozen = false; showSubtitle("Where... am I?", 4000);
+            }, 1000); 
+        }
+
+        const clock = new THREE.Clock(); let lightningTimer = Math.random() * 2 + 0.5;
+        let menuRabbitTimer = 2; let menuRabbitAnimState = 0; let menuRabbitAnimProgress = 0;
+
+        function animate() {
+            requestAnimationFrame(animate); const delta = clock.getDelta();
+            if (isPaused) { renderer.render(scene, camera); return; }
+
+            if (uiElems.main.classList.contains('hidden') === false) {
+                rainDrop.visible = true; const pos = rainDrop.geometry.attributes.position.array;
+                for(let i = 1; i < rainCount * 3; i += 3) { pos[i] -= 40 * delta; if (pos[i] < 0) pos[i] = 40; } rainDrop.geometry.attributes.position.needsUpdate = true;
+                lightningTimer -= delta;
+                if (lightningTimer <= 0) {
+                    scene.background.setHex(0xffffff); scene.fog.color.setHex(0xffffff);
+                    setTimeout(() => { scene.background.setHex(0x111111); scene.fog.color.setHex(0x111111); }, 50); setTimeout(() => { scene.background.setHex(0xffffff); scene.fog.color.setHex(0xffffff); }, 100); setTimeout(() => { scene.background.setHex(0x060708); scene.fog.color.setHex(0x060708); }, 150);
+                    if (audioCtx && audioCtx.state === 'running') playSound('thunder'); lightningTimer = Math.random() * 4 + 2; 
+                }
+                menuRabbitTimer -= delta;
+                if (menuRabbitTimer <= 0 && menuRabbitAnimState === 0) {
+                    if (Math.random() > 0.35) { menuRabbitAnimState = 1; menuRabbitTimer = 0.5 + Math.random() * 1.5; rHeadGroup.userData.targetTilt = (Math.random() > 0.5 ? 1 : -1) * (Math.PI / 3 + Math.random() * 0.4); } else { menuRabbitAnimState = 2; menuRabbitAnimProgress = 0; }
+                }
+                if (menuRabbitAnimState === 1) { rHeadGroup.rotation.z = THREE.MathUtils.lerp(rHeadGroup.rotation.z, rHeadGroup.userData.targetTilt, 15 * delta); if (menuRabbitTimer <= 0) { menuRabbitAnimState = 0; menuRabbitTimer = Math.random() * 2 + 1.5; }
+                } else if (menuRabbitAnimState === 2) {
+                    menuRabbitAnimProgress += delta * 1.8; let t = Math.min(menuRabbitAnimProgress, 1); let eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; rHeadGroup.rotation.y = eased * Math.PI * 2;
+                    if (t >= 1) { rHeadGroup.rotation.y = 0; menuRabbitAnimState = 0; menuRabbitTimer = Math.random() * 3 + 2; }
+                } else { rHeadGroup.rotation.z = THREE.MathUtils.lerp(rHeadGroup.rotation.z, 0, 5 * delta); }
+                rabbitLight.intensity = 1.5 + Math.random() * 0.8; const time = clock.elapsedTime; camera.position.x = Math.sin(time) * 0.5; camera.position.y = 2.5 + Math.sin(time * 1.5) * 0.15; camera.lookAt(0, 2.5, 43);
+                renderer.render(scene, camera); return; 
+            }
+
+            if (eyeAnimState === 1) updateEyeAnimation(delta);
+
+            if (isWakingUp) {
+                camera.position.x = -4; camera.position.z = -45; wakeUpTimer += delta; const duration = 2.5; const t = Math.min(wakeUpTimer / duration, 1); const easeOut = 1 - Math.pow(1 - t, 3);
+                pitch = THREE.MathUtils.lerp(-Math.PI / 2.5, 0, easeOut); camera.position.y = THREE.MathUtils.lerp(1.0, 2.5, easeOut); camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+                if (t >= 1) { isWakingUp = false; isFrozen = false; }
+            }
+
+            if (isNightmareChase) {
+                let targetYaw = Math.PI; let currentYaw = yaw % (Math.PI * 2); if (currentYaw < 0) currentYaw += Math.PI * 2;
+                let diff = targetYaw - currentYaw; if (diff > Math.PI) diff -= Math.PI * 2; if (diff < -Math.PI) diff += Math.PI * 2;
+                yaw += diff * 10 * delta; pitch += (0 - pitch) * 10 * delta; camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+                const chaseSpeed = 35; rabbitGroup.position.z -= chaseSpeed * delta;
+                const time = clock.elapsedTime; const bounceY = Math.abs(Math.sin(time * 15)) * 2.5; rabbitGroup.position.y = 0.5 + bounceY; 
+                if (bounceY < 0.2 && !rabbitLanded) { rabbitLanded = true; playSound('earthquake_thud'); shakeTimer = 0.3; } else if (bounceY > 1.0) { rabbitLanded = false; }
+                rabbitGroup.rotation.z = Math.sin(time * 20) * 0.25; rabbitGroup.rotation.y = Math.PI + Math.sin(time * 35) * 0.15; 
+                if (rabbitGroup.position.z <= camera.position.z + 1.5) {
+                    isNightmareChase = false; rabbitGroup.position.y = -10; rabbitGroup.rotation.set(0, 0, 0); rabbitGroup.scale.set(0.6, 0.6, 0.6); rabbitLight.intensity = 0;
+                    isNightmare = false; nightmareDoorOpened = false; while(bloodGroup.children.length > 0) bloodGroup.remove(bloodGroup.children[0]); doorMesh.userData.isOpen = false; doorPivot.rotation.y = 0;
+                    triggerWakeUp(true); 
+                }
+            }
+
+            if (!isDaytime && currentCycle === 1 && !hasScared && !isAfternoon) {
+                if (roadRabbitState === 0 && camera.position.z < -10 && camera.position.z > -22) { roadRabbitState = 1; roadRabbitGroup.visible = true; playSound('wood_step'); }
+                if (roadRabbitState === 1) {
+                    roadRabbitTimer += delta; const jumpDuration = 0.8; const t = Math.min(roadRabbitTimer / jumpDuration, 1);
+                    roadRabbitGroup.position.x = THREE.MathUtils.lerp(12, 0, t); roadRabbitGroup.position.y = Math.sin(t * Math.PI) * 2; roadRabbitGroup.lookAt(camera.position);
+                    if (t >= 1) { roadRabbitState = 2; roadRabbitTimer = 0; roadRabbitGroup.position.y = 0; playSound('earthquake_thud'); }
+                } else if (roadRabbitState === 2) { roadRabbitTimer += delta; roadRabbitGroup.lookAt(camera.position); if (roadRabbitTimer > 1.2) { roadRabbitState = 3; triggerJumpscare(); } }
+            }
+
+            if (isFinalJumpscare) {
+                rabbitGroup.position.x = finalScareBasePos.x + (Math.random() - 0.5) * 0.3; rabbitGroup.position.y = finalScareBasePos.y + (Math.random() - 0.5) * 0.3; rabbitGroup.position.z = finalScareBasePos.z + (Math.random() - 0.5) * 0.3;
+                const s = 6.5 + (Math.random() - 0.5) * 0.3; rabbitGroup.scale.set(s, s, s); rabbitLight.intensity = 40 + Math.random() * 30; eyeMat.color.setHex(Math.random() > 0.3 ? 0xff0000 : 0x770000);
+            }
+
+            if (isWhiteForest) {
+                whiteRabbits.forEach(r => { r.lookAt(new THREE.Vector3(camera.position.x, r.position.y, camera.position.z)); });
+                whiteForestTimer += delta;
+                if (whiteForestTimer > 30.0 && uiElems.fade.style.opacity === '0') {
+                    isFrozen = true; uiElems.fade.style.pointerEvents = 'auto'; uiElems.fade.style.opacity = 1; uiElems.fade.style.transition = "opacity 3s ease-in-out, background-color 3s"; uiElems.fade.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+                    if (sfx.white_forest) sfx.white_forest.pause();
+                    
+                    // Bật nhạc Bad Ending
+                    if (sfx.bad_ending) { sfx.bad_ending.volume = masterVolume; sfx.bad_ending.play().catch(e => console.log("Missing bad_ending.mp3")); }
+
+                    setTimeout(() => {
+                        uiElems.fade.innerHTML = `
+                            <div style="display:flex; flex-direction:column; align-items:center; z-index: 999; position: relative;">
+                                <span style="color:#ff0000; font-size:4rem; margin-bottom: 20px; font-family: 'Caveat', cursive; text-shadow: 0 0 20px #ff0000; font-weight:bold; animation: fast-flicker 0.1s infinite;">BAD ENDING</span>
+                                <span style="color:#fff; font-size:2rem; margin-bottom: 40px; font-family: 'Courier New', monospace;">Your mind belongs to The rabbits!</span>
+                                <button id="btn-final-menu" style="font-size:2.5rem; padding:15px 40px; font-family: 'Courier New', monospace; background: rgba(0,0,0,0.8); color: #f00; border: 4px solid #f00; cursor: pointer; transition: all 0.3s; font-weight:bold;">MAIN MENU</button>
+                            </div>`;
+                        document.exitPointerLock(); const btnFinal = document.getElementById('btn-final-menu');
+                        btnFinal.addEventListener('mouseover', (e) => { e.target.style.background = '#f00'; e.target.style.color = '#000'; e.target.style.boxShadow = '0 0 30px #f00'; });
+                        btnFinal.addEventListener('mouseout', (e) => { e.target.style.background = 'rgba(0,0,0,0.8)'; e.target.style.color = '#f00'; e.target.style.boxShadow = 'none'; });
+                        btnFinal.addEventListener('click', () => location.reload());
+                    }, 3500);
+                }
+            }
+
+            if (currentCycle === 2 && !isDaytime && !isPaused && !isWhiteForest && !isAfternoon) {
+                if (sfx.rain && sfx.rain.paused && !isFinalJumpscare) { sfx.rain.volume = masterVolume; sfx.rain.play().catch(e => console.log("Missing rain.mp3")); }
+                rainDrop.visible = true; const pos = rainDrop.geometry.attributes.position.array; for(let i = 1; i < rainCount * 3; i += 3) { pos[i] -= 30 * delta; if (pos[i] < 0) pos[i] = 40; } rainDrop.geometry.attributes.position.needsUpdate = true;
+                if (!isFinalJumpscare) {
+                    lightningTimer -= delta;
+                    if (lightningTimer <= 0) {
+                        scene.background.setHex(0xffffff); scene.fog.color.setHex(0xffffff);
+                        setTimeout(() => { scene.background.setHex(0x111111); scene.fog.color.setHex(0x111111); }, 50); setTimeout(() => { scene.background.setHex(0xffffff); scene.fog.color.setHex(0xffffff); }, 100); setTimeout(() => { scene.background.setHex(0x060708); scene.fog.color.setHex(0x060708); }, 150);
+                        playSound('thunder'); lightningTimer = Math.random() * 5 + 3; 
+                    }
+                }
+            } else if (!isWhiteForest) { rainDrop.visible = false; if (sfx.rain && !sfx.rain.paused) sfx.rain.pause(); }
+            
+            // --- STREAMING_CHUNK: Player Movement and Interaction Hover ---
+            if (controlsEnabled && !isFrozen) {
+                raycaster.setFromCamera(new THREE.Vector2(0, 0), camera); 
+                const intersects = raycaster.intersectObjects(interactables);
+                let isHoveringInteractable = false;
+
+                if (currentCycle !== 2 && intersects.length > 0 && intersects[0].distance < 6) {
+                    const type = intersects[0].object.userData.type;
+                    if (isAfternoon && type === 'tv') isHoveringInteractable = true;
+                    else if (!isAfternoon) {
+                        if (type === 'door' || type === 'switch' || type === 'bed' || type === 'tv') {
+                            if ((!isDaytime || type === 'bed' || type === 'door' || type === 'tv') && (!isNightmare || type === 'door')) {
+                                isHoveringInteractable = true;
+                            }
+                        }
+                    }
+                }
+
+                if (isHoveringInteractable) {
+                    uiElems.crosshair.classList.add('glow');
+                    uiElems.hoverText.classList.remove('hidden');
+                    uiElems.hoverText.textContent = "[Left Click] Interact";
+                } else {
+                    uiElems.crosshair.classList.remove('glow');
+                    uiElems.hoverText.classList.add('hidden');
+                }
+
+                const dirVec = new THREE.Vector3();
+                if (keys.w) dirVec.z -= 1;
+                if (keys.s) dirVec.z += 1;
+                if (keys.a) dirVec.x -= 1;
+                if (keys.d) dirVec.x += 1;
+                dirVec.normalize();
+                dirVec.applyQuaternion(camera.quaternion);
+                dirVec.y = 0;
+                dirVec.normalize();
+
+                const nextX = camera.position.x + dirVec.x * moveSpeed * delta;
+                const nextZ = camera.position.z + dirVec.z * moveSpeed * delta;
+
+                const inHouse = (nextZ < -37 && nextZ > -53 && Math.abs(nextX) < 7.5);
+                const onPath = (Math.abs(nextX) < 2.5 && nextZ <= 100 && nextZ >= -3500);
+
+                if (inHouse || onPath) {
+                    camera.position.x = nextX;
+                    camera.position.z = nextZ;
+
+                    if (!hasEnteredHouse && inHouse && !isDaytime && currentCycle === 1) hasEnteredHouse = true;
+
+                    // Trigger bad ending walk nếu player đi quá xa xuống path (bị loại bỏ ở buổi chiều)
+                    if (!isAfternoon && currentCycle === 2 && camera.position.z < -200 && !isFinalJumpscare) {
+                        triggerFinalJumpscare();
+                    }
+
+                    if (dirVec.length() > 0 && !isFinalJumpscare) {
+                        const stepSound = inHouse ? sfx.house_steps : sfx.path_steps;
+                        if (stepSound && stepSound.paused) {
+                            stepSound.volume = masterVolume * 0.5;
+                            stepSound.play().catch(()=>{});
+                        }
+                    }
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
     </script>
 </body>
 </html>
+```eof
