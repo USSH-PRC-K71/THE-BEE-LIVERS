@@ -247,44 +247,45 @@
     <!-- Bottom Scroll Fade & Blur Effect (Làm mờ nội dung khi cuộn xuống phía dưới màn hình) -->
     <div class="fixed bottom-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-t from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%); mask-image: linear-gradient(to top, black 30%, transparent 100%);"></div>
 
-    <!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) với viền đậm và bóng đổ -->
+    <!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) chuẩn Responsive gọn đẹp -->
     <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
-        <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 relative overflow-hidden">
+        <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-3 sm:px-6 py-2 sm:py-3 flex flex-row justify-between items-center gap-2 md:gap-0 relative overflow-hidden">
             
             <!-- Họa tiết trang trí chìm ở góc Header -->
             <div class="absolute -top-4 -left-4 w-12 h-12 bg-brand-yellow rounded-full border-4 border-brand-brown opacity-60 z-0 pointer-events-none"></div>
             <div class="absolute -bottom-6 -right-2 w-16 h-16 bg-brand-green rounded-full border-4 border-brand-brown opacity-20 z-0 pointer-events-none"></div>
 
             <!-- Cụm Logo & Tên (Trái) -->
-            <a href="#" class="flex items-center gap-2 sm:gap-3 group relative z-10 shrink-0 self-start md:self-auto w-full md:w-auto justify-center md:justify-start">
-                <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
-                <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
+            <a href="#" class="flex items-center gap-2 sm:gap-3 group relative z-10 shrink-0">
+                <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 sm:border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
+                <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 sm:border-4 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
                 <div class="flex flex-col items-start justify-center text-left">
-                    <span class="font-heading font-black text-lg sm:text-2xl text-brand-brown tracking-tight leading-none flex items-center gap-1.5 whitespace-nowrap">
+                    <span class="font-heading font-black text-sm sm:text-xl lg:text-2xl text-brand-brown tracking-tight leading-none flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
                         K71 - PRC USSH 
-                        <i class="fas fa-sparkles text-amber-500 text-sm sm:text-base animate-pulse"></i>
+                        <i class="fas fa-sparkles text-amber-500 text-xs sm:text-base animate-pulse"></i>
                     </span>
-                    <span class="font-heading font-extrabold text-xs sm:text-sm text-brand-green tracking-wider uppercase mt-0.5">
+                    <span class="font-heading font-extrabold text-[10px] sm:text-xs lg:text-sm text-brand-green tracking-wider uppercase mt-0.5 hidden xs:block">
                         The Bee-Livers
                     </span>
                 </div>
             </a>
-            <!-- 4 Nút Điều Hướng (Phải): Cho phép wrap, bỏ class ẩn chữ -->
-            <div class="flex flex-wrap items-center justify-center md:justify-end gap-2 sm:gap-3 z-20 w-full md:w-auto mt-2 md:mt-0 pb-2 md:pb-0">
-                <a href="#video-tuyen-truyen" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-[11px] sm:text-xs lg:text-base py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
+            
+            <!-- 5 Nút Điều Hướng (Phải): Tự động ẩn chữ trên mobile, hiển thị trọn vẹn trên tablet/desktop -->
+            <div class="flex items-center justify-end gap-1.5 sm:gap-2.5 z-20 shrink-0">
+                <a href="#video-tuyen-truyen" title="Xem Video" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                    <i class="fas fa-play-circle text-brand-green text-sm sm:text-base"></i> <span class="hidden md:inline">Xem Video</span>
                 </a>
-                <a href="#tai-sao" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[11px] sm:text-xs lg:text-base py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
+                <a href="#tai-sao" title="Tại Sao?" class="nav-btn bg-white text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                    <i class="fas fa-question-circle text-amber-500 text-sm sm:text-base"></i> <span class="hidden md:inline">Tại Sao?</span>
                 </a>
-                <a href="#thuc-tinh" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[11px] sm:text-xs lg:text-base py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
+                <a href="#thuc-tinh" title="Thức Tỉnh" class="nav-btn bg-white text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                    <i class="fas fa-bell text-red-500 text-sm sm:text-base"></i> <span class="hidden md:inline">Thức Tỉnh</span>
                 </a>
-                <a href="#tac-hai" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[11px] sm:text-xs lg:text-base py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
+                <a href="#tac-hai" title="Tác Hại" class="nav-btn bg-white text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                    <i class="fas fa-skull-crossbones text-gray-700 text-sm sm:text-base"></i> <span class="hidden md:inline">Tác Hại</span>
                 </a>
-                <a href="#dong-gop" class="nav-btn bg-blue-100 text-brand-brown font-heading font-bold text-[11px] sm:text-xs lg:text-base py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
+                <a href="#dong-gop" title="Đóng Góp" class="nav-btn bg-blue-100 text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                    <i class="fas fa-lightbulb text-blue-500 text-sm sm:text-base"></i> <span class="hidden md:inline">Đóng Góp</span>
                 </a>
             </div>
         </div>
