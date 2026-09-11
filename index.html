@@ -846,9 +846,3 @@
     </script>
 </body>
 </html>
-```eof
-
-**Tóm tắt các thay đổi:**
-*   **Header:** Đã thay đổi thẻ bao bọc (wrapper) của header thành dạng cột xếp lớp trên mobile (`flex-col md:flex-row`, `flex-wrap`). Đồng thời xóa class `hidden md:inline` ở chữ trong các nút bấm, giúp cho 4 nút điều hướng giờ đây luôn hiển thị đủ 100% icon và chữ, tự động tràn dòng gọn gàng trên màn hình nhỏ.
-*   **Hiệu ứng Fade:** Bổ sung class `.fade-in` trong CSS và gán class này vào các đoạn `<section>` (như Phần Mở đầu, Video, Tại Sao, Thức Tỉnh...). Kèm theo đó là một đoạn mã Javascript dùng `IntersectionObserver` ở dưới cùng để khi bạn cuộn trang tới đâu, chữ và khối hình mới mềm mại lướt lên tới đó (cách viết này nhẹ và không làm khựng máy).
-*   **Particles:** Trong Javascript thuộc phần `1. POLLEN PARTICLES BACKGROUND`, tôi đã giảm thông số `speedX` và `speedY` xuống (nhân thêm với 0.4) giúp cho hạt phấn hoa rơi êm, chậm và mượt mắt hơn rất nhiều.
