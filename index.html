@@ -247,45 +247,52 @@
     <!-- Bottom Scroll Fade & Blur Effect (Làm mờ nội dung khi cuộn xuống phía dưới màn hình) -->
     <div class="fixed bottom-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-t from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%); mask-image: linear-gradient(to top, black 30%, transparent 100%);"></div>
 
-    <!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) chuẩn Responsive gọn đẹp -->
+    <!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) với menu thu gọn trên mobile -->
     <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
-        <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-3 sm:px-6 py-2 sm:py-3 flex flex-row justify-between items-center gap-2 md:gap-0 relative overflow-hidden">
+        <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between">
             
             <!-- Họa tiết trang trí chìm ở góc Header -->
             <div class="absolute -top-4 -left-4 w-12 h-12 bg-brand-yellow rounded-full border-4 border-brand-brown opacity-60 z-0 pointer-events-none"></div>
             <div class="absolute -bottom-6 -right-2 w-16 h-16 bg-brand-green rounded-full border-4 border-brand-brown opacity-20 z-0 pointer-events-none"></div>
 
-            <!-- Cụm Logo & Tên (Trái) -->
-            <a href="#" class="flex items-center gap-2 sm:gap-3 group relative z-10 shrink-0">
-                <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 sm:border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
-                <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 sm:border-4 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
-                <div class="flex flex-col items-start justify-center text-left">
-                    <span class="font-heading font-black text-sm sm:text-xl lg:text-2xl text-brand-brown tracking-tight leading-none flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
-                        K71 - PRC USSH 
-                        <i class="fas fa-sparkles text-amber-500 text-xs sm:text-base animate-pulse"></i>
-                    </span>
-                    <span class="font-heading font-extrabold text-[10px] sm:text-xs lg:text-sm text-brand-green tracking-wider uppercase mt-0.5 hidden xs:block">
-                        The Bee-Livers
-                    </span>
-                </div>
-            </a>
-            
-            <!-- 5 Nút Điều Hướng (Phải): Tự động ẩn chữ trên mobile, hiển thị trọn vẹn trên tablet/desktop -->
-            <div class="flex items-center justify-end gap-1.5 sm:gap-2.5 z-20 shrink-0">
-                <a href="#video-tuyen-truyen" title="Xem Video" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-play-circle text-brand-green text-sm sm:text-base"></i> <span class="hidden md:inline">Xem Video</span>
+            <div class="flex justify-between items-center w-full md:w-auto relative z-10">
+                <!-- Cụm Logo & Tên (Trái) -->
+                <a href="#" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+                    <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
+                    <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
+                    <div class="flex flex-col items-start justify-center text-left">
+                        <span class="font-heading font-black text-lg sm:text-2xl text-brand-brown tracking-tight leading-none flex items-center gap-1.5 whitespace-nowrap">
+                            K71 - PRC USSH 
+                            <i class="fas fa-sparkles text-amber-500 text-sm sm:text-base animate-pulse"></i>
+                        </span>
+                        <span class="font-heading font-extrabold text-xs sm:text-sm text-brand-green tracking-wider uppercase mt-0.5">
+                            The Bee-Livers
+                        </span>
+                    </div>
                 </a>
-                <a href="#tai-sao" title="Tại Sao?" class="nav-btn bg-white text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-question-circle text-amber-500 text-sm sm:text-base"></i> <span class="hidden md:inline">Tại Sao?</span>
+
+                <!-- Nút Hamburger cho Mobile -->
+                <button id="mobile-menu-toggle" class="md:hidden text-brand-brown text-2xl p-2 focus:outline-none hover:scale-110 transition-transform flex items-center justify-center">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- 5 Nút Điều Hướng (Phải): Ẩn trên mobile mặc định, hiển thị dạng cột khi bấm nút -->
+            <div id="nav-menu" class="hidden md:flex flex-col md:flex-row items-stretch md:items-center justify-center md:justify-end gap-2 sm:gap-3 z-20 w-full md:w-auto mt-4 md:mt-0 pb-2 md:pb-0">
+                <a href="#video-tuyen-truyen" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+                    <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
                 </a>
-                <a href="#thuc-tinh" title="Thức Tỉnh" class="nav-btn bg-white text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-bell text-red-500 text-sm sm:text-base"></i> <span class="hidden md:inline">Thức Tỉnh</span>
+                <a href="#tai-sao" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+                    <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
                 </a>
-                <a href="#tac-hai" title="Tác Hại" class="nav-btn bg-white text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-skull-crossbones text-gray-700 text-sm sm:text-base"></i> <span class="hidden md:inline">Tác Hại</span>
+                <a href="#thuc-tinh" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+                    <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
                 </a>
-                <a href="#dong-gop" title="Đóng Góp" class="nav-btn bg-blue-100 text-brand-brown font-heading font-bold text-xs lg:text-base p-2 sm:py-1.5 sm:px-4 rounded-full flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
-                    <i class="fas fa-lightbulb text-blue-500 text-sm sm:text-base"></i> <span class="hidden md:inline">Đóng Góp</span>
+                <a href="#tac-hai" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+                    <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
+                </a>
+                <a href="#dong-gop" class="nav-btn bg-blue-100 text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+                    <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
                 </a>
             </div>
         </div>
@@ -390,7 +397,7 @@
                     <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">2</div>
                     <div>
                         <h3 class="font-heading font-bold text-2xl mb-2">Tâm Lý Chủ Quan và Hiệu Ứng "Nó Sẽ Trừ Mình Ra"</h3>
-                        <p>Bộ não con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
+                        <p>Bộ脑 con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
                     </div>
                 </div>
 
@@ -525,7 +532,6 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 mt-16 fade-in">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             <div class="flex items-center gap-4">
@@ -560,6 +566,36 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
+            // Xử lý nút Hamburger Menu trên mobile
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const toggleIcon = mobileMenuToggle.querySelector('i');
+            const navLinks = navMenu.querySelectorAll('a');
+
+            mobileMenuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+                navMenu.classList.toggle('flex');
+                if (navMenu.classList.contains('hidden')) {
+                    toggleIcon.classList.remove('fa-times');
+                    toggleIcon.classList.add('fa-bars');
+                } else {
+                    toggleIcon.classList.remove('fa-bars');
+                    toggleIcon.classList.add('fa-times');
+                }
+            });
+
+            // Tự động đóng menu khi bấm vào một nút điều hướng (chỉ áp dụng trên mobile)
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) { // md breakpoint in Tailwind
+                        navMenu.classList.add('hidden');
+                        navMenu.classList.remove('flex');
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-bars');
+                    }
+                });
+            });
+
             /* TỐI ƯU HIỆU ỨNG FADE (SCROLL) SỬ DỤNG INTERSECTION OBSERVER */
             const observerOptions = {
                 root: null,
