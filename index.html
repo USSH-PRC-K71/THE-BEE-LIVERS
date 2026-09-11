@@ -236,13 +236,16 @@
                 <path d="M 70 58 Q 76 64 82 58" stroke="#5a3311" stroke-width="3" stroke-linecap="round" fill="none" />
                 <circle cx="66" cy="55" r="3.5" fill="#FF7B7B" opacity="0.8" />
                 <circle cx="85" cy="57" r="3.5" fill="#FF7B7B" opacity="0.8" />
-                <path d="M 16 55 L -2 58 L 16 63 Z" fill="#5a3311" stroke="#5a3311" stroke-width="3" stroke-linejoin="round"/>
-            </svg>
-        </div>
-    </template>
+        <path d="M 16 55 L -2 58 L 16 63 Z" fill="#5a3311" stroke="#5a3311" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+</div>
+</template>
 
-    <!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) với viền đậm và bóng đổ -->
-    <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
+<!-- Top Scroll Fade & Blur Effect (Chặn và làm mờ nội dung khi cuộn lên qua header) -->
+<div class="fixed top-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-b from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%); mask-image: linear-gradient(to bottom, black 30%, transparent 100%);"></div>
+
+<!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) với viền đậm và bóng đổ -->
+<header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
         <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 relative overflow-hidden">
             
             <!-- Họa tiết trang trí chìm ở góc Header -->
