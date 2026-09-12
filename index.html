@@ -228,7 +228,8 @@
             height: 100px;
             z-index: 15;
             overflow: hidden;
-            margin-bottom: -1px; 
+            margin-bottom: -4px; 
+            margin-top: 0;
         }
         .grass-ground {
             position: absolute;
@@ -325,14 +326,14 @@
                 <a href="#video-tuyen-truyen" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
                     <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
                 </a>
+                <a href="#tac-hai" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+                    <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
+                </a>
                 <a href="#tai-sao" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
                     <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
                 </a>
                 <a href="#thuc-tinh" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
                     <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
-                </a>
-                <a href="#tac-hai" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
-                    <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
                 </a>
                 <a href="#dong-gop" class="nav-btn bg-blue-100 text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
                     <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
@@ -341,7 +342,7 @@
         </div>
     </header>
 
-    <main class="flex flex-col gap-20 sm:gap-32 pb-20">
+    <main class="flex flex-col gap-20 sm:gap-32 pb-0">
         <!-- Frontpage (Hero Section) -->
         <section class="relative overflow-hidden w-full flex flex-col items-center justify-center text-center px-4 pt-24 sm:pt-32 pb-10 min-h-[100svh]">
             <div class="fade-in w-full h-full absolute inset-0 z-0 pointer-events-none flex flex-col items-center justify-center">
@@ -428,6 +429,57 @@
             </div>
         </section>
 
+        <!-- Tác Hại Của Thuốc Lá -->
+        <section id="tac-hai" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto w-full fade-in">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Tác Hại Của Thuốc Lá</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-lungs"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Tại sao biết nguy hiểm nhưng vẫn dùng? -->
         <section id="tai-sao" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full fade-in">
@@ -498,57 +550,6 @@
             </div>
         </section>
 
-        <!-- Tác Hại Của Thuốc Lá -->
-        <section id="tac-hai" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto w-full fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Tác Hại Của Thuốc Lá</h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                            <i class="fas fa-lungs"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
-                        <p class="text-lg text-brand-brown/80 font-medium">
-                            Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
-                        </p>
-                    </div>
-
-                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                        <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                            <i class="fas fa-heartbeat"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
-                        <p class="text-lg text-brand-brown/80 font-medium">
-                            Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
-                        </p>
-                    </div>
-
-                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
-                        <p class="text-lg text-brand-brown/80 font-medium">
-                            Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
-                        </p>
-                    </div>
-
-                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                            <i class="fas fa-wallet"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
-                        <p class="text-lg text-brand-brown/80 font-medium">
-                            Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Đóng Góp Giải Pháp -->
         <section id="dong-gop" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full relative fade-in">
@@ -586,12 +587,12 @@
         </section>
     </main>
 
-    <div class="grass-container fade-in">
+    <div class="grass-container">
         <div class="grass-ground"></div>
         <!-- Grass blades will be injected here via JS -->
     </div>
 
-    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 fade-in overflow-hidden">
+    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 overflow-hidden">
         
         <!-- Lớp trang trí lòng đất (Giun, sỏi, rễ cây) -->
         <div class="absolute inset-0 z-0 pointer-events-none opacity-80">
