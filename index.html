@@ -221,6 +221,44 @@
         .sticker-1 { animation: float-sticker-1 4.5s ease-in-out infinite; }
         .sticker-2 { animation: float-sticker-2 5.5s ease-in-out infinite; }
         .sticker-3 { animation: float-sticker-3 3.8s ease-in-out infinite; }
+
+        .grass-container {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            z-index: 15;
+            overflow: hidden;
+            margin-bottom: -1px; 
+        }
+        .grass-ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 25px;
+            background: #65a30d;
+            border-radius: 50% 50% 0 0 / 15px 15px 0 0;
+            z-index: 2;
+        }
+        .grass-wrapper {
+            position: absolute;
+            bottom: 12px;
+            transform-origin: bottom center;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            z-index: 1;
+        }
+        .grass-blade {
+            width: 100%;
+            height: 100%;
+            transform-origin: bottom center;
+            will-change: transform;
+            animation: sway-grass infinite alternate ease-in-out;
+            box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
+        }
+        @keyframes sway-grass {
+            0% { transform: skewX(-10deg) rotate(-8deg); }
+            100% { transform: skewX(10deg) rotate(8deg); }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -549,8 +587,73 @@
         </section>
     </main>
 
-    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 fade-in">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+    <div class="grass-container fade-in">
+        <div class="grass-ground"></div>
+        <!-- Grass blades will be injected here via JS -->
+    </div>
+
+    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 fade-in overflow-hidden">
+        
+        <!-- Lớp trang trí lòng đất (Giun, sỏi, rễ cây) -->
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-80">
+            <!-- Pattern Hạt đất -->
+            <svg class="absolute inset-0 w-full h-full opacity-20">
+                <defs>
+                    <pattern id="soil-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <circle cx="10" cy="10" r="1.5" fill="#3f240c" />
+                        <circle cx="40" cy="30" r="1" fill="#3f240c" />
+                        <circle cx="80" cy="20" r="2" fill="#734117" />
+                        <circle cx="20" cy="70" r="1.5" fill="#734117" />
+                        <circle cx="60" cy="80" r="1" fill="#3f240c" />
+                        <circle cx="90" cy="90" r="1.5" fill="#3f240c" />
+                        <circle cx="50" cy="50" r="2" fill="#3f240c" />
+                        <circle cx="70" cy="60" r="1" fill="#734117" />
+                    </pattern>
+                </defs>
+                <rect x="0" y="0" width="100%" height="100%" fill="url(#soil-pattern)" />
+            </svg>
+
+            <!-- Sỏi đá (Pebbles) -->
+            <div class="absolute top-4 left-[10%] w-3 h-2 bg-[#4a2b13] rounded-full transform rotate-12"></div>
+            <div class="absolute top-12 left-[15%] w-5 h-3 bg-[#3f240c] rounded-[40%_60%_70%_30%]"></div>
+            <div class="absolute bottom-6 left-[25%] w-4 h-4 bg-[#633814] rounded-full"></div>
+            <div class="absolute top-8 right-[20%] w-6 h-4 bg-[#3f240c] rounded-[60%_40%_30%_70%] transform -rotate-12"></div>
+            <div class="absolute bottom-10 right-[10%] w-3 h-2 bg-[#4a2b13] rounded-full"></div>
+            <div class="absolute top-20 right-[35%] w-4 h-3 bg-[#633814] rounded-full transform rotate-45"></div>
+            <div class="absolute bottom-16 left-[50%] w-6 h-3 bg-[#3f240c] rounded-[70%_30%_50%_50%] transform -rotate-12"></div>
+
+            <!-- Giun đất (Worms) -->
+            <!-- Giun trái -->
+            <svg class="absolute top-8 left-[5%] w-16 h-16 drop-shadow-sm transform -rotate-12" viewBox="0 0 100 100">
+                <path d="M 10,50 Q 30,20 50,60 T 90,40" fill="none" stroke="#b45330" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 10,50 Q 30,20 50,60 T 90,40" fill="none" stroke="#8a3c20" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 6" />
+            </svg>
+            
+            <!-- Giun phải đang chui lên -->
+            <svg class="absolute bottom-[-10px] right-[25%] w-12 h-12" viewBox="0 0 100 100">
+                <path d="M 50,100 Q 40,60 70,40" fill="none" stroke="#d66840" stroke-width="5" stroke-linecap="round" />
+                <path d="M 50,100 Q 40,60 70,40" fill="none" stroke="#a34522" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 5" />
+            </svg>
+
+            <!-- Giun giữa cuộn tròn -->
+            <svg class="absolute top-12 left-[45%] w-10 h-10 transform rotate-45" viewBox="0 0 100 100">
+                <path d="M 20,80 Q 50,90 80,20" fill="none" stroke="#b45330" stroke-width="5" stroke-linecap="round" />
+                <path d="M 20,80 Q 50,90 80,20" fill="none" stroke="#8a3c20" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 5" />
+            </svg>
+            
+            <!-- Rễ cây (Roots) -->
+            <svg class="absolute top-0 right-[5%] w-32 h-32 opacity-40" viewBox="0 0 100 100">
+                <path d="M 50,0 Q 60,30 40,50 T 60,100" fill="none" stroke="#3f240c" stroke-width="4" stroke-linecap="round" />
+                <path d="M 45,35 Q 20,40 10,60" fill="none" stroke="#3f240c" stroke-width="3" stroke-linecap="round" />
+            </svg>
+
+            <svg class="absolute top-0 left-[20%] w-40 h-40 opacity-40 transform -scale-x-100" viewBox="0 0 100 100">
+                <path d="M 50,0 Q 40,40 50,80 T 100,100" fill="none" stroke="#3f240c" stroke-width="5" stroke-linecap="round" />
+                <path d="M 47,45 Q 70,50 80,70" fill="none" stroke="#3f240c" stroke-width="3" stroke-linecap="round" />
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative z-10">
             <div class="flex items-center gap-4">
                 <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
                 <div class="flex flex-col text-left">
@@ -583,6 +686,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
+            // --- UI LOGIC ---
             const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
             const navMenu = document.getElementById('nav-menu');
             const toggleIcon = mobileMenuToggle.querySelector('i');
@@ -634,6 +738,7 @@
                 if(firstSection) firstSection.classList.add('visible');
             }, 100);
 
+            // --- 2D CANVAS POLLEN ---
             const canvas = document.getElementById('pollen-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -686,6 +791,7 @@
             }
             animatePollen();
 
+            // --- 2D CLOUDS ---
             const cloudsContainer = document.getElementById('clouds-container');
             const numClouds = 8;
             for(let i=0; i<numClouds; i++) {
@@ -715,6 +821,7 @@
             `;
             document.head.appendChild(styleSheet);
 
+            // --- THREE.JS VINES ---
             const container = document.getElementById('three-container');
             const scene = new THREE.Scene();
             
@@ -738,35 +845,30 @@
             function createLeafTexture(baseColorHex, veinColorHex) {
                 const canvas = document.createElement('canvas');
                 canvas.width = 256;
-                canvas.height = 512; // Tỷ lệ dài
+                canvas.height = 512; 
                 const context = canvas.getContext('2d');
 
-                // Nền lá
                 context.fillStyle = baseColorHex;
                 context.fillRect(0, 0, canvas.width, canvas.height);
 
-                // Vẽ gân chính
                 context.strokeStyle = veinColorHex;
                 context.lineWidth = 6;
                 context.lineCap = 'round';
                 context.beginPath();
-                context.moveTo(128, 512); // Từ cuống lá
-                context.lineTo(128, 20);  // Lên đỉnh lá
+                context.moveTo(128, 512);
+                context.lineTo(128, 20);  
                 context.stroke();
 
-                // Vẽ gân phụ
                 context.lineWidth = 3;
-                const numVeins = 12; // Số lượng gân phụ mỗi bên
+                const numVeins = 12; 
                 for (let i = 1; i <= numVeins; i++) {
                     const yOffset = 512 - (i * (480 / numVeins));
                     
-                    // Gân phải
                     context.beginPath();
                     context.moveTo(128, yOffset);
                     context.quadraticCurveTo(180, yOffset - 30, 240, yOffset - 60);
                     context.stroke();
 
-                    // Gân trái
                     context.beginPath();
                     context.moveTo(128, yOffset);
                     context.quadraticCurveTo(76, yOffset - 30, 16, yOffset - 60);
@@ -774,11 +876,10 @@
                 }
 
                 const texture = new THREE.CanvasTexture(canvas);
-                // Cấu hình lặp lại texture để khớp với UV mapping của ExtrudeGeometry
                 texture.wrapS = THREE.RepeatWrapping;
                 texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(0.04, 0.015); // Điều chỉnh scale texture cho vừa hình lá
-                texture.offset.set(0.5, 0.5); // Căn giữa texture
+                texture.repeat.set(0.04, 0.015); 
+                texture.offset.set(0.5, 0.5); 
 
                 return texture;
             }
@@ -789,7 +890,6 @@
                 metalness: 0.1
             });
 
-            // Sử dụng MeshStandardMaterial với map là texture gân lá vừa tạo
             const leafMaterials = [
                 new THREE.MeshStandardMaterial({ map: createLeafTexture('#65a30d', '#3f6212'), roughness: 0.6, side: THREE.DoubleSide }),
                 new THREE.MeshStandardMaterial({ map: createLeafTexture('#4d7c0f', '#2f4b09'), roughness: 0.7, side: THREE.DoubleSide }),
@@ -798,8 +898,15 @@
                 new THREE.MeshStandardMaterial({ map: createLeafTexture('#166534', '#064e3b'), roughness: 0.8, side: THREE.DoubleSide })
             ];
 
-            const petalMaterial = new THREE.MeshStandardMaterial({
-                color: 0xfffcf2, // Đổi sang màu trắng kem nhẹ cho hoa trông ấm áp mềm mại hơn
+            const whitePetalMaterial = new THREE.MeshStandardMaterial({
+                color: 0xfffcf2, 
+                roughness: 0.6,
+                metalness: 0.1,
+                side: THREE.DoubleSide
+            });
+
+            const yellowPetalMaterial = new THREE.MeshStandardMaterial({
+                color: 0xfacc15, 
                 roughness: 0.6,
                 metalness: 0.1,
                 side: THREE.DoubleSide
@@ -810,11 +917,14 @@
                 roughness: 0.9
             });
 
-            // TẠO NHIỀU KIỂU DÁNG LÁ KHÁC NHAU ĐỂ TĂNG SỰ ĐA DẠNG
+            const darkStamenMaterial = new THREE.MeshStandardMaterial({
+                color: 0x5a3311,
+                roughness: 0.9
+            });
+
             function createLeafGeometries() {
                 const extrudeSettings = { depth: 0.4, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.2, bevelThickness: 0.2 };
                 
-                // 1. Lá thon thẳng
                 const shape1 = new THREE.Shape();
                 shape1.moveTo(0, 0);
                 shape1.bezierCurveTo(12, 20, 10, 50, 0, 70); 
@@ -822,7 +932,6 @@
                 const geo1 = new THREE.ExtrudeGeometry(shape1, extrudeSettings);
                 geo1.translate(0, 0, -0.2);
 
-                // 2. Lá cong trái (lượn sóng nhẹ)
                 const shape2 = new THREE.Shape();
                 shape2.moveTo(0, 0);
                 shape2.bezierCurveTo(15, 20, 5, 50, -20, 65);
@@ -830,7 +939,6 @@
                 const geo2 = new THREE.ExtrudeGeometry(shape2, extrudeSettings);
                 geo2.translate(0, 0, -0.2);
 
-                // 3. Lá cong phải
                 const shape3 = new THREE.Shape();
                 shape3.moveTo(0, 0);
                 shape3.bezierCurveTo(12, 20, 20, 45, 20, 65);
@@ -838,7 +946,6 @@
                 const geo3 = new THREE.ExtrudeGeometry(shape3, extrudeSettings);
                 geo3.translate(0, 0, -0.2);
                 
-                // 4. Lá hơi bầu bĩnh, mập mạp hơn
                 const shape4 = new THREE.Shape();
                 shape4.moveTo(0, 0);
                 shape4.bezierCurveTo(22, 25, 12, 55, 0, 70); 
@@ -850,33 +957,27 @@
             }
             
             const leafGeometriesList = createLeafGeometries();
-
             const animatedFoliage = [];
 
-            function createFlower() {
+            function createFlower(isYellow = false) {
                 const flower = new THREE.Group();
                 
-                // Nhụy hoa (Stamen) - dẹt hơn một chút để trông như chiếc cúc áo đáng yêu
                 const stamenGeo = new THREE.SphereGeometry(5.5, 16, 16);
                 stamenGeo.scale(1, 1, 0.6);
-                const stamen = new THREE.Mesh(stamenGeo, stamenMaterial);
-                // Đẩy nhụy hoa nhô lên trên một chút so với cánh
+                const stamen = new THREE.Mesh(stamenGeo, isYellow ? darkStamenMaterial : stamenMaterial);
                 stamen.position.z = 1.5; 
                 flower.add(stamen);
 
-                // Cánh hoa (Petal) - dùng Sphere dẹt thay vì Cylinder để tạo độ "mũm mĩm"
                 const petalGeo = new THREE.SphereGeometry(4.5, 16, 16);
-                // Dịch tâm xuống gốc cánh hoa để xoay quanh trục
                 petalGeo.translate(0, 4.5, 0); 
-                // Kéo dài và làm dẹt cánh hoa (x: chiều rộng, y: chiều dài, z: độ dày)
-                // scale X > 1 để cánh hoa mập mạp và bung xòe hơn
                 petalGeo.scale(1.3, 1.5, 0.35); 
 
-                const numPetals = 6; // 6 cánh để bông hoa trông đầy đặn, tròn trịa
+                const currentPetalMat = isYellow ? yellowPetalMaterial : whitePetalMaterial;
+
+                const numPetals = 6; 
                 for(let i = 0; i < numPetals; i++) {
-                    const petal = new THREE.Mesh(petalGeo, petalMaterial);
+                    const petal = new THREE.Mesh(petalGeo, currentPetalMat);
                     petal.rotation.z = (Math.PI * 2 / numPetals) * i;
-                    // Tạo độ cong nhẹ cho bông hoa (cánh hơi ngửa ra sau)
                     petal.rotation.x = -0.15; 
                     flower.add(petal);
                 }
@@ -884,15 +985,77 @@
                 return flower;
             }
 
+            // HÀM MỚI: Tạo Tổ Ong ngẫu nhiên, to và đẹp mắt
+            function createBeehive() {
+                const hiveGroup = new THREE.Group();
+                
+                // Vật liệu tạo vằn cho tổ ong (Màu mật ong sáng và tối đan xen)
+                const matLight = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.8, metalness: 0.1 }); 
+                const matDark = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.9, metalness: 0.1 });  
+                
+                // Các tầng của tổ ong - Đã được điều chỉnh để phình to ra giống hình tròn hơn
+                const radii = [6, 10, 13.5, 15, 13.5, 10, 6, 3];
+                let currentY = 0;
+                let largestY = 0;
+                let largestRadius = 0;
+
+                // Xây dựng thân tổ ong từ các khối cầu dẹt
+                for(let i = 0; i < radii.length; i++) {
+                    const r = radii[i];
+                    const geo = new THREE.SphereGeometry(r, 32, 16);
+                    geo.scale(1, 0.65, 1); // Giảm độ dẹt để các vành tròn trịa hơn
+                    
+                    const material = (i % 2 === 0) ? matLight : matDark;
+                    const mesh = new THREE.Mesh(geo, material);
+                    
+                    if(i > 0) {
+                        currentY -= (radii[i-1] * 0.65 + r * 0.65) * 0.55; // Điều chỉnh lại độ chồng lấp
+                    }
+                    
+                    mesh.position.y = currentY;
+                    hiveGroup.add(mesh);
+
+                    if(r > largestRadius) {
+                        largestRadius = r;
+                        largestY = currentY;
+                    }
+                }
+
+                // Tạo cửa ra vào của tổ ong (Hình lục giác - Hexagon)
+                const holeMat = new THREE.MeshBasicMaterial({ color: 0x2d1a09 });
+                // CylinderGeometry với 6 cạnh (segments) sẽ tạo ra hình lục giác
+                const holeGeo = new THREE.CylinderGeometry(4, 4, 1.5, 6); 
+                holeGeo.rotateX(Math.PI / 2); // Xoay hướng ra mặt trước
+                holeGeo.rotateZ(Math.PI / 6); // Xoay nhẹ để đỉnh nhọn hướng lên trên cho giống lỗ tổ ong
+                const hole = new THREE.Mesh(holeGeo, holeMat);
+                
+                // Đặt cửa ở tầng phình to nhất
+                hole.position.set(0, largestY - 1, largestRadius * 0.9);
+                hiveGroup.add(hole);
+
+                // Cuống/Nhành cây nhỏ nối tổ ong với thân chính
+                const branchMat = new THREE.MeshStandardMaterial({ color: 0x5a3311 });
+                const branchGeo = new THREE.CylinderGeometry(1.2, 1.8, 10);
+                const branch = new THREE.Mesh(branchGeo, branchMat);
+                branch.position.set(0, 6, 0); // Đặt trên đỉnh
+                hiveGroup.add(branch);
+
+                // Dời toàn bộ Group lên trên để tâm xoay (pivot) nằm ở cuống nhánh.
+                hiveGroup.children.forEach(c => c.position.y -= 6);
+
+                // Tăng kích thước tổ ong
+                hiveGroup.scale.set(1.3, 1.3, 1.3);
+                
+                return hiveGroup;
+            }
+
             function buildProceduralVine(isLeft, totalHeight) {
                 const vineGroup = new THREE.Group();
                 const startY = h / 2 + 100; 
-                // Tăng chiều dài của dây leo xuống để không bao giờ bị cắt cụt (thêm 600px dự phòng)
                 const endY = (h / 2) - totalHeight - 600;
                 const baseX = isLeft ? -w / 2 + 50 : w / 2 - 50;
                 
                 const points = [];
-                // Tăng segment để dây trơn tru khi kéo dài
                 const segments = Math.max(2, Math.floor((totalHeight + 600) / 30));
                 for (let i = 0; i <= segments; i++) {
                     const t = i / segments;
@@ -907,16 +1070,14 @@
                 const stem = new THREE.Mesh(tubeGeometry, stemMaterial);
                 vineGroup.add(stem);
 
-                // Giảm mật độ xuống: cứ mỗi 30 pixel chiều dài mới mọc 1 cành/hoa (trước đó là 5)
                 const decorationCount = Math.floor((totalHeight + 600) / 30); 
                 
                 for (let i = 1; i < decorationCount; i++) {
                     const t = i / decorationCount;
                     const pt = curve.getPointAt(t);
                     
-                    const isFlower = Math.random() > 0.8; // Giảm nhẹ tỷ lệ hoa so với lá
-                    
-                    // Sử dụng số chẵn/lẻ để quyết định hướng mọc của mầm này (isLocalLeft)
+                    // Tăng tỷ lệ xuất hiện hoa lên ~35% (trước đó là 20%)
+                    const isFlower = Math.random() > 0.65; 
                     const isLocalLeft = (i % 2 === 0);
 
                     let mesh;
@@ -925,49 +1086,36 @@
                     let offsetOutward = 0;
                     
                     if (isFlower) {
-                        mesh = createFlower();
-                        // TĂNG KÍCH THƯỚC HOA (to gấp đôi so với trước đây)
+                        // Khoảng 25% số hoa sẽ có màu vàng tươi điểm xuyết
+                        const isYellow = Math.random() < 0.25;
+                        mesh = createFlower(isYellow);
                         const fScale = 1.4 + Math.random() * 0.6; 
                         mesh.scale.set(fScale, fScale, fScale);
                         
-                        // HOA LUÔN HƯỚNG MẶT VỀ PHÍA NGƯỜI DÙNG
                         baseRotY = isLocalLeft ? 0.1 : -0.1;
                         baseRotX = (Math.random() - 0.5) * 0.2; 
                         baseRotZ = Math.random() * Math.PI * 2; 
 
-                        // Bắt buộc hoa phải mọc ở MẶT TRƯỚC của thân cây
                         customZOffset = 4 + Math.random() * 6;
-                        // Hoa cũng nhô nhẹ đan xen hai bên thân
                         offsetOutward = isLocalLeft ? -2 - Math.random()*3 : 2 + Math.random()*3;
                     } else {
                         const randomMat = leafMaterials[Math.floor(Math.random() * leafMaterials.length)];
-                        
-                        // Lấy ngẫu nhiên 1 trong 4 hình dáng lá cong/thẳng
                         const randomGeo = leafGeometriesList[Math.floor(Math.random() * leafGeometriesList.length)];
                         mesh = new THREE.Mesh(randomGeo, randomMat);
                         
-                        // TĂNG KÍCH THƯỚC LÁ
-                        const scale = 0.6 + Math.random() * 0.5; // Kích thước to hơn hẳn so với trước đây
+                        const scale = 0.6 + Math.random() * 0.5; 
                         mesh.scale.set(scale, scale, scale);
                         
-                        // Hướng lá: Túe ra 2 bên và rủ xuống dưới (Trọng lực)
                         const droopAngle = Math.PI / 2 + (Math.random() * Math.PI / 3);
-                        // QUAN TRỌNG: Lá xoay đan xen trái/phải
                         baseRotZ = isLocalLeft ? droopAngle : -droopAngle;
                         
-                        // Xoay nhẹ trục Y để lá có chiều sâu, mọc tỏa ra trước/sau
                         baseRotY = (Math.random() - 0.5) * Math.PI / 2.5;
-                        
-                        // Xoay nhẹ trục X để bẻ nghiêng lá một chút
                         baseRotX = (Math.random() - 0.5) * Math.PI / 6;
                         
-                        // Lá mọc tỏa đều quanh thân (có thể mọc cả ở mặt sau)
                         customZOffset = (Math.random() - 0.5) * 10;
-                        // QUAN TRỌNG: Gốc lá dịch đan xen trái/phải
                         offsetOutward = isLocalLeft ? -3 - Math.random()*5 : 3 + Math.random()*5;
                     }
 
-                    // Độ lệch ngẫu nhiên bám quanh thân
                     const noiseOffset = new THREE.Vector3(
                         offsetOutward,
                         (Math.random() - 0.5) * 10,
@@ -981,12 +1129,44 @@
                         baseRotX: baseRotX,
                         baseRotZ: baseRotZ,
                         animOffset: Math.random() * Math.PI * 2,
-                        speed: 0.3 + Math.random() * 0.4 // Giảm tốc độ lắc lư cho nhẹ nhàng hơn
+                        speed: 0.3 + Math.random() * 0.4 
                     };
 
                     animatedFoliage.push(mesh);
                     vineGroup.add(mesh);
                 }
+
+                // --- TÍCH HỢP TỔ ONG VÀO DÂY LEO ---
+                // Tạo 2 tổ ong ngẫu nhiên trải đều ở nửa trên và nửa dưới của đoạn dây leo
+                const hivePositions = [
+                    0.1 + Math.random() * 0.35, // Tổ ong 1: t nằm trong khoảng 0.1 - 0.45
+                    0.55 + Math.random() * 0.35 // Tổ ong 2: t nằm trong khoảng 0.55 - 0.9
+                ];
+
+                hivePositions.forEach(hiveT => {
+                    const hivePt = curve.getPointAt(hiveT);
+                    const beehive = createBeehive();
+                    
+                    // Dịch chuyển tổ ong ra ngoài một chút và hơi chếch xuống
+                    const hiveOffsetOutward = isLeft ? (12 + Math.random() * 6) : -(12 + Math.random() * 6); 
+                    beehive.position.copy(hivePt).add(new THREE.Vector3(hiveOffsetOutward, -5, 8)); 
+                    
+                    // Xoay nhẹ tổ ong để nó luôn hướng chéo ra phía người dùng một chút
+                    beehive.rotation.y = isLeft ? 0.35 : -0.35;
+                    beehive.rotation.z = isLeft ? 0.08 : -0.08; 
+
+                    // Thêm vào mảng hoạt ảnh đung đưa
+                    beehive.userData = {
+                        baseRotX: 0,
+                        baseRotZ: beehive.rotation.z,
+                        animOffset: Math.random() * Math.PI * 2,
+                        speed: 0.15 + Math.random() * 0.1 // Tốc độ đung đưa khác nhau cho mỗi tổ
+                    };
+                    animatedFoliage.push(beehive);
+                    
+                    vineGroup.add(beehive);
+                });
+                // ------------------------------------
 
                 return vineGroup;
             }
@@ -1012,8 +1192,6 @@
                 scene.add(rightVine);
             }
 
-            // SỬA LỖI Ở ĐÂY: 
-            // Dùng ResizeObserver thay vì timeout cứng để luôn cập nhật đúng chiều cao sau khi hình ảnh/video tải xong
             let lastDocHeight = 0;
             let docResizeTimer;
             
@@ -1021,7 +1199,6 @@
                 clearTimeout(docResizeTimer);
                 docResizeTimer = setTimeout(() => {
                     const currentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-                    // Chỉ vẽ lại nếu chiều cao thay đổi hơn 50px
                     if (Math.abs(currentHeight - lastDocHeight) > 50) {
                         lastDocHeight = currentHeight;
                         initVines();
@@ -1031,7 +1208,6 @@
             
             docObserver.observe(document.body);
 
-            // Trigger lần cuối chắc chắn khi mọi thứ (kể cả asset nặng) đã load
             window.addEventListener('load', () => {
                 initVines();
             });
@@ -1072,6 +1248,7 @@
             }
             animateThree();
 
+            // --- 2D BEES ---
             const beesContainer = document.getElementById('bees-container');
             const beeTemplate = document.getElementById('bee-template');
             const numBees = 4;
@@ -1133,6 +1310,111 @@
                 requestAnimationFrame(animateBees);
             }
             animateBees();
+
+            let grassWrappers = [];
+            let grassContainerWidth = 0;
+
+            function initGrass() {
+                const grassContainer = document.querySelector('.grass-container');
+                if (!grassContainer) return;
+                
+                grassContainerWidth = grassContainer.getBoundingClientRect().width;
+                
+                const existingWrappers = grassContainer.querySelectorAll('.grass-wrapper');
+                existingWrappers.forEach(b => b.remove());
+                grassWrappers = [];
+
+                const numBlades = Math.floor(grassContainerWidth / 4); 
+                const greens = ['#65a30d', '#84cc16', '#4d7c0f', '#a3e635'];
+
+                const fragment = document.createDocumentFragment();
+
+                for (let i = 0; i < numBlades; i++) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'grass-wrapper';
+                    
+                    const blade = document.createElement('div');
+                    blade.className = 'grass-blade';
+                    
+                    const left = Math.random() * 100;
+                    const height = 30 + Math.random() * 45; 
+                    const width = 4 + Math.random() * 6;    
+                    const duration = 1.5 + Math.random() * 2.5; 
+                    const delay = -Math.random() * 5;         
+                    const color = greens[Math.floor(Math.random() * greens.length)];
+                    const zIndex = Math.floor(Math.random() * 10); 
+
+                    // Định hình chiếc lá cỏ nhọn bằng thuộc tính border-radius thay vì hcn
+                    if (Math.random() > 0.5) {
+                        blade.style.borderRadius = "0 100% 2px 2px";
+                    } else {
+                        blade.style.borderRadius = "100% 0 2px 2px";
+                    }
+
+                    wrapper.style.left = `${left}%`;
+                    wrapper.style.height = `${height}px`;
+                    wrapper.style.width = `${width}px`;
+                    wrapper.style.zIndex = zIndex;
+
+                    blade.style.background = color;
+                    blade.style.animationDuration = `${duration}s`;
+                    blade.style.animationDelay = `${delay}s`;
+                    
+                    wrapper.appendChild(blade);
+                    fragment.appendChild(wrapper);
+                    
+                    grassWrappers.push({ el: wrapper, leftPercent: left });
+                }
+                
+                grassContainer.appendChild(fragment);
+            }
+
+            initGrass();
+
+            window.addEventListener('resize', () => {
+                clearTimeout(window.grassResizeTimer);
+                window.grassResizeTimer = setTimeout(initGrass, 300);
+            });
+
+            const grassContainer = document.querySelector('.grass-container');
+            let isGrassMouseMoving = false;
+            let grassMouseX = 0;
+
+            const handleGrassInteraction = (clientX) => {
+                const rect = grassContainer.getBoundingClientRect();
+                grassMouseX = clientX - rect.left;
+                if (!isGrassMouseMoving) {
+                    isGrassMouseMoving = true;
+                    requestAnimationFrame(() => {
+                        const radius = 90; // Bán kính tương tác của con chuột
+                        grassWrappers.forEach(w => {
+                            const bladeX = (w.leftPercent / 100) * grassContainerWidth;
+                            const dist = grassMouseX - bladeX;
+                            if (Math.abs(dist) < radius) {
+                                // Lực đẩy (cỏ càng gần chuột thì bị đè càng rạp xuống)
+                                const bend = dist > 0 ? -75 : 75; 
+                                const intensity = Math.pow(1 - Math.abs(dist) / radius, 1.2);
+                                w.el.style.transform = `rotate(${bend * intensity}deg)`;
+                            } else {
+                                w.el.style.transform = 'rotate(0deg)';
+                            }
+                        });
+                        isGrassMouseMoving = false;
+                    });
+                }
+            };
+
+            const resetGrassInteraction = () => {
+                grassWrappers.forEach(w => {
+                    w.el.style.transform = 'rotate(0deg)';
+                });
+            };
+
+            // Gắn sự kiện cho cả PC (mouse) và thiết bị di động (touch)
+            grassContainer.addEventListener('mousemove', (e) => handleGrassInteraction(e.clientX));
+            grassContainer.addEventListener('mouseleave', resetGrassInteraction);
+            grassContainer.addEventListener('touchmove', (e) => handleGrassInteraction(e.touches[0].clientX), { passive: true });
+            grassContainer.addEventListener('touchend', resetGrassInteraction);
         });
     </script>
 </body>
