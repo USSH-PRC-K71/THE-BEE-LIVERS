@@ -735,23 +735,73 @@
             dirLight.position.set(200, 300, 400);
             scene.add(dirLight);
 
+            function createLeafTexture(baseColorHex, veinColorHex) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 512; // Tỷ lệ dài
+                const context = canvas.getContext('2d');
+
+                // Nền lá
+                context.fillStyle = baseColorHex;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Vẽ gân chính
+                context.strokeStyle = veinColorHex;
+                context.lineWidth = 6;
+                context.lineCap = 'round';
+                context.beginPath();
+                context.moveTo(128, 512); // Từ cuống lá
+                context.lineTo(128, 20);  // Lên đỉnh lá
+                context.stroke();
+
+                // Vẽ gân phụ
+                context.lineWidth = 3;
+                const numVeins = 12; // Số lượng gân phụ mỗi bên
+                for (let i = 1; i <= numVeins; i++) {
+                    const yOffset = 512 - (i * (480 / numVeins));
+                    
+                    // Gân phải
+                    context.beginPath();
+                    context.moveTo(128, yOffset);
+                    context.quadraticCurveTo(180, yOffset - 30, 240, yOffset - 60);
+                    context.stroke();
+
+                    // Gân trái
+                    context.beginPath();
+                    context.moveTo(128, yOffset);
+                    context.quadraticCurveTo(76, yOffset - 30, 16, yOffset - 60);
+                    context.stroke();
+                }
+
+                const texture = new THREE.CanvasTexture(canvas);
+                // Cấu hình lặp lại texture để khớp với UV mapping của ExtrudeGeometry
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(0.04, 0.015); // Điều chỉnh scale texture cho vừa hình lá
+                texture.offset.set(0.5, 0.5); // Căn giữa texture
+
+                return texture;
+            }
+
             const stemMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x5a3311,
                 roughness: 0.8,
                 metalness: 0.1
             });
 
+            // Sử dụng MeshStandardMaterial với map là texture gân lá vừa tạo
             const leafMaterials = [
-                new THREE.MeshStandardMaterial({ color: 0x65a30d, roughness: 0.6, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0x4d7c0f, roughness: 0.7, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0x84cc16, roughness: 0.5, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0xa3e635, roughness: 0.6, side: THREE.DoubleSide }),
-                new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.8, side: THREE.DoubleSide })
+                new THREE.MeshStandardMaterial({ map: createLeafTexture('#65a30d', '#3f6212'), roughness: 0.6, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ map: createLeafTexture('#4d7c0f', '#2f4b09'), roughness: 0.7, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ map: createLeafTexture('#84cc16', '#4d7c0f'), roughness: 0.5, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ map: createLeafTexture('#a3e635', '#65a30d'), roughness: 0.6, side: THREE.DoubleSide }),
+                new THREE.MeshStandardMaterial({ map: createLeafTexture('#166534', '#064e3b'), roughness: 0.8, side: THREE.DoubleSide })
             ];
 
             const petalMaterial = new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-                roughness: 0.4,
+                color: 0xfffcf2, // Đổi sang màu trắng kem nhẹ cho hoa trông ấm áp mềm mại hơn
+                roughness: 0.6,
+                metalness: 0.1,
                 side: THREE.DoubleSide
             });
 
@@ -760,33 +810,77 @@
                 roughness: 0.9
             });
 
-            const leafShape = new THREE.Shape();
-            leafShape.moveTo(0, 0);
-            leafShape.quadraticCurveTo(15, 10, 0, 35);
-            leafShape.quadraticCurveTo(-15, 10, 0, 0);
+            // TẠO NHIỀU KIỂU DÁNG LÁ KHÁC NHAU ĐỂ TĂNG SỰ ĐA DẠNG
+            function createLeafGeometries() {
+                const extrudeSettings = { depth: 0.4, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.2, bevelThickness: 0.2 };
+                
+                // 1. Lá thon thẳng
+                const shape1 = new THREE.Shape();
+                shape1.moveTo(0, 0);
+                shape1.bezierCurveTo(12, 20, 10, 50, 0, 70); 
+                shape1.bezierCurveTo(-10, 50, -12, 20, 0, 0);
+                const geo1 = new THREE.ExtrudeGeometry(shape1, extrudeSettings);
+                geo1.translate(0, 0, -0.2);
+
+                // 2. Lá cong trái (lượn sóng nhẹ)
+                const shape2 = new THREE.Shape();
+                shape2.moveTo(0, 0);
+                shape2.bezierCurveTo(15, 20, 5, 50, -20, 65);
+                shape2.bezierCurveTo(-20, 45, -12, 20, 0, 0);
+                const geo2 = new THREE.ExtrudeGeometry(shape2, extrudeSettings);
+                geo2.translate(0, 0, -0.2);
+
+                // 3. Lá cong phải
+                const shape3 = new THREE.Shape();
+                shape3.moveTo(0, 0);
+                shape3.bezierCurveTo(12, 20, 20, 45, 20, 65);
+                shape3.bezierCurveTo(-5, 50, -15, 20, 0, 0);
+                const geo3 = new THREE.ExtrudeGeometry(shape3, extrudeSettings);
+                geo3.translate(0, 0, -0.2);
+                
+                // 4. Lá hơi bầu bĩnh, mập mạp hơn
+                const shape4 = new THREE.Shape();
+                shape4.moveTo(0, 0);
+                shape4.bezierCurveTo(22, 25, 12, 55, 0, 70); 
+                shape4.bezierCurveTo(-12, 55, -22, 25, 0, 0);
+                const geo4 = new THREE.ExtrudeGeometry(shape4, extrudeSettings);
+                geo4.translate(0, 0, -0.2);
+                
+                return [geo1, geo2, geo3, geo4];
+            }
             
-            const extrudeSettings = { depth: 1.5, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 0.5, bevelThickness: 0.5 };
-            const leafGeometry = new THREE.ExtrudeGeometry(leafShape, extrudeSettings);
-            leafGeometry.translate(0, 0, -0.75);
+            const leafGeometriesList = createLeafGeometries();
 
             const animatedFoliage = [];
 
             function createFlower() {
                 const flower = new THREE.Group();
-                const stamen = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 16), stamenMaterial);
+                
+                // Nhụy hoa (Stamen) - dẹt hơn một chút để trông như chiếc cúc áo đáng yêu
+                const stamenGeo = new THREE.SphereGeometry(5.5, 16, 16);
+                stamenGeo.scale(1, 1, 0.6);
+                const stamen = new THREE.Mesh(stamenGeo, stamenMaterial);
+                // Đẩy nhụy hoa nhô lên trên một chút so với cánh
+                stamen.position.z = 1.5; 
                 flower.add(stamen);
 
-                const petalGeo = new THREE.CylinderGeometry(4, 0.5, 18, 8);
-                petalGeo.translate(0, 9, 0);
-                petalGeo.scale(1, 1, 0.2);
+                // Cánh hoa (Petal) - dùng Sphere dẹt thay vì Cylinder để tạo độ "mũm mĩm"
+                const petalGeo = new THREE.SphereGeometry(4.5, 16, 16);
+                // Dịch tâm xuống gốc cánh hoa để xoay quanh trục
+                petalGeo.translate(0, 4.5, 0); 
+                // Kéo dài và làm dẹt cánh hoa (x: chiều rộng, y: chiều dài, z: độ dày)
+                // scale X > 1 để cánh hoa mập mạp và bung xòe hơn
+                petalGeo.scale(1.3, 1.5, 0.35); 
 
-                for(let i = 0; i < 5; i++) {
+                const numPetals = 6; // 6 cánh để bông hoa trông đầy đặn, tròn trịa
+                for(let i = 0; i < numPetals; i++) {
                     const petal = new THREE.Mesh(petalGeo, petalMaterial);
-                    petal.rotation.z = (Math.PI * 2 / 5) * i;
-                    petal.rotation.x = -0.3;
+                    petal.rotation.z = (Math.PI * 2 / numPetals) * i;
+                    // Tạo độ cong nhẹ cho bông hoa (cánh hơi ngửa ra sau)
+                    petal.rotation.x = -0.15; 
                     flower.add(petal);
                 }
-                flower.scale.set(0.7, 0.7, 0.7);
+                flower.scale.set(0.8, 0.8, 0.8);
                 return flower;
             }
 
@@ -813,35 +907,73 @@
                 const stem = new THREE.Mesh(tubeGeometry, stemMaterial);
                 vineGroup.add(stem);
 
-                const decorationCount = Math.floor((totalHeight + 600) / 5); 
+                // Giảm mật độ xuống: cứ mỗi 30 pixel chiều dài mới mọc 1 cành/hoa (trước đó là 5)
+                const decorationCount = Math.floor((totalHeight + 600) / 30); 
+                
                 for (let i = 1; i < decorationCount; i++) {
                     const t = i / decorationCount;
                     const pt = curve.getPointAt(t);
                     
-                    const isFlower = Math.random() > 0.75; 
+                    const isFlower = Math.random() > 0.8; // Giảm nhẹ tỷ lệ hoa so với lá
+                    
+                    // Sử dụng số chẵn/lẻ để quyết định hướng mọc của mầm này (isLocalLeft)
+                    const isLocalLeft = (i % 2 === 0);
+
                     let mesh;
+                    let baseRotX = 0, baseRotY = 0, baseRotZ = 0;
+                    let customZOffset = 0; 
+                    let offsetOutward = 0;
                     
                     if (isFlower) {
                         mesh = createFlower();
-                        const fScale = 0.8 + Math.random() * 0.5;
+                        // TĂNG KÍCH THƯỚC HOA (to gấp đôi so với trước đây)
+                        const fScale = 1.4 + Math.random() * 0.6; 
                         mesh.scale.set(fScale, fScale, fScale);
+                        
+                        // HOA LUÔN HƯỚNG MẶT VỀ PHÍA NGƯỜI DÙNG
+                        baseRotY = isLocalLeft ? 0.1 : -0.1;
+                        baseRotX = (Math.random() - 0.5) * 0.2; 
+                        baseRotZ = Math.random() * Math.PI * 2; 
+
+                        // Bắt buộc hoa phải mọc ở MẶT TRƯỚC của thân cây
+                        customZOffset = 4 + Math.random() * 6;
+                        // Hoa cũng nhô nhẹ đan xen hai bên thân
+                        offsetOutward = isLocalLeft ? -2 - Math.random()*3 : 2 + Math.random()*3;
                     } else {
                         const randomMat = leafMaterials[Math.floor(Math.random() * leafMaterials.length)];
-                        mesh = new THREE.Mesh(leafGeometry, randomMat);
-                        const scale = 0.3 + Math.random() * 1.6; 
+                        
+                        // Lấy ngẫu nhiên 1 trong 4 hình dáng lá cong/thẳng
+                        const randomGeo = leafGeometriesList[Math.floor(Math.random() * leafGeometriesList.length)];
+                        mesh = new THREE.Mesh(randomGeo, randomMat);
+                        
+                        // TĂNG KÍCH THƯỚC LÁ
+                        const scale = 0.6 + Math.random() * 0.5; // Kích thước to hơn hẳn so với trước đây
                         mesh.scale.set(scale, scale, scale);
+                        
+                        // Hướng lá: Túe ra 2 bên và rủ xuống dưới (Trọng lực)
+                        const droopAngle = Math.PI / 2 + (Math.random() * Math.PI / 3);
+                        // QUAN TRỌNG: Lá xoay đan xen trái/phải
+                        baseRotZ = isLocalLeft ? droopAngle : -droopAngle;
+                        
+                        // Xoay nhẹ trục Y để lá có chiều sâu, mọc tỏa ra trước/sau
+                        baseRotY = (Math.random() - 0.5) * Math.PI / 2.5;
+                        
+                        // Xoay nhẹ trục X để bẻ nghiêng lá một chút
+                        baseRotX = (Math.random() - 0.5) * Math.PI / 6;
+                        
+                        // Lá mọc tỏa đều quanh thân (có thể mọc cả ở mặt sau)
+                        customZOffset = (Math.random() - 0.5) * 10;
+                        // QUAN TRỌNG: Gốc lá dịch đan xen trái/phải
+                        offsetOutward = isLocalLeft ? -3 - Math.random()*5 : 3 + Math.random()*5;
                     }
 
+                    // Độ lệch ngẫu nhiên bám quanh thân
                     const noiseOffset = new THREE.Vector3(
-                        (Math.random() - 0.5) * 25,
-                        (Math.random() - 0.5) * 25,
-                        (Math.random() - 0.5) * 25
+                        offsetOutward,
+                        (Math.random() - 0.5) * 10,
+                        customZOffset 
                     );
                     mesh.position.copy(pt).add(noiseOffset);
-                    
-                    const baseRotZ = isLeft ? -Math.PI/4 + (Math.random()-0.5) : Math.PI/4 + (Math.random()-0.5);
-                    const baseRotX = (Math.random() - 0.5) * Math.PI/2;
-                    const baseRotY = isLeft ? Math.random()*0.5 : -Math.random()*0.5;
 
                     mesh.rotation.set(baseRotX, baseRotY, baseRotZ);
 
@@ -849,7 +981,7 @@
                         baseRotX: baseRotX,
                         baseRotZ: baseRotZ,
                         animOffset: Math.random() * Math.PI * 2,
-                        speed: 0.5 + Math.random() * 0.5
+                        speed: 0.3 + Math.random() * 0.4 // Giảm tốc độ lắc lư cho nhẹ nhàng hơn
                     };
 
                     animatedFoliage.push(mesh);
