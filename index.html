@@ -38,13 +38,20 @@
     </script>
 
     <style>
+        /* Cấu hình bắt dính (Scroll Snapping) & Smooth Scroll "Oiled-up" */
+        html {
+            scroll-behavior: smooth;
+            /* Chừa ra khoảng trống 120px ở trên cùng khi click menu để Header không che Tiêu đề */
+            scroll-padding-top: 120px; 
+        }
+
         body {
             background-color: #fdfbf7;
             color: #1e1b18;
             overflow-x: hidden;
             position: relative;
         }
-        
+
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #fef08a; }
         ::-webkit-scrollbar-thumb { background: #65a30d; border-radius: 5px; border: 2px solid #fef08a; }
@@ -75,18 +82,27 @@
             box-shadow: 6px 6px 0px #5a3311;
         }
 
-        /* Text Pop Styles */
+        /* Text Pop Styles - Đã làm viền (text-shadow xung quanh) dày hơn */
         .title-pop {
             color: #ffffff;
-            -webkit-text-stroke: 3px #5a3311;
-            text-shadow: 6px 6px 0px #65a30d, 10px 10px 0px #5a3311;
-            line-height: 1.1;
+            text-shadow: 
+                -3px -3px 0 #5a3311, 0 -3px 0 #5a3311, 3px -3px 0 #5a3311,
+                3px 0 0 #5a3311, 3px 3px 0 #5a3311, 0 3px 0 #5a3311,
+                -3px 3px 0 #5a3311, -3px 0 0 #5a3311,
+                6px 6px 0px #65a30d, 11px 11px 0px #5a3311;
+            line-height: 1.3;
+            padding: 0.1em;
         }
         
         .section-title-pop {
             color: #ffffff;
-            -webkit-text-stroke: 2px #5a3311;
-            text-shadow: 4px 4px 0px #65a30d;
+            text-shadow: 
+                -3px -3px 0 #5a3311, 0 -3px 0 #5a3311, 3px -3px 0 #5a3311,
+                3px 0 0 #5a3311, 3px 3px 0 #5a3311, 0 3px 0 #5a3311,
+                -3px 3px 0 #5a3311, -3px 0 0 #5a3311,
+                5px 5px 0px #65a30d, 8px 8px 0px #5a3311; /* Thêm lớp đổ bóng 3D cho đẹp hơn */
+            line-height: 1.4; /* Tăng chiều cao dòng để không bị lẹm trên/dưới */
+            padding: 0.2em; /* Mở rộng bounding box (hit box) */
         }
 
         /* Hiệu ứng Fade tối ưu GPU */
@@ -143,7 +159,6 @@
             border-radius: 50%;
         }
 
-        /* 3D Three.js Container */
         #three-container {
             position: fixed;
             top: 0; left: 0;
@@ -191,7 +206,6 @@
             60% { transform: translateY(-10px); }
         }
 
-        /* Cập nhật Họa tiết (Stickers) Animation - Bong bóng to hơn, trôi nổi xa hơn */
         @keyframes float-sticker-1 {
             0%, 100% { transform: translateY(0) rotate(-12deg) scale(1); }
             50% { transform: translateY(-40px) rotate(-5deg) scale(1.15); }
@@ -241,22 +255,17 @@
         </div>
     </template>
 
-    <!-- Top Scroll Fade & Blur Effect (Chặn và làm mờ nội dung khi cuộn lên qua header) -->
+    <!-- Top & Bottom Scroll Fade Effects -->
     <div class="fixed top-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-b from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%); mask-image: linear-gradient(to bottom, black 30%, transparent 100%);"></div>
-
-    <!-- Bottom Scroll Fade & Blur Effect (Làm mờ nội dung khi cuộn xuống phía dưới màn hình) -->
     <div class="fixed bottom-0 left-0 w-full h-12 sm:h-14 z-40 pointer-events-none bg-gradient-to-t from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%); mask-image: linear-gradient(to top, black 30%, transparent 100%);"></div>
 
-    <!-- Header: Nâng cấp thành dạng thẻ nổi (Floating Pill) với menu thu gọn trên mobile -->
     <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
         <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between">
             
-            <!-- Họa tiết trang trí chìm ở góc Header -->
             <div class="absolute -top-4 -left-4 w-12 h-12 bg-brand-yellow rounded-full border-4 border-brand-brown opacity-60 z-0 pointer-events-none"></div>
             <div class="absolute -bottom-6 -right-2 w-16 h-16 bg-brand-green rounded-full border-4 border-brand-brown opacity-20 z-0 pointer-events-none"></div>
 
             <div class="flex justify-between items-center w-full md:w-auto relative z-10">
-                <!-- Cụm Logo & Tên (Trái) -->
                 <a href="#" class="flex items-center gap-2 sm:gap-3 group shrink-0">
                     <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
                     <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
@@ -270,14 +279,11 @@
                         </span>
                     </div>
                 </a>
-
-                <!-- Nút Hamburger cho Mobile -->
                 <button id="mobile-menu-toggle" class="md:hidden text-brand-brown text-2xl p-2 focus:outline-none hover:scale-110 transition-transform flex items-center justify-center">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
 
-            <!-- 5 Nút Điều Hướng (Phải) -->
             <div id="nav-menu" class="hidden md:flex flex-col md:flex-row items-stretch md:items-center justify-center md:justify-end gap-2 sm:gap-3 z-20 w-full md:w-auto mt-4 md:mt-0 pb-2 md:pb-0">
                 <a href="#video-tuyen-truyen" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
                     <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
@@ -298,32 +304,29 @@
         </div>
     </header>
 
-    <main class="pt-10">
+    <main class="flex flex-col gap-20 sm:gap-32 pb-20">
         <!-- Frontpage (Hero Section) -->
-        <section class="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center px-4 pt-20 pb-32 fade-in">
+        <section class="relative overflow-hidden w-full flex flex-col items-center justify-center text-center px-4 pt-28 sm:pt-32 pb-16 min-h-[95vh] fade-in">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] bg-white/70 blur-[100px] rounded-full z-0 pointer-events-none"></div>
 
-            <!-- Cập nhật Họa tiết trang trí (Stickers) cho to hơn -->
+            <!-- Stickers -->
             <div class="absolute top-[20%] left-[5%] md:left-[15%] w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-10 sticker-1 text-red-500">
                 <i class="fas fa-smoking-ban text-5xl sm:text-6xl"></i>
             </div>
-            
             <div class="absolute bottom-[30%] right-[5%] md:right-[15%] w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-10 sticker-2 text-brand-green">
                 <i class="fas fa-lungs text-5xl sm:text-6xl"></i>
             </div>
-
             <div class="absolute top-[35%] right-[10%] md:right-[20%] w-20 h-20 sm:w-28 sm:h-28 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-10 sticker-3 text-blue-500 hidden md:flex">
                 <i class="fas fa-shield-heart text-4xl sm:text-5xl"></i>
             </div>
-            
             <div class="absolute bottom-[25%] left-[10%] md:left-[25%] w-16 h-16 sm:w-24 sm:h-24 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-10 sticker-1 text-pink-500">
                 <i class="fas fa-heartbeat text-3xl sm:text-4xl"></i>
             </div>
 
-            <div class="max-w-6xl mx-auto relative z-10 flex flex-col items-center -mt-10 sm:-mt-16">
+            <div class="max-w-6xl mx-auto relative z-10 flex flex-col items-center">
                 
-                <!-- Cụm 3 Logo Nổi Bật (Đã được phóng to đáng kể) -->
-                <div class="flex justify-center items-center gap-2 sm:gap-6 md:gap-10 mb-10 mt-16 sm:mt-0">
+                <!-- Cụm 3 Logo Nổi Bật -->
+                <div class="flex justify-center items-center gap-2 sm:gap-6 md:gap-10 mb-10">
                     <div class="w-28 h-28 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform -rotate-6 hover:rotate-0 transition-transform shadow-[6px_6px_0px_#5a3311]">
                         <img src="images/logo1.jpg" onerror="this.src='https://placehold.co/300x300/fef08a/5a3311?text=Logo+1'" alt="Campaign Logo 1" class="w-full h-full object-cover">
                     </div>
@@ -341,9 +344,17 @@
                 </span>
                 
                 <!-- Tiêu đề chính -->
-                <h1 class="text-6xl sm:text-7xl md:text-[6.5rem] font-heading font-black tracking-tight mb-12 uppercase title-pop">
+                <h1 class="text-6xl sm:text-7xl md:text-[6.5rem] font-heading font-black tracking-tight mb-4 uppercase title-pop">
                     Create Change <br /> Breath Free
                 </h1>
+                
+                <!-- Dòng chữ nhỏ theo yêu cầu -->
+                <div class="inline-block bg-white/95 backdrop-blur-sm border-4 border-brand-brown rounded-full px-6 py-2 shadow-[4px_4px_0px_#5a3311] mb-12 transform hover:scale-105 transition-transform">
+                    <p class="text-xl sm:text-2xl font-heading font-bold text-brand-brown uppercase tracking-widest m-0 leading-none flex items-center gap-2">
+                        <i class="fas fa-crown text-amber-500"></i>
+                        1 dự án của PRC - K71
+                    </p>
+                </div>
             </div>
 
             <div class="absolute bottom-10 left-1/2 -translate-x-1/2 bounce-arrow z-10 text-brand-brown opacity-80 hidden md:block">
@@ -351,183 +362,192 @@
             </div>
         </section>
 
-        <!-- Đã thêm my-[100vh] để tạo khoảng cách cực lớn (lớn hơn 1 chiều cao màn hình) -->
-        <section id="video-tuyen-truyen" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-[100vh] relative z-10 scroll-mt-40 fade-in">
-            
-            <div class="absolute -top-10 left-2 md:-left-12 w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-2 text-red-500">
-                <i class="fas fa-smoking-ban text-4xl sm:text-5xl"></i>
-            </div>
-            <div class="absolute -bottom-10 right-2 md:-right-12 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-1 text-brand-green">
-                <i class="fas fa-leaf text-3xl sm:text-4xl"></i>
-            </div>
-
-            <div class="text-center mb-10">
-                <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Video Tuyên Truyền</h2>
-                <div class="w-32 h-3 bg-brand-yellow mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="w-full max-w-4xl mx-auto rounded-3xl overflow-hidden border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311] bg-white p-2">
-                <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
-                   <video controls class="w-full h-full object-cover" preload="metadata">
-                        <source src="images/video.mp4" type="video/mp4">
-                        Trình duyệt của bạn không hỗ trợ thẻ video.
-                   </video>
+        <!-- Video Tuyên Truyền -->
+        <section id="video-tuyen-truyen" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 fade-in">
+            <div class="max-w-7xl mx-auto w-full relative">
+                <!-- Stickers -->
+                <div class="absolute -top-10 left-2 md:-left-12 w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-2 text-red-500">
+                    <i class="fas fa-smoking-ban text-4xl sm:text-5xl"></i>
                 </div>
-            </div>
-        </section>
-
-        <section id="tai-sao" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-[100vh] relative z-10 scroll-mt-40 fade-in">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Tại sao biết nguy hiểm nhưng vẫn dùng?</h2>
-                <div class="w-32 h-3 bg-brand-green mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-8 text-brand-brown text-lg font-medium leading-relaxed relative">
-                <div class="flex items-start gap-4 fade-in">
-                    <div class="w-14 h-14 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">1</div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Cơ Chế Gây Nghiện Sinh Học Mạnh Mẽ (Nicotine Trap)</h3>
-                        <p>Nicotine tác động lên não bộ cực kỳ nhanh chóng chỉ sau vài giây hít vào, kích hoạt giải phóng dopamine — chất dẫn truyền thần kinh tạo cảm giác hưng phấn, sảng khoái và giảm stress tạm thời. Khi lượng nicotine giảm xuống, não bộ lập tức phát tín hiệu "đói", gây ra hội chứng cai nghiện (bứt rứt, cáu gắt, mất tập trung). Con người tiếp tục hút không phải vì thích, mà để khỏa lấp cảm giác khó chịu do chính nicotine gây ra.</p>
-                    </div>
+                <div class="absolute -bottom-10 right-2 md:-right-12 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-1 text-brand-green">
+                    <i class="fas fa-leaf text-3xl sm:text-4xl"></i>
                 </div>
 
-                <div class="flex items-start gap-4 fade-in">
-                    <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">2</div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Tâm Lý Chủ Quan và Hiệu Ứng "Nó Sẽ Trừ Mình Ra"</h3>
-                        <p>Bộ não con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
-                    </div>
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Video Tuyên Truyền</h2>
                 </div>
 
-                <div class="flex items-start gap-4 fade-in">
-                    <div class="w-14 h-14 bg-emerald-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">3</div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Áp Lực Xã Hội và Thói Quen Giao Tiếp</h3>
-                        <p>Đặc biệt trong giới trẻ, thuốc lá hay thuốc lá điện tử đôi khi bị gắn mác sai lầm là "biểu tượng của sự trưởng thành", "phong cách sành điệu" hoặc là công cụ kết nối trong các buổi giao lưu bạn bè. Sự ép buộc vô hình từ nhóm bạn cùng trang lứa khiến nhiều người dễ dàng lún sâu vào cạm bẫy khói thuốc dù ban đầu chỉ thử cho biết.</p>
+                <!-- Video container co giãn linh hoạt: vw cho size động thay vì ghim cứng -->
+                <div class="w-full mx-auto rounded-3xl overflow-hidden border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311] bg-white p-2">
+                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
+                       <video controls class="w-full h-full object-cover" preload="metadata">
+                            <source src="images/video.mp4" type="video/mp4">
+                            Trình duyệt của bạn không hỗ trợ thẻ video.
+                       </video>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="thuc-tinh" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-[100vh] relative z-10 scroll-mt-40 fade-in">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Làm thế nào để thức tỉnh họ?</h2>
-                <div class="w-32 h-3 bg-red-400 mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-8 text-brand-brown text-lg font-medium leading-relaxed">
-                <div class="flex items-start gap-4 fade-in">
-                    <div class="w-14 h-14 bg-red-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-red-600 text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-heart"></i></div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Thay Đổi Cách Tiếp Cận: Dùng Sự Thấu Cảm Thay Vì Chỉ Trích</h3>
-                        <p>Việc la mắng, chì chiết hay kỳ thị người nghiện thuốc lá thường chỉ đẩy họ vào tâm lý phòng thủ và tìm đến điếu thuốc nhiều hơn để giải tỏa căng thẳng. Thay vào đó, hãy kiên nhẫn lắng nghe, thấu hiểu rằng họ đang là nạn nhân của một chứng bệnh nghiện sinh học thực thụ, và bày tỏ sự lo lắng chân thành vì sức khỏe của chính họ và những người thân yêu.</p>
-                    </div>
+        <!-- Tại sao biết nguy hiểm nhưng vẫn dùng? -->
+        <section id="tai-sao" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 fade-in">
+            <div class="max-w-5xl mx-auto w-full">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase section-title-pop">Tại sao biết nguy hiểm nhưng vẫn dùng?</h2>
                 </div>
 
-                <div class="flex items-start gap-4 fade-in">
-                    <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-amber-700 text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-bullseye"></i></div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Đánh Trúng Vào Động Lực Gần Gũi Nhất</h3>
-                        <p>Mỗi người sẽ có một "nút thắt" riêng để từ bỏ thuốc lá. Với người trẻ, đó có thể là ngoại hình (da dẻ lão hóa, răng ố vàng, hôi miệng) hay tài chính. Với người đã làm cha mẹ, đó chính là tấm gương cho con cái và nỗi sợ hãi bỏ lại gia đình trước bệnh tật. Khơi gợi đúng nỗi trăn trở cá nhân sẽ tạo ra động lực mạnh mẽ hơn ngàn lời răn đe lý thuyết.</p>
+                <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-8 text-brand-brown text-lg font-medium leading-relaxed relative">
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">1</div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Cơ Chế Gây Nghiện Sinh Học Mạnh Mẽ (Nicotine Trap)</h3>
+                            <p>Nicotine tác động lên não bộ cực kỳ nhanh chóng chỉ sau vài giây hít vào, kích hoạt giải phóng dopamine — chất dẫn truyền thần kinh tạo cảm giác hưng phấn, sảng khoái và giảm stress tạm thời. Khi lượng nicotine giảm xuống, não bộ lập tức phát tín hiệu "đói", gây ra hội chứng cai nghiện (bứt rứt, cáu gắt, mất tập trung). Con người tiếp tục hút không phải vì thích, mà để khỏa lấp cảm giác khó chịu do chính nicotine gây ra.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="flex items-start gap-4 fade-in">
-                    <div class="w-14 h-14 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-hands-helping"></i></div>
-                    <div>
-                        <h3 class="font-heading font-bold text-2xl mb-2">Đồng Hành Khoa Học và Hỗ Trợ Tâm Lý</h3>
-                        <p>Bỏ thuốc lá không chỉ cần ý chí đơn thuần mà còn cần phương pháp. Hãy khích lệ họ sử dụng các liệu pháp thay thế nicotine (kẹo ngậm, miếng dán), tập thể dục để tái tạo dopamine tự nhiên, thay đổi thói quen sinh hoạt và tìm kiếm sự hỗ trợ y tế từ các chuyên gia khi cần thiết. Sự đồng hành bền bỉ từ gia đình và cộng đồng là chìa khóa vàng giúp họ chiến thắng cơn nghiện.</p>
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">2</div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Tâm Lý Chủ Quan và Hiệu Ứng "Nó Sẽ Trừ Mình Ra"</h3>
+                            <p>Bộ não con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-emerald-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]">3</div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Áp Lực Xã Hội và Thói Quen Giao Tiếp</h3>
+                            <p>Đặc biệt trong giới trẻ, thuốc lá hay thuốc lá điện tử đôi khi bị gắn mác sai lầm là "biểu tượng của sự trưởng thành", "phong cách sành điệu" hoặc là công cụ kết nối trong các buổi giao lưu bạn bè. Sự ép buộc vô hình từ nhóm bạn cùng trang lứa khiến nhiều người dễ dàng lún sâu vào cạm bẫy khói thuốc dù ban đầu chỉ thử cho biết.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="tac-hai" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[100vh] relative z-10 scroll-mt-40 fade-in">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Tác Hại Của Thuốc Lá</h2>
-                <div class="w-32 h-3 bg-gray-700 mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
+        <!-- Làm thế nào để thức tỉnh họ? -->
+        <section id="thuc-tinh" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 fade-in">
+            <div class="max-w-5xl mx-auto w-full">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase section-title-pop">Làm thế nào để thức tỉnh họ?</h2>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                    <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-lungs"></i>
+                <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card space-y-8 text-brand-brown text-lg font-medium leading-relaxed">
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-red-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-red-600 text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-heart"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Thay Đổi Cách Tiếp Cận: Dùng Sự Thấu Cảm Thay Vì Chỉ Trích</h3>
+                            <p>Việc la mắng, chì chiết hay kỳ thị người nghiện thuốc lá thường chỉ đẩy họ vào tâm lý phòng thủ và tìm đến điếu thuốc nhiều hơn để giải tỏa căng thẳng. Thay vào đó, hãy kiên nhẫn lắng nghe, thấu hiểu rằng họ đang là nạn nhân của một chứng bệnh nghiện sinh học thực thụ, và bày tỏ sự lo lắng chân thành vì sức khỏe của chính họ và những người thân yêu.</p>
+                        </div>
                     </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-amber-700 text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-bullseye"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Đánh Trúng Vào Động Lực Gần Gũi Nhất</h3>
+                            <p>Mỗi người sẽ có một "nút thắt" riêng để từ bỏ thuốc lá. Với người trẻ, đó có thể là ngoại hình (da dẻ lão hóa, răng ố vàng, hôi miệng) hay tài chính. Với người đã làm cha mẹ, đó chính là tấm gương cho con cái và nỗi sợ hãi bỏ lại gia đình trước bệnh tật. Khơi gợi đúng nỗi trăn trở cá nhân sẽ tạo ra động lực mạnh mẽ hơn ngàn lời răn đe lý thuyết.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-hands-helping"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Đồng Hành Khoa Học và Hỗ Trợ Tâm Lý</h3>
+                            <p>Bỏ thuốc lá không chỉ cần ý chí đơn thuần mà còn cần phương pháp. Hãy khích lệ họ sử dụng các liệu pháp thay thế nicotine (kẹo ngậm, miếng dán), tập thể dục để tái tạo dopamine tự nhiên, thay đổi thói quen sinh hoạt và tìm kiếm sự hỗ trợ y tế từ các chuyên gia khi cần thiết. Sự đồng hành bền bỉ từ gia đình và cộng đồng là chìa khóa vàng giúp họ chiến thắng cơn nghiện.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tác Hại Của Thuốc Lá -->
+        <section id="tac-hai" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 fade-in">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Tác Hại Của Thuốc Lá</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-lungs"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Đóng Góp Giải Pháp -->
+        <section id="dong-gop" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 fade-in">
+            <div class="max-w-5xl mx-auto w-full relative">
+                <div class="absolute -top-14 right-[5%] w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-3 text-yellow-500">
+                    <i class="fas fa-star text-5xl"></i>
+                </div>
+                <div class="absolute bottom-10 left-[2%] md:left-[5%] w-16 h-16 sm:w-24 sm:h-24 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-1 text-blue-400">
+                    <i class="fas fa-comment-dots text-3xl sm:text-5xl"></i>
+                </div>
+
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Đóng Góp Giải Pháp</h2>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-14 ngo-card flex flex-col items-center text-center fade-in max-w-4xl mx-auto border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311]">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-500 text-5xl shadow-[4px_4px_0px_#5a3311]">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    
+                    <h3 class="text-3xl md:text-4xl font-bold text-brand-brown mb-6 font-heading">Chung Tay Tạo Nên Sự Thay Đổi</h3>
+                    
+                    <p class="text-lg md:text-xl text-brand-brown/80 font-medium mb-10 max-w-2xl">
+                        Mọi ý tưởng nhỏ đều có thể mang lại tác động lớn. Nếu bạn có sáng kiến, giải pháp hay câu chuyện truyền cảm hứng để giúp cộng đồng từ bỏ khói thuốc, hãy chia sẻ ngay với chiến dịch!
+                    </p>
+
+                    <a href="https://forms.gle/diendiachicuabannhe" target="_blank" rel="noopener noreferrer" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-black text-xl md:text-2xl py-4 md:py-5 px-8 md:px-12 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto hover:bg-amber-300 transition-colors shadow-[6px_6px_0px_#5a3311] group">
+                        <i class="fas fa-paper-plane text-brand-green group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
+                        Gửi Giải Pháp Của Bạn
+                    </a>
+                    <p class="mt-4 text-sm text-brand-brown/60 font-medium italic">
+                        *Mở ra biểu mẫu Google Form
                     </p>
                 </div>
-
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                    <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
-                    <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
-                    <p class="text-lg text-brand-brown/80 font-medium">
-                        Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
-                    </p>
-                </div>
             </div>
         </section>
-
-        <section id="dong-gop" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-[100vh] mb-[30vh] relative z-10 scroll-mt-40 fade-in">
-            <div class="absolute -top-14 right-[5%] w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-3 text-yellow-500">
-                <i class="fas fa-star text-5xl"></i>
-            </div>
-            <div class="absolute bottom-10 left-[2%] md:left-[5%] w-16 h-16 sm:w-24 sm:h-24 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-1 text-blue-400">
-                <i class="fas fa-comment-dots text-3xl sm:text-5xl"></i>
-            </div>
-
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase mb-4 section-title-pop">Đóng Góp Giải Pháp</h2>
-                <div class="w-32 h-3 bg-blue-400 mx-auto border-2 border-brand-brown rounded-full"></div>
-            </div>
-
-            <div class="bg-white rounded-3xl p-8 sm:p-14 ngo-card flex flex-col items-center text-center fade-in max-w-4xl mx-auto border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311]">
-                <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-500 text-5xl shadow-[4px_4px_0px_#5a3311]">
-                    <i class="fas fa-lightbulb"></i>
-                </div>
-                
-                <h3 class="text-3xl md:text-4xl font-bold text-brand-brown mb-6 font-heading">Chung Tay Tạo Nên Sự Thay Đổi</h3>
-                
-                <p class="text-lg md:text-xl text-brand-brown/80 font-medium mb-10 max-w-2xl">
-                    Mọi ý tưởng nhỏ đều có thể mang lại tác động lớn. Nếu bạn có sáng kiến, giải pháp hay câu chuyện truyền cảm hứng để giúp cộng đồng từ bỏ khói thuốc, hãy chia sẻ ngay với chiến dịch!
-                </p>
-
-                <a href="https://forms.gle/diendiachicuabannhe" target="_blank" rel="noopener noreferrer" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-black text-xl md:text-2xl py-4 md:py-5 px-8 md:px-12 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto hover:bg-amber-300 transition-colors shadow-[6px_6px_0px_#5a3311] group">
-                    <i class="fas fa-paper-plane text-brand-green group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
-                    Gửi Giải Pháp Của Bạn
-                </a>
-                <p class="mt-4 text-sm text-brand-brown/60 font-medium italic">
-                    *Mở ra biểu mẫu Google Form
-                </p>
-            </div>
-        </section>
-
     </main>
 
-    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 mt-16 fade-in">
+    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 fade-in">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             <div class="flex items-center gap-4">
                 <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
@@ -561,7 +581,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Xử lý nút Hamburger Menu trên mobile
             const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
             const navMenu = document.getElementById('nav-menu');
             const toggleIcon = mobileMenuToggle.querySelector('i');
@@ -579,10 +598,9 @@
                 }
             });
 
-            // Tự động đóng menu khi bấm vào một nút điều hướng (chỉ áp dụng trên mobile)
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (window.innerWidth < 768) { // md breakpoint in Tailwind
+                    if (window.innerWidth < 768) { 
                         navMenu.classList.add('hidden');
                         navMenu.classList.remove('flex');
                         toggleIcon.classList.remove('fa-times');
@@ -591,18 +609,17 @@
                 });
             });
 
-            /* TỐI ƯU HIỆU ỨNG FADE (SCROLL) SỬ DỤNG INTERSECTION OBSERVER */
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.15 // Kích hoạt khi cuộn thấy 15% của phần tử
+                threshold: 0.15 
             };
 
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        observer.unobserve(entry.target); // Ngừng theo dõi sau khi hiện (tiết kiệm tài nguyên)
+                        observer.unobserve(entry.target); 
                     }
                 });
             }, observerOptions);
@@ -610,13 +627,11 @@
             document.querySelectorAll('.fade-in').forEach(el => {
                 fadeObserver.observe(el);
             });
-            // Hiển thị ngay phần tử Hero section đầu tiên
             setTimeout(() => {
                 const firstSection = document.querySelector('section.fade-in');
                 if(firstSection) firstSection.classList.add('visible');
             }, 100);
 
-            /* 1. POLLEN PARTICLES BACKGROUND */
             const canvas = document.getElementById('pollen-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -633,7 +648,6 @@
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
                     this.size = Math.random() * 4 + 2;
-                    // Chỉnh tốc độ X và Y nhỏ lại (nhân với 0.4) để chuyển động chậm hơn
                     this.speedX = (Math.random() * 1.5 - 0.75) * 0.4;
                     this.speedY = (Math.random() * -1.5 - 0.5) * 0.4;
                     this.opacity = Math.random() * 0.9 + 0.3;
@@ -670,7 +684,6 @@
             }
             animatePollen();
 
-            /* 2. FLOATING CLOUDS BACKGROUND */
             const cloudsContainer = document.getElementById('clouds-container');
             const numClouds = 8;
             for(let i=0; i<numClouds; i++) {
@@ -700,7 +713,6 @@
             `;
             document.head.appendChild(styleSheet);
 
-            /* 3. THREE.JS 3D VINES, LEAVES & FLOWERS */
             const container = document.getElementById('three-container');
             const scene = new THREE.Scene();
             
@@ -902,7 +914,6 @@
             }
             animateThree();
 
-            /* 4. AUTONOMOUS BEE SWARM */
             const beesContainer = document.getElementById('bees-container');
             const beeTemplate = document.getElementById('bee-template');
             const numBees = 4;
