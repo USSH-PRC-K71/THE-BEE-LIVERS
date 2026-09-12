@@ -82,7 +82,7 @@
             box-shadow: 6px 6px 0px #5a3311;
         }
 
-        /* Text Pop Styles - Đã làm viền (text-shadow xung quanh) dày hơn */
+        /* Text Pop Styles */
         .title-pop {
             color: #ffffff;
             text-shadow: 
@@ -100,9 +100,9 @@
                 -3px -3px 0 #5a3311, 0 -3px 0 #5a3311, 3px -3px 0 #5a3311,
                 3px 0 0 #5a3311, 3px 3px 0 #5a3311, 0 3px 0 #5a3311,
                 -3px 3px 0 #5a3311, -3px 0 0 #5a3311,
-                5px 5px 0px #65a30d, 8px 8px 0px #5a3311; /* Thêm lớp đổ bóng 3D cho đẹp hơn */
-            line-height: 1.4; /* Tăng chiều cao dòng để không bị lẹm trên/dưới */
-            padding: 0.2em; /* Mở rộng bounding box (hit box) */
+                5px 5px 0px #65a30d, 8px 8px 0px #5a3311; 
+            line-height: 1.4; 
+            padding: 0.2em; 
         }
 
         /* Hiệu ứng Fade tối ưu GPU */
@@ -365,7 +365,6 @@
         </section>
 
         <!-- Video Tuyên Truyền -->
-        <!-- Đã sửa: Chuyển fade-in vào div con bên trong -->
         <section id="video-tuyen-truyen" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto w-full relative fade-in">
                 <!-- Stickers -->
@@ -393,7 +392,6 @@
         </section>
 
         <!-- Tại sao biết nguy hiểm nhưng vẫn dùng? -->
-        <!-- Đã sửa: Chuyển fade-in vào div con bên trong -->
         <section id="tai-sao" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full fade-in">
                 <div class="text-center mb-8">
@@ -429,7 +427,6 @@
         </section>
 
         <!-- Làm thế nào để thức tỉnh họ? -->
-        <!-- Đã sửa: Chuyển fade-in vào div con bên trong -->
         <section id="thuc-tinh" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full fade-in">
                 <div class="text-center mb-8">
@@ -465,7 +462,6 @@
         </section>
 
         <!-- Tác Hại Của Thuốc Lá -->
-        <!-- Đã sửa: Chuyển fade-in vào div con bên trong -->
         <section id="tac-hai" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto w-full fade-in">
                 <div class="text-center mb-8">
@@ -517,7 +513,6 @@
         </section>
 
         <!-- Đóng Góp Giải Pháp -->
-        <!-- Đã sửa: Chuyển fade-in vào div con bên trong -->
         <section id="dong-gop" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full relative fade-in">
                 <div class="absolute -top-14 right-[5%] w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-20 sticker-3 text-yellow-500">
@@ -798,11 +793,13 @@
             function buildProceduralVine(isLeft, totalHeight) {
                 const vineGroup = new THREE.Group();
                 const startY = h / 2 + 100; 
-                const endY = (h / 2) - totalHeight - 200;
+                // Tăng chiều dài của dây leo xuống để không bao giờ bị cắt cụt (thêm 600px dự phòng)
+                const endY = (h / 2) - totalHeight - 600;
                 const baseX = isLeft ? -w / 2 + 50 : w / 2 - 50;
                 
                 const points = [];
-                const segments = Math.max(2, Math.floor(totalHeight / 30));
+                // Tăng segment để dây trơn tru khi kéo dài
+                const segments = Math.max(2, Math.floor((totalHeight + 600) / 30));
                 for (let i = 0; i <= segments; i++) {
                     const t = i / segments;
                     const y = THREE.MathUtils.lerp(startY, endY, t);
@@ -816,7 +813,7 @@
                 const stem = new THREE.Mesh(tubeGeometry, stemMaterial);
                 vineGroup.add(stem);
 
-                const decorationCount = Math.floor(totalHeight / 5); 
+                const decorationCount = Math.floor((totalHeight + 600) / 5); 
                 for (let i = 1; i < decorationCount; i++) {
                     const t = i / decorationCount;
                     const pt = curve.getPointAt(t);
@@ -883,7 +880,29 @@
                 scene.add(rightVine);
             }
 
-            setTimeout(initVines, 100);
+            // SỬA LỖI Ở ĐÂY: 
+            // Dùng ResizeObserver thay vì timeout cứng để luôn cập nhật đúng chiều cao sau khi hình ảnh/video tải xong
+            let lastDocHeight = 0;
+            let docResizeTimer;
+            
+            const docObserver = new ResizeObserver(() => {
+                clearTimeout(docResizeTimer);
+                docResizeTimer = setTimeout(() => {
+                    const currentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                    // Chỉ vẽ lại nếu chiều cao thay đổi hơn 50px
+                    if (Math.abs(currentHeight - lastDocHeight) > 50) {
+                        lastDocHeight = currentHeight;
+                        initVines();
+                    }
+                }, 300);
+            });
+            
+            docObserver.observe(document.body);
+
+            // Trigger lần cuối chắc chắn khi mọi thứ (kể cả asset nặng) đã load
+            window.addEventListener('load', () => {
+                initVines();
+            });
 
             window.addEventListener('scroll', () => {
                 camera.position.y = -window.scrollY;
