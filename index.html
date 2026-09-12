@@ -295,7 +295,6 @@
 
     <!-- Top & Bottom Scroll Fade Effects -->
     <div class="fixed top-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-b from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%); mask-image: linear-gradient(to bottom, black 30%, transparent 100%);"></div>
-    <div class="fixed bottom-0 left-0 w-full h-12 sm:h-14 z-40 pointer-events-none bg-gradient-to-t from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%); mask-image: linear-gradient(to top, black 30%, transparent 100%);"></div>
 
     <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
         <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between">
@@ -825,8 +824,8 @@
             const container = document.getElementById('three-container');
             const scene = new THREE.Scene();
             
-            const w = window.innerWidth;
-            const h = window.innerHeight;
+            let w = window.innerWidth;
+            let h = window.innerHeight;
             const camera = new THREE.OrthographicCamera(w / -2, w / 2, h / 2, h / -2, -1000, 1000);
             camera.position.z = 100;
 
@@ -1220,16 +1219,16 @@
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer3D);
                 resizeTimer3D = setTimeout(() => {
-                    const newW = window.innerWidth;
-                    const newH = window.innerHeight;
+                    w = window.innerWidth;
+                    h = window.innerHeight;
                     
-                    camera.left = newW / -2;
-                    camera.right = newW / 2;
-                    camera.top = newH / 2;
-                    camera.bottom = newH / -2;
+                    camera.left = w / -2;
+                    camera.right = w / 2;
+                    camera.top = h / 2;
+                    camera.bottom = h / -2;
                     camera.updateProjectionMatrix();
                     
-                    renderer.setSize(newW, newH);
+                    renderer.setSize(w, h);
                     initVines();
                 }, 300);
             });
