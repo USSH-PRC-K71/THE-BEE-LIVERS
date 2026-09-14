@@ -38,10 +38,8 @@
     </script>
 
     <style>
-        /* Cấu hình bắt dính (Scroll Snapping) & Smooth Scroll "Oiled-up" */
         html {
             scroll-behavior: smooth;
-            /* Chừa ra khoảng trống 120px ở trên cùng khi click menu để Header không che Tiêu đề */
             scroll-padding-top: 120px; 
         }
 
@@ -71,18 +69,129 @@
             box-shadow: 9px 9px 0px #5a3311;
         }
 
-        /* Nav Button Styles */
-        .nav-btn {
-            border: 4px solid #5a3311;
-            box-shadow: 4px 4px 0px #5a3311;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .nav-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 6px 6px 0px #5a3311;
+        .hex-nav-wrapper {
+            position: relative;
+            display: inline-block;
+            /* Tạo viền outline nâu bằng cách ghép 4 drop-shadow xung quanh + bóng đổ 4px */
+            filter: drop-shadow(3px 0px 0px #5a3311) 
+                    drop-shadow(-3px 0px 0px #5a3311) 
+                    drop-shadow(0px 3px 0px #5a3311) 
+                    drop-shadow(0px -3px 0px #5a3311)
+                    drop-shadow(4px 4px 0px #5a3311);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 14px; /* Chừa không gian bên dưới cho mật chảy ra mà không bị chèn ép */
+            will-change: transform, filter;
+            cursor: pointer;
         }
 
-        /* Text Pop Styles */
+        .hex-nav-wrapper:hover {
+            transform: translateY(-4px) scale(1.05);
+            filter: drop-shadow(3px 0px 0px #5a3311) 
+                    drop-shadow(-3px 0px 0px #5a3311) 
+                    drop-shadow(0px 3px 0px #5a3311) 
+                    drop-shadow(0px -3px 0px #5a3311)
+                    drop-shadow(6px 6px 0px #5a3311);
+        }
+
+        .hex-content {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Họa tiết tổ ong */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23f59e0b' fill-opacity='0.15' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            /* Cắt hình dạng thành lục giác kéo dài */
+            clip-path: polygon(15px 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0% 50%);
+            z-index: 10;
+        }
+
+        /* Large Honey Button (CTA Đóng Góp) */
+        .hex-large-wrapper {
+            position: relative;
+            display: inline-block;
+            filter: drop-shadow(4px 0px 0px #5a3311) 
+                    drop-shadow(-4px 0px 0px #5a3311) 
+                    drop-shadow(0px 4px 0px #5a3311) 
+                    drop-shadow(0px -4px 0px #5a3311)
+                    drop-shadow(6px 6px 0px #5a3311);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 24px;
+        }
+        .hex-large-wrapper:hover {
+            transform: translateY(-5px) scale(1.05);
+            filter: drop-shadow(4px 0px 0px #5a3311) 
+                    drop-shadow(-4px 0px 0px #5a3311) 
+                    drop-shadow(0px 4px 0px #5a3311) 
+                    drop-shadow(0px -4px 0px #5a3311)
+                    drop-shadow(10px 10px 0px #5a3311);
+        }
+        .hex-content-large {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23f59e0b' fill-opacity='0.15' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            clip-path: polygon(24px 0%, calc(100% - 24px) 0%, 100% 50%, calc(100% - 24px) 100%, 24px 100%, 0% 50%);
+            z-index: 10;
+        }
+
+        .honey-drip {
+            position: absolute;
+            background: linear-gradient(160deg, #fde047 0%, #f59e0b 40%, #b45309 100%);
+            box-shadow: inset -1.5px -2px 3px rgba(180, 83, 9, 0.7), inset 1.5px 2px 3px rgba(255, 255, 255, 0.9);
+            border-radius: 0 0 20px 20px;
+            top: calc(100% - 4px); /* Nhô ra từ đáy phần thân để merge mượt với drop-shadow */
+            z-index: 5;
+            transform-origin: top;
+        }
+        
+        /* Nav button drips (Bottom) */
+        .drip-1 { left: 25%; width: 8px; height: 14px; animation: drip-anim 2.5s infinite alternate ease-in-out; }
+        .drip-2 { left: 52%; width: 11px; height: 18px; animation: drip-anim 3s infinite alternate ease-in-out 1s; }
+        .drip-3 { left: 78%; width: 6px; height: 10px; animation: drip-anim 2s infinite alternate ease-in-out 0.5s; }
+
+        /* Large button drips (Bottom) */
+        .large-drip-1 { left: 22%; width: 14px; height: 26px; animation: drip-anim 2.5s infinite alternate ease-in-out; }
+        .large-drip-2 { left: 50%; width: 18px; height: 32px; animation: drip-anim 3.2s infinite alternate ease-in-out 1s; }
+        .large-drip-3 { left: 75%; width: 12px; height: 20px; animation: drip-anim 2s infinite alternate ease-in-out 0.5s; }
+
+        @keyframes drip-anim {
+            0% { transform: scaleY(0.9); }
+            100% { transform: scaleY(1.4); }
+        }
+
+        /* Top Drips (Mật chảy từ trên xuống do trọng lực) */
+        .honey-drip-top {
+            position: absolute;
+            background: linear-gradient(160deg, #fde047 0%, #f59e0b 40%, #b45309 100%);
+            box-shadow: inset -1.5px -2px 3px rgba(180, 83, 9, 0.7), inset 1.5px 2px 3px rgba(255, 255, 255, 0.9);
+            border-radius: 0 0 20px 20px; /* Đáy bo tròn vì giọt rớt xuống */
+            top: 0; /* Bám từ mép trên */
+            z-index: 15; /* Phủ lên trên bề mặt chữ và nền */
+            transform-origin: top; /* Kéo dãn từ trên xuống dưới */
+        }
+        
+        .top-drip-1 { left: 20%; width: 7px; height: 12px; animation: drip-top-anim 2.2s infinite alternate ease-in-out; }
+        .top-drip-2 { left: 45%; width: 9px; height: 16px; animation: drip-top-anim 2.8s infinite alternate ease-in-out 0.8s; }
+        .top-drip-3 { left: 75%; width: 6px; height: 11px; animation: drip-top-anim 1.9s infinite alternate ease-in-out 0.3s; }
+
+        @keyframes drip-top-anim {
+            0% { transform: scaleY(0.8); }
+            100% { transform: scaleY(1.4); }
+        }
+
+        /* Active State CSS cho thanh Menu */
+        .hex-nav-wrapper .hex-content {
+            background-color: #ffffff; /* Trắng mặc định */
+            transition: background-color 0.3s ease;
+        }
+        .hex-nav-wrapper:hover .hex-content {
+            background-color: #f3f4f6; /* Hover xám nhẹ */
+        }
+        .hex-nav-wrapper.active .hex-content {
+            background-color: #fef08a; /* Chuyển vàng khi Active */
+        }
+
         .title-pop {
             color: #ffffff;
             text-shadow: 
@@ -105,7 +214,6 @@
             padding: 0.2em; 
         }
 
-        /* Hiệu ứng Fade tối ưu GPU */
         .fade-in {
             opacity: 0;
             transform: translateY(40px);
@@ -167,7 +275,6 @@
             pointer-events: none;
         }
 
-        /* Bee Swarm Styling */
         #bees-container {
             position: fixed;
             top: 0; left: 0;
@@ -298,12 +405,12 @@
     <div class="fixed top-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-b from-[#fdfbf7] via-[#fdfbf7]/80 to-transparent backdrop-blur-md" style="-webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%); mask-image: linear-gradient(to bottom, black 30%, transparent 100%);"></div>
 
     <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
-        <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between">
+        <div class="bg-[#fdfbf7]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden flex flex-col xl:flex-row xl:items-center xl:justify-between">
             
             <div class="absolute -top-4 -left-4 w-12 h-12 bg-brand-yellow rounded-full border-4 border-brand-brown opacity-60 z-0 pointer-events-none"></div>
             <div class="absolute -bottom-6 -right-2 w-16 h-16 bg-brand-green rounded-full border-4 border-brand-brown opacity-20 z-0 pointer-events-none"></div>
 
-            <div class="flex justify-between items-center w-full md:w-auto relative z-10">
+            <div class="flex justify-between items-center w-full xl:w-auto relative z-10 shrink-0">
                 <a href="#" class="flex items-center gap-2 sm:gap-3 group shrink-0">
                     <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
                     <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-11 w-11 sm:h-13 sm:w-13 object-cover rounded-full border-4 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
@@ -317,26 +424,62 @@
                         </span>
                     </div>
                 </a>
-                <button id="mobile-menu-toggle" class="md:hidden text-brand-brown text-2xl p-2 focus:outline-none hover:scale-110 transition-transform flex items-center justify-center">
+                <button id="mobile-menu-toggle" class="xl:hidden text-brand-brown text-2xl p-2 focus:outline-none hover:scale-110 transition-transform flex items-center justify-center">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
 
-            <div id="nav-menu" class="hidden md:flex flex-col md:flex-row items-stretch md:items-center justify-center md:justify-end gap-2 sm:gap-3 z-20 w-full md:w-auto mt-4 md:mt-0 pb-2 md:pb-0">
-                <a href="#video-tuyen-truyen" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
-                    <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
+            <div id="nav-menu" class="hidden xl:flex flex-wrap items-center justify-center gap-x-2 gap-y-0 xl:gap-3 z-20 w-full xl:w-auto mt-4 xl:mt-0 pt-2 xl:pt-0">
+                
+                <!-- Nút tổ ong 1 -->
+                <a href="#video-tuyen-truyen" class="hex-nav-wrapper group">
+                    <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
+                        <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
+                    </div>
+                    <div class="honey-drip-top top-drip-2"></div>
+                    <div class="honey-drip drip-1"></div>
+                    <div class="honey-drip drip-3"></div>
                 </a>
-                <a href="#tac-hai" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
-                    <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
+
+                <!-- Nút tổ ong 2 -->
+                <a href="#tac-hai" class="hex-nav-wrapper group">
+                    <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
+                        <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
+                    </div>
+                    <div class="honey-drip-top top-drip-1"></div>
+                    <div class="honey-drip-top top-drip-3"></div>
+                    <div class="honey-drip drip-2"></div>
                 </a>
-                <a href="#tai-sao" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
-                    <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
+
+                <!-- Nút tổ ong 3 -->
+                <a href="#tai-sao" class="hex-nav-wrapper group">
+                    <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
+                        <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
+                    </div>
+                    <div class="honey-drip-top top-drip-2"></div>
+                    <div class="honey-drip drip-1"></div>
+                    <div class="honey-drip drip-2"></div>
                 </a>
-                <a href="#thuc-tinh" class="nav-btn bg-white text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
-                    <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
+
+                <!-- Nút tổ ong 4 -->
+                <a href="#thuc-tinh" class="hex-nav-wrapper group">
+                    <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
+                        <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
+                    </div>
+                    <div class="honey-drip-top top-drip-1"></div>
+                    <div class="honey-drip drip-3"></div>
                 </a>
-                <a href="#dong-gop" class="nav-btn bg-blue-100 text-brand-brown font-heading font-bold text-[13px] lg:text-base py-2 px-4 rounded-full flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
-                    <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
+
+                <!-- Nút tổ ong 5 -->
+                <a href="#dong-gop" class="hex-nav-wrapper group">
+                    <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
+                        <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
+                    </div>
+                    <div class="honey-drip-top top-drip-2"></div>
+                    <div class="honey-drip-top top-drip-3"></div>
+                    <div class="honey-drip drip-1"></div>
+                    <div class="honey-drip drip-2"></div>
+                    <div class="honey-drip drip-3"></div>
                 </a>
             </div>
         </div>
@@ -575,10 +718,19 @@
                         Mọi ý tưởng nhỏ đều có thể mang lại tác động lớn. Nếu bạn có sáng kiến, giải pháp hay câu chuyện truyền cảm hứng để giúp cộng đồng từ bỏ khói thuốc, hãy chia sẻ ngay với chiến dịch!
                     </p>
 
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdbrsWxy9GddNWpjT1jicaOSXS7SbVKUIJDckX62RXGDIcXRw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="nav-btn bg-brand-yellow text-brand-brown font-heading font-black text-xl md:text-2xl py-4 md:py-5 px-8 md:px-12 rounded-full flex items-center justify-center gap-3 w-full sm:w-auto hover:bg-amber-300 transition-colors shadow-[6px_6px_0px_#5a3311] group">
-                        <i class="fas fa-paper-plane text-brand-green group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
-                        Gửi Giải Pháp Của Bạn
+                    <!-- Nút Tổ Ong Khổng Lồ CTA -->
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdbrsWxy9GddNWpjT1jicaOSXS7SbVKUIJDckX62RXGDIcXRw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="hex-large-wrapper group">
+                        <div class="hex-content-large font-heading font-black text-xl md:text-2xl bg-brand-yellow group-hover:bg-amber-300 transition-colors duration-300 px-10 py-5">
+                            <i class="fas fa-paper-plane text-brand-green group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
+                            <span class="whitespace-nowrap">Gửi Giải Pháp Của Bạn</span>
+                        </div>
+                        <div class="honey-drip-top top-drip-1"></div>
+                        <div class="honey-drip-top top-drip-3"></div>
+                        <div class="honey-drip large-drip-1"></div>
+                        <div class="honey-drip large-drip-2"></div>
+                        <div class="honey-drip large-drip-3"></div>
                     </a>
+                    
                     <p class="mt-4 text-sm text-brand-brown/60 font-medium italic">
                         *Mở ra biểu mẫu Google Form
                     </p>
@@ -706,13 +858,45 @@
 
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (window.innerWidth < 768) { 
+                    if (window.innerWidth < 1280) { // xl breakpoint
                         navMenu.classList.add('hidden');
                         navMenu.classList.remove('flex');
                         toggleIcon.classList.remove('fa-times');
                         toggleIcon.classList.add('fa-bars');
                     }
                 });
+            });
+
+            // --- SCROLLSPY (TỰ ĐỘNG CHUYỂN VÀNG NÚT KHI CUỘN) ---
+            const sections = document.querySelectorAll('section[id]');
+            const hexNavItems = document.querySelectorAll('.hex-nav-wrapper');
+
+            const scrollSpyOptions = {
+                root: null,
+                // Kích hoạt khi Section chạm vào mốc 30% tính từ đỉnh màn hình
+                rootMargin: '-30% 0px -70% 0px', 
+                threshold: 0
+            };
+
+            const scrollSpyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const currentId = entry.target.getAttribute('id');
+                        
+                        // Xóa class active ở tất cả các nút
+                        hexNavItems.forEach(item => {
+                            item.classList.remove('active');
+                            // Thêm lại class active cho nút đang khớp với phần màn hình hiện tại
+                            if (item.getAttribute('href') === `#${currentId}`) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, scrollSpyOptions);
+
+            sections.forEach(sec => {
+                scrollSpyObserver.observe(sec);
             });
 
             const observerOptions = {
@@ -985,31 +1169,27 @@
                 return flower;
             }
 
-            // HÀM MỚI: Tạo Tổ Ong ngẫu nhiên, to và đẹp mắt
             function createBeehive() {
                 const hiveGroup = new THREE.Group();
                 
-                // Vật liệu tạo vằn cho tổ ong (Màu mật ong sáng và tối đan xen)
                 const matLight = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.8, metalness: 0.1 }); 
                 const matDark = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.9, metalness: 0.1 });  
                 
-                // Các tầng của tổ ong - Đã được điều chỉnh để phình to ra giống hình tròn hơn
                 const radii = [6, 10, 13.5, 15, 13.5, 10, 6, 3];
                 let currentY = 0;
                 let largestY = 0;
                 let largestRadius = 0;
 
-                // Xây dựng thân tổ ong từ các khối cầu dẹt
                 for(let i = 0; i < radii.length; i++) {
                     const r = radii[i];
                     const geo = new THREE.SphereGeometry(r, 32, 16);
-                    geo.scale(1, 0.65, 1); // Giảm độ dẹt để các vành tròn trịa hơn
+                    geo.scale(1, 0.65, 1); 
                     
                     const material = (i % 2 === 0) ? matLight : matDark;
                     const mesh = new THREE.Mesh(geo, material);
                     
                     if(i > 0) {
-                        currentY -= (radii[i-1] * 0.65 + r * 0.65) * 0.55; // Điều chỉnh lại độ chồng lấp
+                        currentY -= (radii[i-1] * 0.65 + r * 0.65) * 0.55; 
                     }
                     
                     mesh.position.y = currentY;
@@ -1021,29 +1201,22 @@
                     }
                 }
 
-                // Tạo cửa ra vào của tổ ong (Hình lục giác - Hexagon)
                 const holeMat = new THREE.MeshBasicMaterial({ color: 0x2d1a09 });
-                // CylinderGeometry với 6 cạnh (segments) sẽ tạo ra hình lục giác
                 const holeGeo = new THREE.CylinderGeometry(4, 4, 1.5, 6); 
-                holeGeo.rotateX(Math.PI / 2); // Xoay hướng ra mặt trước
-                holeGeo.rotateZ(Math.PI / 6); // Xoay nhẹ để đỉnh nhọn hướng lên trên cho giống lỗ tổ ong
+                holeGeo.rotateX(Math.PI / 2); 
+                holeGeo.rotateZ(Math.PI / 6); 
                 const hole = new THREE.Mesh(holeGeo, holeMat);
                 
-                // Đặt cửa ở tầng phình to nhất
                 hole.position.set(0, largestY - 1, largestRadius * 0.9);
                 hiveGroup.add(hole);
 
-                // Cuống/Nhành cây nhỏ nối tổ ong với thân chính
                 const branchMat = new THREE.MeshStandardMaterial({ color: 0x5a3311 });
                 const branchGeo = new THREE.CylinderGeometry(1.2, 1.8, 10);
                 const branch = new THREE.Mesh(branchGeo, branchMat);
-                branch.position.set(0, 6, 0); // Đặt trên đỉnh
+                branch.position.set(0, 6, 0); 
                 hiveGroup.add(branch);
 
-                // Dời toàn bộ Group lên trên để tâm xoay (pivot) nằm ở cuống nhánh.
                 hiveGroup.children.forEach(c => c.position.y -= 6);
-
-                // Tăng kích thước tổ ong
                 hiveGroup.scale.set(1.3, 1.3, 1.3);
                 
                 return hiveGroup;
@@ -1076,7 +1249,6 @@
                     const t = i / decorationCount;
                     const pt = curve.getPointAt(t);
                     
-                    // Tăng tỷ lệ xuất hiện hoa lên ~35% (trước đó là 20%)
                     const isFlower = Math.random() > 0.65; 
                     const isLocalLeft = (i % 2 === 0);
 
@@ -1086,7 +1258,6 @@
                     let offsetOutward = 0;
                     
                     if (isFlower) {
-                        // Khoảng 25% số hoa sẽ có màu vàng tươi điểm xuyết
                         const isYellow = Math.random() < 0.25;
                         mesh = createFlower(isYellow);
                         const fScale = 1.4 + Math.random() * 0.6; 
@@ -1136,37 +1307,31 @@
                     vineGroup.add(mesh);
                 }
 
-                // --- TÍCH HỢP TỔ ONG VÀO DÂY LEO ---
-                // Tạo 2 tổ ong ngẫu nhiên trải đều ở nửa trên và nửa dưới của đoạn dây leo
                 const hivePositions = [
-                    0.1 + Math.random() * 0.35, // Tổ ong 1: t nằm trong khoảng 0.1 - 0.45
-                    0.55 + Math.random() * 0.35 // Tổ ong 2: t nằm trong khoảng 0.55 - 0.9
+                    0.1 + Math.random() * 0.35,
+                    0.55 + Math.random() * 0.35
                 ];
 
                 hivePositions.forEach(hiveT => {
                     const hivePt = curve.getPointAt(hiveT);
                     const beehive = createBeehive();
                     
-                    // Dịch chuyển tổ ong ra ngoài một chút và hơi chếch xuống
                     const hiveOffsetOutward = isLeft ? (12 + Math.random() * 6) : -(12 + Math.random() * 6); 
                     beehive.position.copy(hivePt).add(new THREE.Vector3(hiveOffsetOutward, -5, 8)); 
                     
-                    // Xoay nhẹ tổ ong để nó luôn hướng chéo ra phía người dùng một chút
                     beehive.rotation.y = isLeft ? 0.35 : -0.35;
                     beehive.rotation.z = isLeft ? 0.08 : -0.08; 
 
-                    // Thêm vào mảng hoạt ảnh đung đưa
                     beehive.userData = {
                         baseRotX: 0,
                         baseRotZ: beehive.rotation.z,
                         animOffset: Math.random() * Math.PI * 2,
-                        speed: 0.15 + Math.random() * 0.1 // Tốc độ đung đưa khác nhau cho mỗi tổ
+                        speed: 0.15 + Math.random() * 0.1 
                     };
                     animatedFoliage.push(beehive);
                     
                     vineGroup.add(beehive);
                 });
-                // ------------------------------------
 
                 return vineGroup;
             }
@@ -1344,7 +1509,6 @@
                     const color = greens[Math.floor(Math.random() * greens.length)];
                     const zIndex = Math.floor(Math.random() * 10); 
 
-                    // Định hình chiếc lá cỏ nhọn bằng thuộc tính border-radius thay vì hcn
                     if (Math.random() > 0.5) {
                         blade.style.borderRadius = "0 100% 2px 2px";
                     } else {
@@ -1386,12 +1550,11 @@
                 if (!isGrassMouseMoving) {
                     isGrassMouseMoving = true;
                     requestAnimationFrame(() => {
-                        const radius = 90; // Bán kính tương tác của con chuột
+                        const radius = 90; 
                         grassWrappers.forEach(w => {
                             const bladeX = (w.leftPercent / 100) * grassContainerWidth;
                             const dist = grassMouseX - bladeX;
                             if (Math.abs(dist) < radius) {
-                                // Lực đẩy (cỏ càng gần chuột thì bị đè càng rạp xuống)
                                 const bend = dist > 0 ? -75 : 75; 
                                 const intensity = Math.pow(1 - Math.abs(dist) / radius, 1.2);
                                 w.el.style.transform = `rotate(${bend * intensity}deg)`;
@@ -1410,7 +1573,6 @@
                 });
             };
 
-            // Gắn sự kiện cho cả PC (mouse) và thiết bị di động (touch)
             grassContainer.addEventListener('mousemove', (e) => handleGrassInteraction(e.clientX));
             grassContainer.addEventListener('mouseleave', resetGrassInteraction);
             grassContainer.addEventListener('touchmove', (e) => handleGrassInteraction(e.touches[0].clientX), { passive: true });
