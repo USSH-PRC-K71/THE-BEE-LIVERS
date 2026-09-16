@@ -1546,35 +1546,45 @@
 
             // --- PAGE VIEW COUNTER ---
             async function fetchAndIncrementPageViews() {
-                // Đổi sang định dạng chuẩn (chỉ dùng chữ, số và gạch ngang)
-                const namespace = 'ussh-k71-prc-campaign'; 
-                const key = 'website-visits-v2'; // Đã đổi key mới để reset bộ đếm về 0
-                // Endpoint đếm +1 mỗi khi gọi
-                const url = `https://api.counterapi.dev/v1/${namespace}/${key}/up`;
+                // SỬA LỖI 1: Đổi sang định dạng CHỈ DÙNG CHỮ CÁI VÀ SỐ (không dùng dấu gạch ngang)
+                // Các API đếm số từ chối ký tự đặc biệt, khiến mạng báo lỗi và web rơi vào chế độ offline (mỗi máy tự đếm 1).
+                const namespace = 'usshk71prc'; 
+                const key = 'globalvisits'; 
+                
+                // SỬA LỖI 2: Thêm tham số thời gian thực (?t=...) để CHỐNG CACHE TRÌNH DUYỆT.
+                // Giúp mỗi lần F5 hoặc có người tải trang đều bắt buộc gọi lên server cộng dồn số thay vì dùng số cũ.
+                const url = `https://api.counterapi.dev/v1/${namespace}/${key}/up?t=${Date.now()}`;
                 
                 const countElement = document.getElementById('page-views-count');
                 
                 try {
-                    const response = await fetch(url);
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache'
+                        }
+                    });
+                    
                     if (!response.ok) {
                         throw new Error(`Mã lỗi HTTP: ${response.status}`);
                     }
                     const data = await response.json();
                     
                     if (data && typeof data.count === 'number') {
-                        // Gọi hàm animation số chạy từ 0 đến kết quả thực tế
+                        // Gọi hàm animation số chạy từ 0 đến kết quả thực tế trên toàn cầu
                         animateNumberValue(countElement, 0, data.count, 2500);
                     } else {
                         throw new Error("Dữ liệu trả về bị thiếu biến count");
                     }
                 } catch (error) {
-                    console.warn('Cảnh báo: API bộ đếm bị lỗi hoặc bị chặn, chuyển sang bộ đếm dự phòng.', error);
+                    console.warn('Cảnh báo: API bộ đếm bị chặn bởi mạng/adblock, chuyển sang dự phòng.', error);
                     
-                    // FALLBACK: Giải pháp dự phòng tạo số đếm thông minh lưu vào Local Storage
-                    // Đã reset biến bắt đầu về 0 (thay cho 1258) và dùng key lưu trữ mới
-                    let localCount = parseInt(localStorage.getItem('k71_fallback_visits_v2')) || 0;
-                    localCount += 1; // Tăng thêm 1 lượt mỗi lần tải trang
-                    localStorage.setItem('k71_fallback_visits_v2', localCount);
+                    // Dự phòng nếu máy người dùng chặn API
+                    let localCount = parseInt(localStorage.getItem('k71_fallback_visits_v3')) || 0;
+                    localCount += 1;
+                    localStorage.setItem('k71_fallback_visits_v3', localCount);
                     
                     if (countElement) {
                         animateNumberValue(countElement, 0, localCount, 2500);
