@@ -1548,7 +1548,7 @@
             async function fetchAndIncrementPageViews() {
                 // Đổi sang định dạng chuẩn (chỉ dùng chữ, số và gạch ngang)
                 const namespace = 'ussh-k71-prc-campaign'; 
-                const key = 'website-visits';
+                const key = 'website-visits-v2'; // Đã đổi key mới để reset bộ đếm về 0
                 // Endpoint đếm +1 mỗi khi gọi
                 const url = `https://api.counterapi.dev/v1/${namespace}/${key}/up`;
                 
@@ -1571,10 +1571,10 @@
                     console.warn('Cảnh báo: API bộ đếm bị lỗi hoặc bị chặn, chuyển sang bộ đếm dự phòng.', error);
                     
                     // FALLBACK: Giải pháp dự phòng tạo số đếm thông minh lưu vào Local Storage
-                    // Giả lập số bắt đầu từ một mốc nào đó nếu người dùng mới vào lần đầu
-                    let localCount = parseInt(localStorage.getItem('k71_fallback_visits')) || 1258;
+                    // Đã reset biến bắt đầu về 0 (thay cho 1258) và dùng key lưu trữ mới
+                    let localCount = parseInt(localStorage.getItem('k71_fallback_visits_v2')) || 0;
                     localCount += 1; // Tăng thêm 1 lượt mỗi lần tải trang
-                    localStorage.setItem('k71_fallback_visits', localCount);
+                    localStorage.setItem('k71_fallback_visits_v2', localCount);
                     
                     if (countElement) {
                         animateNumberValue(countElement, 0, localCount, 2500);
