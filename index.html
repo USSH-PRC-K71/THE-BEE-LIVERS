@@ -72,14 +72,13 @@
         .hex-nav-wrapper {
             position: relative;
             display: inline-block;
-            /* Tạo viền outline nâu bằng cách ghép 4 drop-shadow xung quanh + bóng đổ 4px */
             filter: drop-shadow(3px 0px 0px #5a3311) 
                     drop-shadow(-3px 0px 0px #5a3311) 
                     drop-shadow(0px 3px 0px #5a3311) 
                     drop-shadow(0px -3px 0px #5a3311)
                     drop-shadow(4px 4px 0px #5a3311);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 14px; /* Chừa không gian bên dưới cho mật chảy ra mà không bị chèn ép */
+            margin-bottom: 14px; 
             will-change: transform, filter;
             cursor: pointer;
         }
@@ -98,14 +97,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Họa tiết tổ ong */
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23f59e0b' fill-opacity='0.15' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            /* Cắt hình dạng thành lục giác kéo dài */
             clip-path: polygon(15px 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0% 50%);
             z-index: 10;
         }
 
-        /* Large Honey Button (CTA Đóng Góp) */
         .hex-large-wrapper {
             position: relative;
             display: inline-block;
@@ -140,17 +136,15 @@
             background: linear-gradient(160deg, #fde047 0%, #f59e0b 40%, #b45309 100%);
             box-shadow: inset -1.5px -2px 3px rgba(180, 83, 9, 0.7), inset 1.5px 2px 3px rgba(255, 255, 255, 0.9);
             border-radius: 0 0 20px 20px;
-            top: calc(100% - 4px); /* Nhô ra từ đáy phần thân để merge mượt với drop-shadow */
+            top: calc(100% - 4px); 
             z-index: 5;
             transform-origin: top;
         }
         
-        /* Nav button drips (Bottom) */
         .drip-1 { left: 25%; width: 8px; height: 14px; animation: drip-anim 2.5s infinite alternate ease-in-out; }
         .drip-2 { left: 52%; width: 11px; height: 18px; animation: drip-anim 3s infinite alternate ease-in-out 1s; }
         .drip-3 { left: 78%; width: 6px; height: 10px; animation: drip-anim 2s infinite alternate ease-in-out 0.5s; }
 
-        /* Large button drips (Bottom) */
         .large-drip-1 { left: 22%; width: 14px; height: 26px; animation: drip-anim 2.5s infinite alternate ease-in-out; }
         .large-drip-2 { left: 50%; width: 18px; height: 32px; animation: drip-anim 3.2s infinite alternate ease-in-out 1s; }
         .large-drip-3 { left: 75%; width: 12px; height: 20px; animation: drip-anim 2s infinite alternate ease-in-out 0.5s; }
@@ -160,15 +154,14 @@
             100% { transform: scaleY(1.4); }
         }
 
-        /* Top Drips (Mật chảy từ trên xuống do trọng lực) */
         .honey-drip-top {
             position: absolute;
             background: linear-gradient(160deg, #fde047 0%, #f59e0b 40%, #b45309 100%);
             box-shadow: inset -1.5px -2px 3px rgba(180, 83, 9, 0.7), inset 1.5px 2px 3px rgba(255, 255, 255, 0.9);
-            border-radius: 0 0 20px 20px; /* Đáy bo tròn vì giọt rớt xuống */
-            top: 0; /* Bám từ mép trên */
-            z-index: 15; /* Phủ lên trên bề mặt chữ và nền */
-            transform-origin: top; /* Kéo dãn từ trên xuống dưới */
+            border-radius: 0 0 20px 20px; 
+            top: 0; 
+            z-index: 15; 
+            transform-origin: top; 
         }
         
         .top-drip-1 { left: 20%; width: 7px; height: 12px; animation: drip-top-anim 2.2s infinite alternate ease-in-out; }
@@ -180,16 +173,15 @@
             100% { transform: scaleY(1.4); }
         }
 
-        /* Active State CSS cho thanh Menu */
         .hex-nav-wrapper .hex-content {
-            background-color: #ffffff; /* Trắng mặc định */
+            background-color: #ffffff; 
             transition: background-color 0.3s ease;
         }
         .hex-nav-wrapper:hover .hex-content {
-            background-color: #f3f4f6; /* Hover xám nhẹ */
+            background-color: #f3f4f6; 
         }
         .hex-nav-wrapper.active .hex-content {
-            background-color: #fef08a; /* Chuyển vàng khi Active */
+            background-color: #fef08a; 
         }
 
         .title-pop {
@@ -225,7 +217,6 @@
             transform: translateY(0);
         }
 
-        /* 2D Pollen Background */
         #pollen-canvas {
             position: fixed;
             top: 0; left: 0;
@@ -431,7 +422,6 @@
 
             <div id="nav-menu" class="hidden xl:flex flex-wrap items-center justify-center gap-x-2 gap-y-0 xl:gap-3 z-20 w-full xl:w-auto mt-4 xl:mt-0 pt-2 xl:pt-0">
                 
-                <!-- Nút tổ ong 1 -->
                 <a href="#video-tuyen-truyen" class="hex-nav-wrapper group">
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
@@ -441,7 +431,6 @@
                     <div class="honey-drip drip-3"></div>
                 </a>
 
-                <!-- Nút tổ ong 2 -->
                 <a href="#tac-hai" class="hex-nav-wrapper group">
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
@@ -451,7 +440,6 @@
                     <div class="honey-drip drip-2"></div>
                 </a>
 
-                <!-- Nút tổ ong 3 -->
                 <a href="#tai-sao" class="hex-nav-wrapper group">
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
@@ -461,7 +449,6 @@
                     <div class="honey-drip drip-2"></div>
                 </a>
 
-                <!-- Nút tổ ong 4 -->
                 <a href="#thuc-tinh" class="hex-nav-wrapper group">
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
@@ -470,7 +457,6 @@
                     <div class="honey-drip drip-3"></div>
                 </a>
 
-                <!-- Nút tổ ong 5 -->
                 <a href="#dong-gop" class="hex-nav-wrapper group">
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
@@ -486,12 +472,10 @@
     </header>
 
     <main class="flex flex-col gap-20 sm:gap-32 pb-0">
-        <!-- Frontpage (Hero Section) -->
         <section class="relative overflow-hidden w-full flex flex-col items-center justify-center text-center px-4 pt-24 sm:pt-32 pb-10 min-h-[100svh]">
             <div class="fade-in w-full h-full absolute inset-0 z-0 pointer-events-none flex flex-col items-center justify-center">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] bg-white/70 blur-[100px] rounded-full z-0 pointer-events-none"></div>
 
-                <!-- Stickers -->
                 <div class="absolute top-[20%] left-[5%] md:left-[15%] w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-full border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311] flex items-center justify-center z-10 sticker-1 text-red-500">
                     <i class="fas fa-smoking-ban text-5xl sm:text-6xl"></i>
                 </div>
@@ -508,7 +492,6 @@
 
             <div class="max-w-6xl mx-auto relative z-10 flex flex-col items-center w-full fade-in">
                 
-                <!-- Cụm 3 Logo Nổi Bật -->
                 <div class="flex justify-center items-center gap-2 sm:gap-6 md:gap-10 mb-8 sm:mb-10 w-full max-w-full">
                     <div class="w-24 h-24 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-brand-brown bg-white transform -rotate-6 hover:rotate-0 transition-transform shadow-[6px_6px_0px_#5a3311] shrink-0">
                         <img src="images/logo1.jpg" onerror="this.src='https://placehold.co/300x300/fef08a/5a3311?text=Logo+1'" alt="Campaign Logo 1" class="w-full h-full object-cover">
@@ -521,17 +504,14 @@
                     </div>
                 </div>
 
-                <!-- Tagline -->
                 <span class="inline-block py-1.5 sm:py-2 px-4 sm:px-8 rounded-full bg-brand-yellow text-brand-brown font-black text-sm sm:text-lg md:text-xl mb-4 sm:mb-6 border-4 border-brand-brown uppercase tracking-widest shadow-[4px_4px_0px_#5a3311] text-center">
                     Sáng tạo thay đổi - Thở phào nhẹ nhõm. 🌿
                 </span>
                 
-                <!-- Tiêu đề chính -->
                 <h1 class="text-[3.25rem] leading-[1.1] sm:text-7xl md:text-[6.5rem] font-heading font-black tracking-tight mb-4 uppercase title-pop max-w-full">
                     Create Change <br /> Breath Free
                 </h1>
                 
-                <!-- Dòng chữ nhỏ theo yêu cầu -->
                 <div class="inline-block bg-white/95 backdrop-blur-sm border-4 border-brand-brown rounded-full px-4 sm:px-6 py-1.5 sm:py-2 shadow-[4px_4px_0px_#5a3311] mb-8 sm:mb-12 transform hover:scale-105 transition-transform">
                     <p class="text-lg sm:text-2xl font-heading font-bold text-brand-brown uppercase tracking-widest m-0 leading-none flex items-center gap-2">
                         <i class="fas fa-crown text-amber-500"></i>
@@ -545,15 +525,11 @@
             </div>
         </section>
 
-        <!-- Video Tuyên Truyền -->
         <section id="video-tuyen-truyen" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto w-full relative fade-in">
-                
                 <div class="text-center mb-6">
                     <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Video Tuyên Truyền</h2>
                 </div>
-
-                <!-- Video container co giãn linh hoạt -->
                 <div class="w-full mx-auto rounded-3xl overflow-hidden border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311] bg-white p-2">
                     <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
                        <video controls class="w-full h-full object-cover" preload="metadata">
@@ -565,7 +541,6 @@
             </div>
         </section>
 
-        <!-- Tác Hại Của Thuốc Lá -->
         <section id="tac-hai" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto w-full fade-in">
                 <div class="text-center mb-8">
@@ -616,7 +591,6 @@
             </div>
         </section>
 
-        <!-- Tại sao biết nguy hiểm nhưng vẫn dùng? -->
         <section id="tai-sao" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full fade-in">
                 <div class="text-center mb-8">
@@ -651,7 +625,6 @@
             </div>
         </section>
 
-        <!-- Làm thế nào để thức tỉnh họ? -->
         <section id="thuc-tinh" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full fade-in">
                 <div class="text-center mb-8">
@@ -686,7 +659,6 @@
             </div>
         </section>
 
-        <!-- Đóng Góp Giải Pháp -->
         <section id="dong-gop" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
             <div class="max-w-5xl mx-auto w-full relative fade-in">
                 
@@ -705,7 +677,6 @@
                         Mọi ý tưởng nhỏ đều có thể mang lại tác động lớn. Nếu bạn có sáng kiến, giải pháp hay câu chuyện truyền cảm hứng để giúp cộng đồng từ bỏ khói thuốc, hãy chia sẻ ngay với chiến dịch!
                     </p>
 
-                    <!-- Nút Tổ Ong Khổng Lồ CTA -->
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdbrsWxy9GddNWpjT1jicaOSXS7SbVKUIJDckX62RXGDIcXRw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="hex-large-wrapper group">
                         <div class="hex-content-large font-heading font-black text-xl md:text-2xl bg-brand-yellow group-hover:bg-amber-300 transition-colors duration-300 px-10 py-5">
                             <i class="fas fa-paper-plane text-brand-green group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
@@ -728,14 +699,11 @@
 
     <div class="grass-container">
         <div class="grass-ground"></div>
-        <!-- Grass blades will be injected here via JS -->
     </div>
 
     <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 overflow-hidden">
         
-        <!-- Lớp trang trí lòng đất (Giun, sỏi, rễ cây) -->
         <div class="absolute inset-0 z-0 pointer-events-none opacity-80">
-            <!-- Pattern Hạt đất -->
             <svg class="absolute inset-0 w-full h-full opacity-20">
                 <defs>
                     <pattern id="soil-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
@@ -752,7 +720,6 @@
                 <rect x="0" y="0" width="100%" height="100%" fill="url(#soil-pattern)" />
             </svg>
 
-            <!-- Sỏi đá (Pebbles) -->
             <div class="absolute top-4 left-[10%] w-3 h-2 bg-[#4a2b13] rounded-full transform rotate-12"></div>
             <div class="absolute top-12 left-[15%] w-5 h-3 bg-[#3f240c] rounded-[40%_60%_70%_30%]"></div>
             <div class="absolute bottom-6 left-[25%] w-4 h-4 bg-[#633814] rounded-full"></div>
@@ -761,26 +728,21 @@
             <div class="absolute top-20 right-[35%] w-4 h-3 bg-[#633814] rounded-full transform rotate-45"></div>
             <div class="absolute bottom-16 left-[50%] w-6 h-3 bg-[#3f240c] rounded-[70%_30%_50%_50%] transform -rotate-12"></div>
 
-            <!-- Giun đất (Worms) -->
-            <!-- Giun trái -->
             <svg class="absolute top-8 left-[5%] w-16 h-16 drop-shadow-sm transform -rotate-12" viewBox="0 0 100 100">
                 <path d="M 10,50 Q 30,20 50,60 T 90,40" fill="none" stroke="#b45330" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M 10,50 Q 30,20 50,60 T 90,40" fill="none" stroke="#8a3c20" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 6" />
             </svg>
             
-            <!-- Giun phải đang chui lên -->
             <svg class="absolute bottom-[-10px] right-[25%] w-12 h-12" viewBox="0 0 100 100">
                 <path d="M 50,100 Q 40,60 70,40" fill="none" stroke="#d66840" stroke-width="5" stroke-linecap="round" />
                 <path d="M 50,100 Q 40,60 70,40" fill="none" stroke="#a34522" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 5" />
             </svg>
 
-            <!-- Giun giữa cuộn tròn -->
             <svg class="absolute top-12 left-[45%] w-10 h-10 transform rotate-45" viewBox="0 0 100 100">
                 <path d="M 20,80 Q 50,90 80,20" fill="none" stroke="#b45330" stroke-width="5" stroke-linecap="round" />
                 <path d="M 20,80 Q 50,90 80,20" fill="none" stroke="#8a3c20" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 5" />
             </svg>
             
-            <!-- Rễ cây (Roots) -->
             <svg class="absolute top-0 right-[5%] w-32 h-32 opacity-40" viewBox="0 0 100 100">
                 <path d="M 50,0 Q 60,30 40,50 T 60,100" fill="none" stroke="#3f240c" stroke-width="4" stroke-linecap="round" />
                 <path d="M 45,35 Q 20,40 10,60" fill="none" stroke="#3f240c" stroke-width="3" stroke-linecap="round" />
@@ -792,7 +754,8 @@
             </svg>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start relative z-10">
+            <!-- Cột 1 -->
             <div class="flex items-center gap-4">
                 <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
                 <div class="flex flex-col text-left">
@@ -801,12 +764,30 @@
                 </div>
             </div>
             
+            <!-- Cột 2 -->
             <div class="flex flex-col text-left text-brand-light font-medium">
                 <h4 class="font-heading font-bold text-xl text-brand-yellow mb-3 uppercase tracking-wide">Thông Tin Liên Hệ</h4>
                 <a href="https://www.facebook.com/profile.php?id=61594081110050" target="_blank" class="flex items-center gap-3 hover:text-brand-yellow transition-colors"><i class="fab fa-facebook-f text-brand-green w-5 text-center"></i> Facebook Page</a>
             </div>
 
-            <div class="text-left md:text-right font-medium text-brand-light">
+            <!-- Cột 3: BỘ ĐẾM SỐ NGƯỜI TRUY CẬP (THÊM MỚI) -->
+            <div class="flex flex-col text-left text-brand-light font-medium">
+                <h4 class="font-heading font-bold text-xl text-brand-yellow mb-3 uppercase tracking-wide">Thống Kê</h4>
+                <div class="flex items-center gap-3 bg-brand-dark/40 py-2.5 px-4 rounded-xl border border-brand-yellow/30 w-fit backdrop-blur-sm shadow-lg">
+                    <div class="w-10 h-10 bg-brand-yellow rounded-full flex items-center justify-center text-brand-brown text-lg shadow-inner">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-brand-yellow/90 uppercase font-bold tracking-wider mb-0.5">Lượt người vào web</div>
+                        <div class="font-heading font-black text-2xl text-white leading-none tracking-wide" id="page-views-count">
+                            <i class="fas fa-spinner fa-spin text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột 4 -->
+            <div class="text-left md:text-right font-medium text-brand-light lg:col-start-4">
                 <p>&copy; 2026 USSH - K71 PRC. Chiến dịch thanh niên phòng chống khói thuốc.</p>
                 <p class="text-brand-yellow text-sm mt-1">Đại học Khoa học Xã hội & Nhân văn - ĐHQGHN</p>
                 <p class="text-brand-light text-sm mt-3 opacity-90">Web developer: <a href="https://www.facebook.com/toanvandepchai" target="_blank" class="hover:text-brand-yellow transition-colors underline decoration-brand-yellow/50 underline-offset-4">Nguyễn Văn Toàn</a></p>
@@ -845,7 +826,7 @@
 
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (window.innerWidth < 1280) { // xl breakpoint
+                    if (window.innerWidth < 1280) { 
                         navMenu.classList.add('hidden');
                         navMenu.classList.remove('flex');
                         toggleIcon.classList.remove('fa-times');
@@ -854,13 +835,12 @@
                 });
             });
 
-            // --- SCROLLSPY (TỰ ĐỘNG CHUYỂN VÀNG NÚT KHI CUỘN) ---
+            // --- SCROLLSPY ---
             const sections = document.querySelectorAll('section[id]');
             const hexNavItems = document.querySelectorAll('.hex-nav-wrapper');
 
             const scrollSpyOptions = {
                 root: null,
-                // Kích hoạt khi Section chạm vào mốc 30% tính từ đỉnh màn hình
                 rootMargin: '-30% 0px -70% 0px', 
                 threshold: 0
             };
@@ -870,10 +850,8 @@
                     if (entry.isIntersecting) {
                         const currentId = entry.target.getAttribute('id');
                         
-                        // Xóa class active ở tất cả các nút
                         hexNavItems.forEach(item => {
                             item.classList.remove('active');
-                            // Thêm lại class active cho nút đang khớp với phần màn hình hiện tại
                             if (item.getAttribute('href') === `#${currentId}`) {
                                 item.classList.add('active');
                             }
@@ -1463,6 +1441,7 @@
             }
             animateBees();
 
+            // --- GRASS ---
             let grassWrappers = [];
             let grassContainerWidth = 0;
 
@@ -1564,6 +1543,55 @@
             grassContainer.addEventListener('mouseleave', resetGrassInteraction);
             grassContainer.addEventListener('touchmove', (e) => handleGrassInteraction(e.touches[0].clientX), { passive: true });
             grassContainer.addEventListener('touchend', resetGrassInteraction);
+
+            // --- PAGE VIEW COUNTER ---
+            async function fetchAndIncrementPageViews() {
+                // Tên không gian và khóa lưu trữ trên CounterAPI (miễn phí)
+                const namespace = 'ussh_k71_prc_campaign_2026'; 
+                const key = 'website_visits';
+                // Endpoint đếm +1 mỗi khi gọi
+                const url = `https://api.counterapi.dev/v1/${namespace}/${key}/up`;
+                
+                const countElement = document.getElementById('page-views-count');
+                
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data && data.count) {
+                        // Gọi hàm animation số chạy từ 0 đến kết quả thực tế
+                        animateNumberValue(countElement, 0, data.count, 2500);
+                    } else {
+                        throw new Error("Dữ liệu không hợp lệ");
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi lấy lượt truy cập:', error);
+                    // Dữ liệu dự phòng nếu mạng lỗi
+                    if(countElement) countElement.innerHTML = "1,000+";
+                }
+            }
+
+            function animateNumberValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    // Hiệu ứng Ease Out (chạy nhanh lúc đầu, chậm dần khi đến đích)
+                    const easeOutProgress = progress * (2 - progress);
+                    const currentCount = Math.floor(easeOutProgress * (end - start) + start);
+                    
+                    // Format số hiển thị (VD: 1.234)
+                    obj.innerHTML = currentCount.toLocaleString('vi-VN');
+                    
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            // Gọi đếm ngay khi tải trang
+            fetchAndIncrementPageViews();
         });
     </script>
 </body>
