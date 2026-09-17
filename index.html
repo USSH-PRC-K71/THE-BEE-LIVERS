@@ -305,10 +305,6 @@
 
         /* ===================================================================
            SÂN KHẤU NỀN
-           Thay vì mây (không ăn nhập gì với chủ đề tổ ong), nền giờ là một
-           khoảng sáng ấm kiểu mật ong: trời ngả vàng ở giữa, ngả xanh cỏ ở
-           đáy, một quầng nắng góc trên, lưới tổ ong trôi chậm theo cuộn
-           trang, và vài quầng sáng lững lờ bay lên.
            =================================================================== */
         #bg-stage {
             position: fixed;
@@ -368,8 +364,7 @@
             100% { transform: translate3d(var(--drift, 40px), -150vh, 0) scale(1.15); opacity: 0; }
         }
 
-        /* Vài chú ong bay là đà phía sau nội dung — mờ và chậm hơn ong tiền
-           cảnh, tạo chiều sâu chứ không gây rối mắt. */
+        /* Vài chú ong bay là đà phía sau nội dung */
         #bg-bees-container {
             position: fixed;
             top: 0; left: 0;
@@ -578,9 +573,6 @@
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-play-circle text-brand-green"></i> <span>Xem Video</span>
                     </div>
-                    <div class="honey-drip-top top-drip-2"></div>
-                    <div class="honey-drip drip-1"></div>
-                    <div class="honey-drip drip-3"></div>
                 </a>
 
                 <!-- Nút tổ ong 2 -->
@@ -588,9 +580,6 @@
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-skull-crossbones text-gray-700"></i> <span>Tác Hại</span>
                     </div>
-                    <div class="honey-drip-top top-drip-1"></div>
-                    <div class="honey-drip-top top-drip-3"></div>
-                    <div class="honey-drip drip-2"></div>
                 </a>
 
                 <!-- Nút tổ ong 3 -->
@@ -598,9 +587,6 @@
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-question-circle text-amber-500"></i> <span>Tại Sao?</span>
                     </div>
-                    <div class="honey-drip-top top-drip-2"></div>
-                    <div class="honey-drip drip-1"></div>
-                    <div class="honey-drip drip-2"></div>
                 </a>
 
                 <!-- Nút tổ ong 4 -->
@@ -608,8 +594,6 @@
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-bell text-red-500"></i> <span>Thức Tỉnh</span>
                     </div>
-                    <div class="honey-drip-top top-drip-1"></div>
-                    <div class="honey-drip drip-3"></div>
                 </a>
 
                 <!-- Nút tổ ong 5 -->
@@ -617,11 +601,6 @@
                     <div class="hex-content font-heading font-bold text-[13px] lg:text-[15px] px-6 py-2.5 gap-2 whitespace-nowrap">
                         <i class="fas fa-lightbulb text-blue-500"></i> <span>Đóng Góp</span>
                     </div>
-                    <div class="honey-drip-top top-drip-2"></div>
-                    <div class="honey-drip-top top-drip-3"></div>
-                    <div class="honey-drip drip-1"></div>
-                    <div class="honey-drip drip-2"></div>
-                    <div class="honey-drip drip-3"></div>
                 </a>
             </div>
         </div>
@@ -649,14 +628,14 @@
             <div class="max-w-5xl mx-auto relative z-10 flex flex-col items-center w-full fade-in">
 
                 <!-- Bộ ba logo chiến dịch -->
-                <div class="flex justify-center items-end gap-3 sm:gap-6 mb-7 sm:mb-9">
-                    <div class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-brand-brown bg-white -rotate-6 shadow-[5px_5px_0px_#5a3311] shrink-0">
+                <div class="flex justify-center items-end gap-4 sm:gap-8 mb-8 sm:mb-12">
+                    <div class="w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-brown bg-white -rotate-6 shadow-[6px_6px_0px_#5a3311] shrink-0 transition-transform hover:scale-105 duration-300 cursor-pointer">
                         <img src="images/logo1.jpg" onerror="this.src='https://placehold.co/300x300/fef08a/5a3311?text=Logo+1'" alt="Logo chiến dịch 1" class="w-full h-full object-cover">
                     </div>
-                    <div class="w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-brown bg-white shadow-[8px_8px_0px_#5a3311] shrink-0">
+                    <div class="w-32 h-32 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-brand-brown bg-white shadow-[8px_8px_0px_#5a3311] shrink-0 z-10 transition-transform hover:scale-105 duration-300 cursor-pointer">
                         <img src="images/logo2.jpg" onerror="this.src='https://placehold.co/400x400/65a30d/ffffff?text=Logo+2'" alt="Logo chiến dịch 2" class="w-full h-full object-cover">
                     </div>
-                    <div class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-brand-brown bg-white rotate-6 shadow-[5px_5px_0px_#5a3311] shrink-0">
+                    <div class="w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-brown bg-white rotate-6 shadow-[6px_6px_0px_#5a3311] shrink-0 transition-transform hover:scale-105 duration-300 cursor-pointer">
                         <img src="images/logo3.jpg" onerror="this.src='https://placehold.co/300x300/fef08a/5a3311?text=Logo+3'" alt="Logo chiến dịch 3" class="w-full h-full object-cover">
                     </div>
                 </div>
