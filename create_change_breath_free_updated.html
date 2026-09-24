@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Change - Breath Free | USSH - K71 PRC</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Baloo 2 -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        heading: ['"Baloo 2"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            yellow: '#fef08a',
+                            green: '#65a30d',
+                            brown: '#5a3311',
+                            dark: '#1e1b18',
+                            light: '#fdfbf7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 120px; 
+        }
+
+        body {
+            background-color: #fffdf4;
+            color: #1e1b18;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        html { scrollbar-color: #65a30d #fef08a; scrollbar-width: thin; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #fef08a; }
+        ::-webkit-scrollbar-thumb { background: #65a30d; border-radius: 5px; border: 2px solid #fef08a; }
+        
+        .glass-nav {
+            background: rgba(253, 251, 247, 0.92);
+            backdrop-filter: blur(10px);
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .ngo-card {
+            border: 4px solid #5a3311;
+            box-shadow: 6px 6px 0px #5a3311;
+            transition: transform 0.22s cubic-bezier(0.34, 1.35, 0.5, 1), box-shadow 0.22s ease;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .ngo-card:hover {
+                transform: translate3d(-3px, -3px, 0);
+                box-shadow: 9px 9px 0px #5a3311;
+            }
+        }
+
+        /* Đoạn văn dài: giới hạn độ dài dòng cho dễ đọc */
+        .prose-card p { max-width: 68ch; }
+
+        /* HỆ THỐNG NÚT BẤM MỚI (Pill Buttons) */
+        .btn-nav, .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            font-family: '"Baloo 2"', sans-serif;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: all 0.2s cubic-bezier(0.34, 1.35, 0.5, 1);
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn-nav {
+            padding: 0.4rem 1.25rem;
+            font-size: 15px;
+            color: #5a3311;
+            background-color: #ffffff;
+            border: 2px solid #5a3311;
+            box-shadow: 3px 3px 0px #5a3311;
+        }
+
+        .btn-action {
+            padding: 0.8rem 2rem;
+            font-size: 18px;
+            color: #5a3311;
+            border: 3px solid #5a3311;
+            box-shadow: 5px 5px 0px #5a3311;
+        }
+
+        .btn-action-primary { background-color: #ffffff; }
+        .btn-action-game { background-color: #f3e8ff; color: #7e22ce; border-color: #5a3311; }
+        .btn-action-submit { background-color: #fef08a; }
+
+        @media (hover: hover) and (pointer: fine) {
+            .btn-nav:hover {
+                transform: translate(-2px, -2px);
+                box-shadow: 5px 5px 0px #5a3311;
+                background-color: #fffbeb;
+            }
+            .btn-action:hover {
+                transform: translate(-3px, -3px);
+                box-shadow: 8px 8px 0px #5a3311;
+            }
+            .btn-action-game:hover { background-color: #e9d5ff; }
+            .btn-action-submit:hover { background-color: #fde047; }
+        }
+
+        .btn-nav:active, .btn-action:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px #5a3311;
+            transition-duration: 0.05s;
+        }
+
+        .btn-nav.active {
+            background-color: #fef08a;
+            box-shadow: 1px 1px 0px #5a3311;
+            transform: translate(2px, 2px);
+        }
+
+        :root {
+            --brown: #5a3311;
+        }
+
+        .title-pop {
+            color: #ffffff;
+            text-shadow: 
+                -3px -3px 0 #5a3311, 0 -3px 0 #5a3311, 3px -3px 0 #5a3311,
+                3px 0 0 #5a3311, 3px 3px 0 #5a3311, 0 3px 0 #5a3311,
+                -3px 3px 0 #5a3311, -3px 0 0 #5a3311,
+                6px 6px 0px #65a30d, 11px 11px 0px #5a3311;
+            line-height: 1.3;
+            padding: 0.1em;
+        }
+        
+        .section-head {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title-pop {
+            color: #ffffff;
+            text-shadow: 
+                -3px -3px 0 #5a3311, 0 -3px 0 #5a3311, 3px -3px 0 #5a3311,
+                3px 0 0 #5a3311, 3px 3px 0 #5a3311, 0 3px 0 #5a3311,
+                -3px 3px 0 #5a3311, -3px 0 0 #5a3311,
+                5px 5px 0px #65a30d, 8px 8px 0px #5a3311; 
+            line-height: 1.4; 
+            padding: 0.2em; 
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translate3d(0, 34px, 0);
+            transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+            will-change: opacity, transform;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+        .fade-in.settled {
+            will-change: auto;
+        }
+
+        #bg-stage {
+            position: fixed;
+            inset: 0;
+            z-index: -30;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-sky {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                #fffdf4 0%,
+                #fefaea 28%,
+                #fdf4d9 58%,
+                #f6f3dc 82%,
+                #eaf1d6 100%);
+        }
+        .bg-sun {
+            position: absolute;
+            top: -26vh;
+            right: -14vw;
+            width: 78vw;
+            height: 78vw;
+            max-width: 980px;
+            max-height: 980px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(253, 224, 71, 0.50) 0%,
+                rgba(252, 211, 77, 0.24) 40%,
+                rgba(252, 211, 77, 0) 68%);
+        }
+        .bg-comb {
+            position: absolute;
+            left: -6%;
+            top: -20%;
+            width: 112%;
+            height: 165%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%235a3311' fill-opacity='1' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 84px 147px;
+            opacity: 0.085;
+            will-change: transform;
+        }
+        .bg-orb {
+            position: absolute;
+            bottom: -30vh;
+            border-radius: 50%;
+            will-change: transform;
+            animation-name: orb-rise;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes orb-rise {
+            0%   { transform: translate3d(0, 0, 0) scale(0.85); opacity: 0; }
+            12%  { opacity: 1; }
+            88%  { opacity: 1; }
+            100% { transform: translate3d(var(--drift, 40px), -150vh, 0) scale(1.15); opacity: 0; }
+        }
+
+        #bg-bees-container, #pollen-canvas, #three-container, #bees-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+        }
+        #bg-bees-container { z-index: -25; }
+        #pollen-canvas { z-index: -20; }
+        #three-container { z-index: -10; }
+        #bees-container { z-index: 50; }
+
+        .bee-entity { position: absolute; top: 0; left: 0; width: 38px; height: 38px; will-change: transform; }
+        .bee-entity.bg-bee { opacity: 0.5; filter: blur(0.4px); }
+        
+        @keyframes wing-flap { 0%, 100% { transform: rotate(12deg); } 50% { transform: rotate(-55deg); } }
+        .wing-front { transform-origin: 35px 25px; animation: wing-flap 0.05s linear infinite alternate; }
+        .wing-back { transform-origin: 45px 20px; animation: wing-flap 0.05s linear infinite alternate-reverse; }
+
+        .bounce-arrow { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
+
+        .grass-container {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            z-index: 15;
+            overflow: hidden;
+            margin-bottom: -4px; 
+            margin-top: 0;
+        }
+        .grass-ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 25px;
+            background: #65a30d;
+            border-radius: 50% 50% 0 0 / 15px 15px 0 0;
+            z-index: 2;
+        }
+        .grass-wrapper {
+            position: absolute;
+            bottom: 12px;
+            transform-origin: bottom center;
+            transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+            will-change: transform;
+            z-index: 1;
+        }
+        .grass-blade {
+            width: 100%;
+            height: 100%;
+            transform-origin: bottom center;
+            will-change: transform;
+            animation: sway-grass infinite alternate ease-in-out;
+            box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
+        }
+        @keyframes sway-grass { 0% { transform: skewX(-10deg) rotate(-8deg); } 100% { transform: skewX(10deg) rotate(8deg); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .fade-in { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="bg-stage" aria-hidden="true">
+        <div class="bg-sky"></div>
+        <div class="bg-sun"></div>
+        <div class="bg-comb" id="bg-comb"></div>
+        <div id="bg-orbs"></div>
+    </div>
+
+    <div id="bg-bees-container"></div>
+    <canvas id="pollen-canvas"></canvas>
+    <div id="three-container"></div>
+    <div id="bees-container"></div>
+
+    <template id="bee-template">
+        <div class="bee-entity drop-shadow-md">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                <ellipse cx="45" cy="20" rx="15" ry="25" fill="#FFFFFF" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" class="wing-back" />
+                <ellipse cx="50" cy="55" rx="35" ry="28" fill="#fef08a" stroke="#5a3311" stroke-width="4" />
+                <path d="M 35 29 Q 45 55 30 80 A 35 28 0 0 1 20 50 A 35 28 0 0 1 35 29 Z" fill="#5a3311" />
+                <path d="M 60 28 Q 70 55 55 82 A 35 28 0 0 0 45 83 Q 60 55 50 28 A 35 28 0 0 1 60 28 Z" fill="#5a3311" />
+                <ellipse cx="35" cy="25" rx="18" ry="28" fill="#FFFFFF" stroke="#5a3311" stroke-width="4" stroke-linejoin="round" class="wing-front" />
+                <circle cx="70" cy="48" r="4.5" fill="#5a3311" />
+                <circle cx="82" cy="50" r="4.5" fill="#5a3311" />
+                <path d="M 70 58 Q 76 64 82 58" stroke="#5a3311" stroke-width="3" stroke-linecap="round" fill="none" />
+                <circle cx="66" cy="55" r="3.5" fill="#FF7B7B" opacity="0.8" />
+                <circle cx="85" cy="57" r="3.5" fill="#FF7B7B" opacity="0.8" />
+                <path d="M 16 55 L -2 58 L 16 63 Z" fill="#5a3311" stroke="#5a3311" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </template>
+
+    <div class="fixed top-0 left-0 w-full h-24 sm:h-28 z-40 pointer-events-none bg-gradient-to-b from-[#fffdf4] via-[#fffdf4]/75 to-transparent" style="-webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%); mask-image: linear-gradient(to bottom, black 30%, transparent 100%);"></div>
+
+    <header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 w-[98%] max-w-[1200px] xl:max-w-max z-50 transition-all duration-300">
+        <div class="bg-[#fffdf4]/95 backdrop-blur-md border-4 border-brand-brown rounded-[2rem] shadow-[6px_6px_0px_#5a3311] px-4 sm:px-6 py-2 sm:py-3 relative overflow-hidden flex flex-col xl:flex-row xl:items-center xl:justify-between gap-2 xl:gap-6">
+            
+            <div class="absolute -top-4 -left-4 w-12 h-12 bg-brand-yellow rounded-full border-4 border-brand-brown opacity-60 z-0 pointer-events-none"></div>
+            <div class="absolute -bottom-6 -right-2 w-16 h-16 bg-brand-green rounded-full border-4 border-brand-brown opacity-20 z-0 pointer-events-none"></div>
+
+            <div class="flex justify-between items-center w-full xl:w-auto relative z-10 shrink-0">
+                <a href="#" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+                    <img src="images/logoussh.jpg" onerror="this.src='https://placehold.co/100x100/65a30d/ffffff?text=USSH'" alt="USSH Logo" class="h-11 w-11 sm:h-12 sm:w-12 object-cover rounded-full border-3 border-brand-brown bg-white transition-transform group-hover:rotate-12 shadow-sm">
+                    <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-11 w-11 sm:h-12 sm:w-12 object-cover rounded-full border-3 border-brand-brown bg-white transition-transform group-hover:-rotate-12 shadow-sm">
+                    <div class="flex flex-col items-start justify-center text-left">
+                        <span class="font-heading font-black text-lg sm:text-xl text-brand-brown tracking-tight leading-none flex items-center gap-1.5 whitespace-nowrap">
+                            K71 - PRC USSH 
+                            <i class="fas fa-sparkles text-amber-500 text-sm animate-pulse"></i>
+                        </span>
+                        <span class="font-heading font-extrabold text-xs sm:text-[13px] text-brand-green tracking-wider uppercase mt-0.5">
+                            The Bee-Livers
+                        </span>
+                    </div>
+                </a>
+                <button id="mobile-menu-toggle" class="xl:hidden text-brand-brown text-2xl p-2 focus:outline-none hover:scale-110 transition-transform flex items-center justify-center">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Thanh menu 1 hàng, có thể scroll ngang trên mobile -->
+            <nav id="nav-menu" class="hidden xl:flex flex-nowrap items-center justify-start xl:justify-center gap-3 z-20 w-full xl:w-auto overflow-x-auto scrollbar-hide py-2 px-1">
+                
+                <a href="#video-tuyen-truyen" class="btn-nav group shrink-0">
+                    <i class="fas fa-play-circle text-brand-green mr-2"></i> <span>Xem Video</span>
+                </a>
+
+                <a href="#loai-thuoc-la" class="btn-nav group shrink-0">
+                    <i class="fas fa-smoking text-gray-500 mr-2"></i> <span>Loại Thuốc</span>
+                </a>
+
+                <a href="#tac-hai" class="btn-nav group shrink-0">
+                    <i class="fas fa-skull-crossbones text-gray-700 mr-2"></i> <span>Tác Hại</span>
+                </a>
+
+                <a href="#tai-sao" class="btn-nav group shrink-0">
+                    <i class="fas fa-question-circle text-amber-500 mr-2"></i> <span>Tại Sao?</span>
+                </a>
+
+                <a href="#thuc-tinh" class="btn-nav group shrink-0">
+                    <i class="fas fa-bell text-red-500 mr-2"></i> <span>Thức Tỉnh</span>
+                </a>
+                
+                <a href="#giai-phap-game" class="btn-nav group shrink-0 !border-purple-600 !text-purple-700 hover:!bg-purple-100 !shadow-[3px_3px_0px_#9333ea]">
+                    <i class="fas fa-gamepad mr-2"></i> <span>Chơi Game</span>
+                </a>
+
+                <a href="#dong-gop" class="btn-nav group shrink-0">
+                    <i class="fas fa-lightbulb text-blue-500 mr-2"></i> <span>Đóng Góp</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex flex-col gap-20 sm:gap-32 pb-0">
+        <section class="relative overflow-hidden w-full flex flex-col items-center justify-center text-center px-4 pt-28 sm:pt-36 pb-16 min-h-[100svh]">
+
+            <div class="absolute inset-0 z-0 pointer-events-none fade-in">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] h-[55vh] bg-white/45 blur-[90px] rounded-full"></div>
+            </div>
+
+            <div class="max-w-5xl mx-auto relative z-10 flex flex-col items-center w-full fade-in">
+                <div class="flex justify-center items-end gap-4 sm:gap-8 mb-8 sm:mb-12">
+                    <div class="w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-brown bg-white -rotate-6 shadow-[6px_6px_0px_#5a3311] shrink-0 transition-transform hover:scale-105 duration-300 cursor-pointer">
+                        <img src="images/logo1.jpg" onerror="this.src='https://placehold.co/300x300/fef08a/5a3311?text=Logo+1'" alt="Logo chiến dịch 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-32 h-32 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-brand-brown bg-white shadow-[8px_8px_0px_#5a3311] shrink-0 z-10 transition-transform hover:scale-105 duration-300 cursor-pointer">
+                        <img src="images/logo2.jpg" onerror="this.src='https://placehold.co/400x400/65a30d/ffffff?text=Logo+2'" alt="Logo chiến dịch 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-brown bg-white rotate-6 shadow-[6px_6px_0px_#5a3311] shrink-0 transition-transform hover:scale-105 duration-300 cursor-pointer">
+                        <img src="images/logo3.jpg" onerror="this.src='https://placehold.co/300x300/fef08a/5a3311?text=Logo+3'" alt="Logo chiến dịch 3" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <h1 class="text-[3rem] leading-[1.08] sm:text-7xl md:text-[6rem] font-heading font-black tracking-tight uppercase title-pop max-w-full mb-6">
+                    Create Change <br /> Breath Free
+                </h1>
+
+                <p class="max-w-[42ch] text-lg sm:text-xl font-semibold text-brand-brown/85 leading-relaxed mb-9">
+                    Chiến dịch của sinh viên K71 PRC, Trường Đại học Khoa học Xã hội &amp; Nhân văn,
+                    đưa câu chuyện bỏ thuốc lá đến gần người trẻ hơn.
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                    <a href="#video-tuyen-truyen" class="btn-action btn-action-primary group">
+                        <i class="fas fa-play text-brand-green mr-2"></i>
+                        <span>Xem video</span>
+                    </a>
+
+                    <a href="#giai-phap-game" class="btn-action btn-action-game group">
+                        <i class="fas fa-gamepad mr-2 animate-bounce"></i>
+                        <span class="font-black">Chơi Game Ngay</span>
+                    </a>
+
+                    <a href="#dong-gop" class="btn-action btn-action-submit group">
+                        <i class="fas fa-lightbulb text-amber-600 mr-2"></i>
+                        <span>Gửi giải pháp</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="#video-tuyen-truyen" class="absolute bottom-8 left-1/2 -translate-x-1/2 bounce-arrow z-10 text-brand-brown/70 hover:text-brand-brown transition-colors hidden md:block" aria-label="Cuộn xuống phần nội dung">
+                <i class="fas fa-chevron-down text-3xl"></i>
+            </a>
+        </section>
+
+        <section id="video-tuyen-truyen" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto w-full relative fade-in">
+                
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Video Tuyên Truyền</h2>
+                </div>
+
+                <div class="w-full mx-auto rounded-3xl overflow-hidden border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311] bg-white p-2">
+                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
+                       <video controls class="w-full h-full object-cover" preload="metadata">
+                            <source src="images/video.mp4" type="video/mp4">
+                            Trình duyệt của bạn không hỗ trợ thẻ video.
+                       </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="loai-thuoc-la" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto w-full fade-in">
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Nicotine & Các Loại Thuốc Lá</h2>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-10 ngo-card mb-12 flex flex-col md:flex-row gap-8 items-center fade-in">
+                    <div class="w-24 h-24 md:w-32 md:h-32 bg-purple-100 rounded-full flex-shrink-0 flex items-center justify-center border-4 border-brand-brown text-purple-600 text-5xl shadow-[4px_4px_0px_#5a3311]">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-bold text-brand-brown mb-4 font-heading">Nicotine là gì?</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium leading-relaxed">
+                            Nicotine là một hợp chất hóa học chứa nitơ, có sẵn trong tự nhiên ở cây thuốc lá. Đây là chất gây nghiện cực mạnh. Khi đi vào cơ thể, nó kích thích não bộ giải phóng dopamine, mang lại cảm giác hưng phấn tạm thời. Tuy nhiên, sự phụ thuộc sinh học xảy ra rất nhanh, khiến người dùng liên tục thèm muốn và cực kỳ khó khăn để từ bỏ, đồng thời mở đường cho hàng ngàn hóa chất độc hại khác xâm nhập vào cơ thể.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-3xl p-6 md:p-8 ngo-card flex flex-col sm:flex-row gap-6 items-center sm:items-start fade-in">
+                        <div class="w-full sm:w-48 h-48 rounded-2xl overflow-hidden border-4 border-brand-brown shadow-[4px_4px_0px_#5a3311] flex-shrink-0 bg-amber-50">
+                            <img src="images/thuocla1.jpg" onerror="this.src='https://placehold.co/400x400/fef08a/5a3311?text=Truyền+Thống'" alt="Thuốc lá truyền thống" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">1. Thuốc Lá Điếu Truyền Thống</h3>
+                            <p class="text-base text-brand-brown/80 font-medium">
+                                Phổ biến nhất. Sợi thuốc lá được sấy khô và cuộn trong giấy. Quá trình đốt cháy ở nhiệt độ cao giải phóng nicotine cùng hơn 7.000 hóa chất độc hại (trong đó có ít nhất 69 chất gây ung thư).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 md:p-8 ngo-card flex flex-col sm:flex-row gap-6 items-center sm:items-start fade-in">
+                        <div class="w-full sm:w-48 h-48 rounded-2xl overflow-hidden border-4 border-brand-brown shadow-[4px_4px_0px_#5a3311] flex-shrink-0 bg-blue-50">
+                            <img src="images/thuocla2.jpg" onerror="this.src='https://placehold.co/400x400/bfdbfe/1e3a8a?text=Vape+/+Pod'" alt="Thuốc lá điện tử" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">2. Thuốc Lá Điện Tử (Vape/Pod)</h3>
+                            <p class="text-base text-brand-brown/80 font-medium">
+                                Sử dụng pin để nung nóng dung dịch lỏng (thường chứa nicotine, hương liệu) tạo ra luồng hơi để hít. Rất thu hút giới trẻ nhờ thiết kế bắt mắt và đa dạng hương vị, nhưng ẩn chứa nguy cơ viêm phổi cấp và tổn thương não.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 md:p-8 ngo-card flex flex-col sm:flex-row gap-6 items-center sm:items-start fade-in">
+                        <div class="w-full sm:w-48 h-48 rounded-2xl overflow-hidden border-4 border-brand-brown shadow-[4px_4px_0px_#5a3311] flex-shrink-0 bg-green-50">
+                            <img src="images/thuocla3.jpg" onerror="this.src='https://placehold.co/400x400/bbf7d0/14532d?text=Nung+Nóng'" alt="Thuốc lá nung nóng" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">3. Thuốc Lá Nung Nóng</h3>
+                            <p class="text-base text-brand-brown/80 font-medium">
+                                Dùng thiết bị điện tử để nung nóng điếu thuốc lá thật ở nhiệt độ thấp hơn mức đốt cháy. Các nhà sản xuất thường quảng cáo là "ít độc hại hơn", nhưng thực chất vẫn cung cấp lượng nicotine gây nghiện và phát thải hóa chất độc hại.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 md:p-8 ngo-card flex flex-col sm:flex-row gap-6 items-center sm:items-start fade-in">
+                        <div class="w-full sm:w-48 h-48 rounded-2xl overflow-hidden border-4 border-brand-brown shadow-[4px_4px_0px_#5a3311] flex-shrink-0 bg-red-50">
+                            <img src="images/thuocla4.jpg" onerror="this.src='https://placehold.co/400x400/fecaca/7f1d1d?text=Xì+Gà+/+Lào'" alt="Xì gà và Thuốc lào" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h3 class="text-2xl font-bold text-brand-brown mb-3 font-heading">4. Xì Gà & Thuốc Lào</h3>
+                            <p class="text-base text-brand-brown/80 font-medium">
+                                Chứa lượng thuốc lá và nicotine cao gấp nhiều lần điếu thông thường. Dù người hút thường không hít sâu vào phổi, nhưng khói độc ngậm trong khoang miệng làm tăng rủi ro ung thư vòm họng, thanh quản và thực quản.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tac-hai" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto w-full fade-in">
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Tác Hại Của Thuốc Lá</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-red-500 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-lungs"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hệ Hô Hấp</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Khói thuốc phá hủy phế nang, làm suy giảm chức năng phổi. Gây ra Ung thư phổi, Viêm phế quản mãn tính và Bệnh phổi tắc nghẽn mãn tính (COPD).
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-orange-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Bệnh Tim Mạch</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Nicotine làm tăng nhịp tim và huyết áp. Người hút thuốc có nguy cơ đột stroke quỵ và nhồi máu cơ tim cao gấp 2-4 lần người bình thường.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-600 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Hút Thụ Động</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Khói thuốc tỏa ra môi trường ảnh hưởng nghiêm trọng đến người xung quanh, đặc biệt là trẻ em và phụ nữ mang thai, gây dị tật và sinh non.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card flex flex-col items-center text-center fade-in">
+                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-amber-700 text-4xl shadow-[3px_3px_0px_#5a3311]">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-brown mb-4 font-heading">Ngoại Hình & Tiền Bạc</h3>
+                        <p class="text-lg text-brand-brown/80 font-medium">
+                            Phá hủy collagen gây lão hóa da sớm, vàng răng, hôi miệng. Đồng thời tạo ra gánh nặng tài chính khổng lồ cho bản thân và gia đình.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tai-sao" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto w-full fade-in">
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase section-title-pop">Tại sao biết nguy hiểm nhưng vẫn dùng?</h2>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card prose-card space-y-10 text-brand-brown text-lg font-medium leading-relaxed relative">
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-brand-brown text-2xl shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-brain"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Cơ Chế Gây Nghiện Sinh Học Mạnh Mẽ (Nicotine Trap)</h3>
+                            <p>Nicotine tác động lên não bộ cực kỳ nhanh chóng chỉ sau vài giây hít vào, kích hoạt giải phóng dopamine — chất dẫn truyền thần kinh tạo cảm giác hưng phấn, sảng khoái và giảm stress tạm thời. Khi lượng nicotine giảm xuống, não bộ lập tức phát tín hiệu "đói", gây ra hội chứng cai nghiện (bứt rứt, cáu gắt, mất tập trung). Con người tiếp tục hút không phải vì thích, mà để khỏa lấp cảm giác khó chịu do chính nicotine gây ra.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-amber-700 text-2xl shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-eye-slash"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Tâm Lý Chủ Quan và Hiệu Ứng "Nó Sẽ Trừ Mình Ra"</h3>
+                            <p>Bộ não con người có xu hướng đánh giá thấp những rủi ro dài hạn. Những bệnh lý nghiêm trọng như ung thư phổi, tắc nghẽn mạch máu thường mất hàng chục năm mới biểu hiện rõ. Người hút thuốc thường tự nhủ: <em>"Nhiều người hút già vẫn sống khỏe"</em> hoặc <em>"Chắc mình không xui xẻo đến thế"</em>, từ đó đánh đổi sức khỏe tương lai lấy sự thỏa mãn trước mắt.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-emerald-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-emerald-700 text-2xl shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-user-group"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Áp Lực Xã Hội và Thói Quen Giao Tiếp</h3>
+                            <p>Đặc biệt trong giới trẻ, thuốc lá hay thuốc lá điện tử đôi khi bị gắn mác sai lầm là "biểu tượng của sự trưởng thành", "phong cách sành điệu" hoặc là công cụ kết nối trong các buổi giao lưu bạn bè. Sự ép buộc vô hình từ nhóm bạn cùng trang lứa khiến nhiều người dễ dàng lún sâu vào cạm bẫy khói thuốc dù ban đầu chỉ thử cho biết.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="thuc-tinh" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto w-full fade-in">
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase section-title-pop">Làm thế nào để thức tỉnh họ?</h2>
+                </div>
+
+                <div class="mb-10 text-center fade-in bg-white/70 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-4 border-brand-brown shadow-[6px_6px_0px_#5a3311]">
+                    <i class="fas fa-quote-left text-4xl text-brand-green/40 mb-4 block"></i>
+                    <p class="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-brand-brown uppercase leading-snug">
+                        "Biết chưa chắc đã <span class="text-brand-green">hiểu</span><br>
+                        Hiểu chưa chắc đã <span class="text-amber-500">thay đổi</span><br>
+                        Thay đổi chưa chắc đã biết <span class="text-red-500">bắt đầu từ đâu</span>"
+                    </p>
+                    <div class="mt-6 w-24 h-1.5 bg-brand-brown mx-auto rounded-full"></div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-12 ngo-card prose-card space-y-10 text-brand-brown text-lg font-medium leading-relaxed">
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-red-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-red-600 text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-heart"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Thay Đổi Cách Tiếp Cận: Dùng Sự Thấu Cảm Thay Vì Chỉ Trích</h3>
+                            <p>Việc la mắng, chì chiết hay kỳ thị người nghiện thuốc lá thường chỉ đẩy họ vào tâm lý phòng thủ và tìm đến điếu thuốc nhiều hơn để giải tỏa căng thẳng. Thay vào đó, hãy kiên nhẫn lắng nghe, thấu hiểu rằng họ đang là nạn nhân của một chứng bệnh nghiện sinh học thực thụ, và bày tỏ sự lo lắng chân thành vì sức khỏe của chính họ và những người thân yêu.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-amber-100 rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-amber-700 text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-bullseye"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Đánh Trúng Vào Động Lực Gần Gũi Nhất</h3>
+                            <p>Mỗi người sẽ có một "nút thắt" riêng để từ bỏ thuốc lá. Với người trẻ, đó có thể là ngoại hình (da dẻ lão hóa, răng ố vàng, hôi miệng) hay tài chính. Với người đã làm cha mẹ, đó chính là tấm gương cho con cái và nỗi sợ hãi bỏ lại gia đình trước bệnh tật. Khơi gợi đúng nỗi trăn trở cá nhân sẽ tạo ra động lực mạnh mẽ hơn ngàn lời răn đe lý thuyết.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-14 h-14 bg-brand-yellow rounded-full flex-shrink-0 flex items-center justify-center border-3 border-brand-brown text-brand-brown text-2xl font-bold shadow-[2px_2px_0px_#5a3311]"><i class="fas fa-hands-helping"></i></div>
+                        <div>
+                            <h3 class="font-heading font-bold text-2xl mb-2">Đồng Hành Khoa Học và Hỗ Trợ Tâm Lý</h3>
+                            <p>Bỏ thuốc lá không chỉ cần ý chí đơn thuần mà còn cần phương pháp. Hãy khích lệ họ sử dụng các liệu pháp thay thế nicotine (kẹo ngậm, miếng dán), tập thể dục để tái tạo dopamine tự nhiên, thay đổi thói quen sinh hoạt và tìm kiếm sự hỗ trợ y tế từ các chuyên gia khi cần thiết. Sự đồng hành bền bỉ từ gia đình và cộng đồng là chìa khóa vàng giúp họ chiến thắng cơn nghiện.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="giai-phap-game" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 mt-12">
+            <div class="max-w-7xl mx-auto w-full fade-in">
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Giải Pháp & Trải Nghiệm</h2>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-2 md:p-3 shadow-[8px_8px_0px_#5a3311] mb-12 fade-in transform transition-transform hover:-translate-y-2 duration-300">
+                    <div class="bg-white rounded-[1.25rem] p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 border-4 border-brand-brown">
+                        <div class="w-full md:w-1/2 aspect-video bg-gray-200 rounded-xl overflow-hidden border-4 border-brand-brown shadow-[4px_4px_0px_#5a3311] relative group cursor-pointer">
+                            <img src="https://placehold.co/800x450/e9d5ff/7e22ce?text=Visual+Novel+Game+Thumbnail" alt="Game Visual Novel: The Bee-Livers" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <i class="fas fa-play-circle text-6xl text-white drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 text-left">
+                            <div class="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 font-bold font-heading rounded-full border-2 border-purple-700 mb-4 tracking-wide">Trải nghiệm tương tác</div>
+                            <h3 class="text-3xl md:text-4xl font-black text-brand-brown mb-4 font-heading leading-tight">The Bee-Livers: Hành Trình Thức Tỉnh</h3>
+                            <p class="text-lg text-brand-brown/80 font-medium mb-8 leading-relaxed">
+                                Đừng chỉ nghe kể, hãy trực tiếp trải nghiệm! Nhập vai vào nhân vật trong tựa game Visual Novel độc quyền của chúng mình. Trải qua những tình huống chân thực, đưa ra những lựa chọn khó khăn và khám phá xem khói thuốc thực sự bóp nghẹt tương lai của bạn như thế nào.
+                            </p>
+                            <a href="#" class="btn-action btn-action-game group inline-flex">
+                                <i class="fas fa-gamepad mr-2"></i> <span>Bắt đầu chơi ngay</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <div class="bg-white rounded-3xl p-8 ngo-card fade-in h-full flex flex-col">
+                        <div class="flex items-center gap-4 mb-6 border-b-2 border-brand-brown/10 pb-6">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center border-3 border-brand-brown text-brand-green text-3xl shadow-[3px_3px_0px_#5a3311]">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-brand-brown font-heading">Phương Pháp Khoa Học</h3>
+                        </div>
+                        <div class="flex-1">
+                            <ul class="space-y-5 text-brand-brown/85 font-medium text-lg">
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-brand-green mt-1 text-xl"></i> 
+                                    <span><strong>Sử dụng NRT:</strong> Các liệu pháp thay thế nicotine như kẹo ngậm, miếng dán giúp giảm cảm giác thèm thuốc từ từ.</span>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-brand-green mt-1 text-xl"></i> 
+                                    <span><strong>Tập luyện thể thao:</strong> Đi bộ, chạy bộ giúp cơ thể sản sinh ra dopamine tự nhiên, xua tan căng thẳng.</span>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-brand-green mt-1 text-xl"></i> 
+                                    <span><strong>Thiền định:</strong> Các bài tập hít thở sâu giúp làm chủ tâm trí mỗi khi cơn thèm nicotine ập đến.</span>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <i class="fas fa-check-circle text-brand-green mt-1 text-xl"></i> 
+                                    <span><strong>Tham gia Workshop:</strong> Trau dồi kỹ năng mềm và học cách "Say No" (từ chối) khói thuốc từ bạn bè.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-8 ngo-card fade-in h-full flex flex-col">
+                         <div class="flex items-center gap-4 mb-6 border-b-2 border-brand-brown/10 pb-6">
+                            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center border-3 border-brand-brown text-amber-600 text-3xl shadow-[3px_3px_0px_#5a3311]">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-brand-brown font-heading">Câu Chuyện Truyền Cảm Hứng</h3>
+                        </div>
+                        <div class="space-y-4 flex-1">
+                            <a href="#" class="flex items-center gap-5 p-4 bg-amber-50/50 rounded-2xl border-2 border-brand-brown/20 hover:border-amber-500 hover:bg-amber-50 transition-colors group">
+                                <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-brand-brown shrink-0 relative">
+                                    <img src="https://placehold.co/100x100/f59e0b/ffffff?text=Video" class="w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Thumbnail">
+                                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                        <i class="fas fa-play text-white text-xl drop-shadow-md"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-brand-brown text-lg font-heading group-hover:text-amber-700 transition-colors">Hành trình 30 ngày bỏ Pod của nam sinh năm 2</h4>
+                                    <p class="text-sm text-brand-brown/70 mt-1 font-medium"><i class="fas fa-user-circle mr-1"></i> Minh Tú - Khoa Báo chí</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="flex items-center gap-5 p-4 bg-amber-50/50 rounded-2xl border-2 border-brand-brown/20 hover:border-amber-500 hover:bg-amber-50 transition-colors group">
+                                <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-brand-brown shrink-0 relative flex items-center justify-center bg-brand-yellow">
+                                    <i class="fas fa-newspaper text-3xl text-amber-700"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-brand-brown text-lg font-heading group-hover:text-amber-700 transition-colors">"Thư gửi ba bè bạn" - Lời cảnh tỉnh từ khói trắng</h4>
+                                    <p class="text-sm text-brand-brown/70 mt-1 font-medium"><i class="fas fa-trophy mr-1 text-amber-500"></i> Bài dự thi đạt giải Nhất</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="dong-gop" class="w-full flex flex-col justify-center relative z-10 px-4 sm:px-6 lg:px-8 mt-12">
+            <div class="max-w-5xl mx-auto w-full relative fade-in">
+                
+                <div class="section-head">
+                    <h2 class="text-3xl sm:text-5xl font-heading font-black uppercase section-title-pop">Đóng Góp Giải Pháp</h2>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-14 ngo-card flex flex-col items-center text-center fade-in max-w-4xl mx-auto border-4 border-brand-brown shadow-[8px_8px_0px_#5a3311]">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6 border-4 border-brand-brown text-blue-500 text-5xl shadow-[4px_4px_0px_#5a3311]">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    
+                    <h3 class="text-3xl md:text-4xl font-bold text-brand-brown mb-6 font-heading">Chung Tay Tạo Nên Sự Thay Đổi</h3>
+                    
+                    <p class="text-lg md:text-xl text-brand-brown/80 font-medium mb-10 max-w-2xl">
+                        Mọi ý tưởng nhỏ đều có thể mang lại tác động lớn. Nếu bạn có sáng kiến, giải pháp hay câu chuyện truyền cảm hứng để giúp cộng đồng từ bỏ khói thuốc, hãy chia sẻ ngay với chiến dịch!
+                    </p>
+
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdbrsWxy9GddNWpjT1jicaOSXS7SbVKUIJDckX62RXGDIcXRw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="btn-action btn-action-submit group">
+                        <i class="fas fa-paper-plane text-brand-green mr-2 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
+                        <span>Gửi Giải Pháp Của Bạn</span>
+                    </a>
+                    
+                    <p class="mt-4 text-sm text-brand-brown/60 font-medium italic">
+                        *Mở ra biểu mẫu Google Form
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="grass-container">
+        <div class="grass-ground"></div>
+    </div>
+
+    <footer class="bg-brand-brown text-brand-yellow pt-12 pb-8 border-t-8 border-brand-green relative z-20 overflow-hidden">
+        
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-80">
+            <svg class="absolute inset-0 w-full h-full opacity-20">
+                <defs>
+                    <pattern id="soil-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <circle cx="10" cy="10" r="1.5" fill="#3f240c" />
+                        <circle cx="40" cy="30" r="1" fill="#3f240c" />
+                        <circle cx="80" cy="20" r="2" fill="#734117" />
+                        <circle cx="20" cy="70" r="1.5" fill="#734117" />
+                        <circle cx="60" cy="80" r="1" fill="#3f240c" />
+                        <circle cx="90" cy="90" r="1.5" fill="#3f240c" />
+                        <circle cx="50" cy="50" r="2" fill="#3f240c" />
+                        <circle cx="70" cy="60" r="1" fill="#734117" />
+                    </pattern>
+                </defs>
+                <rect x="0" y="0" width="100%" height="100%" fill="url(#soil-pattern)" />
+            </svg>
+
+            <div class="absolute top-4 left-[10%] w-3 h-2 bg-[#4a2b13] rounded-full transform rotate-12"></div>
+            <div class="absolute top-12 left-[15%] w-5 h-3 bg-[#3f240c] rounded-[40%_60%_70%_30%]"></div>
+            <div class="absolute bottom-6 left-[25%] w-4 h-4 bg-[#633814] rounded-full"></div>
+            <div class="absolute top-8 right-[20%] w-6 h-4 bg-[#3f240c] rounded-[60%_40%_30%_70%] transform -rotate-12"></div>
+            <div class="absolute bottom-10 right-[10%] w-3 h-2 bg-[#4a2b13] rounded-full"></div>
+            <div class="absolute top-20 right-[35%] w-4 h-3 bg-[#633814] rounded-full transform rotate-45"></div>
+            <div class="absolute bottom-16 left-[50%] w-6 h-3 bg-[#3f240c] rounded-[70%_30%_50%_50%] transform -rotate-12"></div>
+
+            <svg class="absolute top-8 left-[5%] w-16 h-16 drop-shadow-sm transform -rotate-12" viewBox="0 0 100 100">
+                <path d="M 10,50 Q 30,20 50,60 T 90,40" fill="none" stroke="#b45330" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 10,50 Q 30,20 50,60 T 90,40" fill="none" stroke="#8a3c20" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 6" />
+            </svg>
+            
+            <svg class="absolute bottom-[-10px] right-[25%] w-12 h-12" viewBox="0 0 100 100">
+                <path d="M 50,100 Q 40,60 70,40" fill="none" stroke="#d66840" stroke-width="5" stroke-linecap="round" />
+                <path d="M 50,100 Q 40,60 70,40" fill="none" stroke="#a34522" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 5" />
+            </svg>
+
+            <svg class="absolute top-12 left-[45%] w-10 h-10 transform rotate-45" viewBox="0 0 100 100">
+                <path d="M 20,80 Q 50,90 80,20" fill="none" stroke="#b45330" stroke-width="5" stroke-linecap="round" />
+                <path d="M 20,80 Q 50,90 80,20" fill="none" stroke="#8a3c20" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 5" />
+            </svg>
+            
+            <svg class="absolute top-0 right-[5%] w-32 h-32 opacity-40" viewBox="0 0 100 100">
+                <path d="M 50,0 Q 60,30 40,50 T 60,100" fill="none" stroke="#3f240c" stroke-width="4" stroke-linecap="round" />
+                <path d="M 45,35 Q 20,40 10,60" fill="none" stroke="#3f240c" stroke-width="3" stroke-linecap="round" />
+            </svg>
+
+            <svg class="absolute top-0 left-[20%] w-40 h-40 opacity-40 transform -scale-x-100" viewBox="0 0 100 100">
+                <path d="M 50,0 Q 40,40 50,80 T 100,100" fill="none" stroke="#3f240c" stroke-width="5" stroke-linecap="round" />
+                <path d="M 47,45 Q 70,50 80,70" fill="none" stroke="#3f240c" stroke-width="3" stroke-linecap="round" />
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative z-10">
+            <div class="flex items-center gap-4">
+                <img src="images/logo.jpg" onerror="this.src='https://placehold.co/100x100/fef08a/5a3311?text=Logo'" alt="USSH - K71 PRC Logo" class="h-16 w-16 object-cover rounded-full border-4 border-brand-yellow bg-white">
+                <div class="flex flex-col text-left">
+                    <span class="font-heading font-black text-2xl tracking-wider leading-none">USSH - K71 PRC</span>
+                    <span class="font-sans font-bold text-sm text-brand-green tracking-widest uppercase mt-1">The Bee-Livers</span>
+                </div>
+            </div>
+            
+            <div class="flex flex-col text-left text-brand-light font-medium gap-3">
+                <h4 class="font-heading font-bold text-xl text-brand-yellow mb-1 uppercase tracking-wide">Thông Tin Liên Hệ</h4>
+                <a href="https://www.facebook.com/profile.php?id=61594081110050" target="_blank" class="flex items-center gap-3 hover:text-brand-yellow transition-colors">
+                    <i class="fab fa-facebook-f text-brand-green w-5 text-center"></i> Facebook Page
+                </a>
+                <a href="https://www.facebook.com/toanvandepchai" target="_blank" class="flex items-center gap-3 hover:text-brand-yellow transition-colors">
+                    <i class="fab fa-facebook-f text-brand-green w-5 text-center"></i> Web developer
+                </a>
+            </div>
+
+            <div class="text-left md:text-right font-medium text-brand-light">
+                <p>&copy; 2026 USSH - K71 PRC. Chiến dịch thanh niên phòng chống khói thuốc.</p>
+                <p class="text-brand-yellow text-sm mt-1">Đại học Khoa học Xã hội & Nhân văn - ĐHQGHN</p>
+                <div class="flex items-center justify-start md:justify-end gap-1.5 mt-4 text-sm font-bold opacity-95">
+                    <span>Powered by</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Gemini</span>
+                    <svg class="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C12 2 12 10.5 20.5 12C12 13.5 12 22 12 22C12 22 13.5 12 22 12C13.5 12 12 2 12 2Z" fill="currentColor"/>
+                        <path d="M4 4C4 4 4 8 7 9C4 10 4 14 4 14C4 14 4 10 1 9C4 8 4 4 4 4Z" fill="currentColor"/>
+                    </svg>
+                    <span>&amp;</span>
+                    <span class="text-white">GitHub</span>
+                    <i class="fab fa-github text-white text-base"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const IS_MOBILE = window.matchMedia('(max-width: 767px)').matches;
+            const IS_WEAK = IS_MOBILE || (navigator.hardwareConcurrency || 4) <= 4;
+
+            const tickers = [];
+            function startLoop() {
+                (function frame() {
+                    requestAnimationFrame(frame);
+                    if (document.hidden) return;
+                    for (let i = 0; i < tickers.length; i++) tickers[i]();
+                })();
+            }
+            startLoop();
+
+            let scrollY = window.scrollY;
+            window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; }, { passive: true });
+
+            // --- UI LOGIC ---
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const toggleIcon = mobileMenuToggle.querySelector('i');
+            const navLinks = navMenu.querySelectorAll('a');
+
+            mobileMenuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+                navMenu.classList.toggle('flex');
+                if (navMenu.classList.contains('hidden')) {
+                    toggleIcon.classList.remove('fa-times');
+                    toggleIcon.classList.add('fa-bars');
+                } else {
+                    toggleIcon.classList.remove('fa-bars');
+                    toggleIcon.classList.add('fa-times');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1280) {
+                        navMenu.classList.add('hidden');
+                        navMenu.classList.remove('flex');
+                        toggleIcon.classList.remove('fa-times');
+                        toggleIcon.classList.add('fa-bars');
+                    }
+                });
+            });
+
+            // --- SCROLLSPY ---
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = document.querySelectorAll('.btn-nav');
+
+            const scrollSpyOptions = { root: null, rootMargin: '-30% 0px -70% 0px', threshold: 0 };
+            const scrollSpyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const currentId = entry.target.getAttribute('id');
+                        navItems.forEach(item => {
+                            item.classList.remove('active');
+                            if (item.getAttribute('href') === `#${currentId}`) item.classList.add('active');
+                        });
+                    }
+                });
+            }, scrollSpyOptions);
+
+            sections.forEach(sec => scrollSpyObserver.observe(sec));
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+            const fadeObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        el.classList.add('visible');
+                        observer.unobserve(el);
+                        el.addEventListener('transitionend', () => el.classList.add('settled'), { once: true });
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+            setTimeout(() => {
+                const firstSection = document.querySelector('.fade-in');
+                if(firstSection) firstSection.classList.add('visible');
+            }, 100);
+
+            const canvas = document.getElementById('pollen-canvas');
+            const ctx = canvas.getContext('2d', { alpha: true });
+            let particles = [];
+
+            const POLLEN_SIZES = [2, 3, 4, 5, 6];
+            const pollenSprites = POLLEN_SIZES.map(r => {
+                const c = document.createElement('canvas');
+                const pad = 2;
+                c.width = c.height = (r + pad) * 2;
+                const g = c.getContext('2d');
+                g.beginPath();
+                g.arc(r + pad, r + pad, r, 0, Math.PI * 2);
+                g.fillStyle = '#fef08a';
+                g.fill();
+                g.lineWidth = 1;
+                g.strokeStyle = 'rgba(90, 51, 17, 0.6)';
+                g.stroke();
+                return c;
+            });
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+
+            class Particle {
+                constructor() { this.reset(true); }
+                reset(anywhere) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = anywhere ? Math.random() * canvas.height : canvas.height + 10;
+                    this.i = Math.floor(Math.random() * pollenSprites.length);
+                    this.half = pollenSprites[this.i].width / 2;
+                    this.speedX = (Math.random() * 1.5 - 0.75) * 0.4;
+                    this.speedY = (Math.random() * -1.5 - 0.5) * 0.4;
+                    this.opacity = Math.random() * 0.9 + 0.3;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.y < -10) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; }
+                    if (this.x < -10) this.x = canvas.width + 10;
+                    if (this.x > canvas.width + 10) this.x = -10;
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                if (REDUCED_MOTION) return;
+                const density = IS_WEAK ? 26000 : 14000;
+                const cap = IS_WEAK ? 45 : 110;
+                const num = Math.min(cap, Math.floor((canvas.width * canvas.height) / density));
+                for (let i = 0; i < num; i++) particles.push(new Particle());
+            }
+            initParticles();
+
+            tickers.push(function stepPollen() {
+                if (!particles.length) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.update();
+                    ctx.globalAlpha = p.opacity;
+                    ctx.drawImage(pollenSprites[p.i], p.x - p.half, p.y - p.half);
+                }
+                ctx.globalAlpha = 1;
+            });
+
+            const orbsLayer = document.getElementById('bg-orbs');
+            const ORB_TINTS = [
+                'rgba(253, 224, 71, 0.30)',
+                'rgba(190, 242, 100, 0.26)',
+                'rgba(251, 191, 36, 0.22)',
+                'rgba(255, 255, 255, 0.40)'
+            ];
+            if (orbsLayer && !REDUCED_MOTION) {
+                const numOrbs = IS_WEAK ? 4 : 7;
+                for (let i = 0; i < numOrbs; i++) {
+                    const orb = document.createElement('div');
+                    orb.className = 'bg-orb';
+                    const size = 90 + Math.random() * 230;
+                    const tint = ORB_TINTS[Math.floor(Math.random() * ORB_TINTS.length)];
+                    orb.style.width = size + 'px';
+                    orb.style.height = size + 'px';
+                    orb.style.left = (Math.random() * 100) + 'vw';
+                    orb.style.background = `radial-gradient(circle at 38% 34%, ${tint} 0%, ${tint} 22%, rgba(255,255,255,0) 68%)`;
+                    orb.style.setProperty('--drift', (Math.random() * 180 - 90).toFixed(0) + 'px');
+                    orb.style.animationDuration = (34 + Math.random() * 40).toFixed(1) + 's';
+                    orb.style.animationDelay = '-' + (Math.random() * 60).toFixed(1) + 's';
+                    orbsLayer.appendChild(orb);
+                }
+            }
+
+            const combLayer = document.getElementById('bg-comb');
+            if (combLayer) {
+                const COMB_TILE = 147;
+                let lastComb = null;
+                tickers.push(function stepComb() {
+                    const y = Math.round(-(scrollY * 0.14) % COMB_TILE);
+                    if (y === lastComb) return;
+                    lastComb = y;
+                    combLayer.style.transform = `translate3d(0, ${y}px, 0)`;
+                });
+            }
+
+            const beeTemplate = document.getElementById('bee-template');
+            const beesContainer = document.getElementById('bees-container');
+            const bgBeesContainer = document.getElementById('bg-bees-container');
+            
+            if (beeTemplate && beesContainer && bgBeesContainer && !REDUCED_MOTION) {
+                const beeHTML = beeTemplate.innerHTML;
+                class Bee {
+                    constructor(isBg) {
+                        this.isBg = isBg;
+                        this.el = document.createElement('div');
+                        this.el.innerHTML = beeHTML;
+                        this.beeBody = this.el.firstElementChild;
+                        if (isBg) this.beeBody.classList.add('bg-bee');
+                        
+                        this.x = Math.random() * window.innerWidth;
+                        this.y = Math.random() * window.innerHeight;
+                        this.vx = (Math.random() - 0.5) * 2;
+                        this.vy = (Math.random() - 0.5) * 2;
+                        
+                        const scale = isBg ? (0.4 + Math.random() * 0.3) : (0.6 + Math.random() * 0.5);
+                        this.beeBody.style.transform = `scale(${scale})`;
+                        
+                        (isBg ? bgBeesContainer : beesContainer).appendChild(this.beeBody);
+                    }
+                    
+                    update() {
+                        if (!this.isBg) {
+                            const dx = mouseX - this.x;
+                            const dy = mouseY + scrollY - this.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            
+                            if (dist > 100 && dist < 500) {
+                                this.vx += (dx / dist) * 0.05;
+                                this.vy += (dy / dist) * 0.05;
+                            }
+                        }
+                        
+                        this.vx += (Math.random() - 0.5) * 0.2;
+                        this.vy += (Math.random() - 0.5) * 0.2;
+                        
+                        const maxSpeed = this.isBg ? 2 : 4;
+                        const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                        if (speed > maxSpeed) {
+                            this.vx = (this.vx / speed) * maxSpeed;
+                            this.vy = (this.vy / speed) * maxSpeed;
+                        }
+                        
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        
+                        if (this.x < 0) { this.x = 0; this.vx *= -1; }
+                        if (this.x > window.innerWidth) { this.x = window.innerWidth; this.vx *= -1; }
+                        
+                        const maxH = document.body.scrollHeight;
+                        if (this.y < 0) { this.y = 0; this.vy *= -1; }
+                        if (this.y > maxH) { this.y = maxH; this.vy *= -1; }
+                        
+                        let angle = Math.atan2(this.vy, this.vx) * 180 / Math.PI;
+                        this.beeBody.style.transform = `translate3d(${this.x}px, ${this.y - scrollY}px, 0) rotate(${angle}deg) scale(${this.isBg ? 0.5 : 0.8})`;
+                    }
+                }
+                
+                const bees = [];
+                const numBgBees = IS_WEAK ? 3 : 6;
+                const numFgBees = IS_WEAK ? 2 : 4;
+                
+                for (let i = 0; i < numBgBees; i++) bees.push(new Bee(true));
+                for (let i = 0; i < numFgBees; i++) bees.push(new Bee(false));
+                
+                tickers.push(() => {
+                    for (let i = 0; i < bees.length; i++) bees[i].update();
+                });
+            }
+
+            threeVines: {
+                if (typeof THREE === 'undefined') {
+                    console.warn('Không tải được Three.js — bỏ qua hiệu ứng dây leo 3D.');
+                    break threeVines;
+                }
+
+                const container = document.getElementById('three-container');
+                const scene = new THREE.Scene();
+
+                let w = window.innerWidth;
+                let h = window.innerHeight;
+                const camera = new THREE.OrthographicCamera(w / -2, w / 2, h / 2, h / -2, -3000, 3000);
+                camera.position.z = 400;
+
+                const renderer = new THREE.WebGLRenderer({
+                    alpha: true,
+                    antialias: !IS_WEAK,
+                    powerPreference: 'high-performance'
+                });
+                renderer.setSize(w, h);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_WEAK ? 1 : 1.5));
+                container.appendChild(renderer.domElement);
+
+                scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+                const keyLight = new THREE.DirectionalLight(0xfff3d6, 0.75);
+                keyLight.position.set(200, 340, 420);
+                scene.add(keyLight);
+                const fillLight = new THREE.DirectionalLight(0xd9f99d, 0.32);
+                fillLight.position.set(-320, -140, 280);
+                scene.add(fillLight);
+
+                function makeLeafGeometry(lean, length) {
+                    const s = new THREE.Shape();
+                    s.moveTo(0, 0);
+                    s.bezierCurveTo(16 * lean, length * 0.30, 13, length * 0.72, 0, length);
+                    s.bezierCurveTo(-13, length * 0.72, -16 / lean, length * 0.30, 0, 0);
+                    const g = new THREE.ExtrudeGeometry(s, { depth: 0.8, bevelEnabled: false, curveSegments: 6, steps: 1 });
+                    g.translate(0, 0, -0.4);
+                    return g;
+                }
+
+                function makeDaisyGeometry(petals, rIn, rOut, rotate) {
+                    const s = new THREE.Shape();
+                    const step = (Math.PI * 2) / petals;
+                    const off = rotate || 0;
+                    s.moveTo(Math.cos(off) * rIn, Math.sin(off) * rIn);
+                    for (let i = 0; i < petals; i++) {
+                        const a0 = off + i * step;
+                        const a1 = a0 + step;
+                        const am = a0 + step / 2;
+                        const spread = step * 0.40;
+                        s.bezierCurveTo(
+                            Math.cos(am - spread) * rOut, Math.sin(am - spread) * rOut,
+                            Math.cos(am + spread) * rOut, Math.sin(am + spread) * rOut,
+                            Math.cos(a1) * rIn, Math.sin(a1) * rIn
+                        );
+                    }
+                    return new THREE.ExtrudeGeometry(s, { depth: 1.6, bevelEnabled: true, bevelThickness: 0.4, bevelSize: 0.35, bevelSegments: 1, curveSegments: 6, steps: 1 });
+                }
+
+                // Loại bỏ chiếc lá khổng lồ thứ 3
+                const LEAF_GEOS = [
+                    makeLeafGeometry(1.0, 58),
+                    makeLeafGeometry(1.5, 46)
+                ];
+                
+                const DAISY_GEO_BACK  = makeDaisyGeometry(8, 3.6, 17, 0);
+                const DAISY_GEO_FRONT = makeDaisyGeometry(8, 2.6, 12.5, Math.PI / 8);
+                const CENTER_GEO = new THREE.SphereGeometry(6, 14, 10);
+                CENTER_GEO.scale(1, 1, 0.5);
+
+                const PETIOLE_GEO = (() => {
+                    const g = new THREE.CylinderGeometry(0.5, 0.85, 1, 5);
+                    g.translate(0, 0.5, 0);
+                    return g;
+                })();
+                const PETIOLE_MAT = new THREE.MeshStandardMaterial({ color: 0x5c6b1f, roughness: 0.88 });
+
+                const LEAF_MATS = [
+                    new THREE.MeshStandardMaterial({ color: 0x33500e, roughness: 0.90, side: THREE.DoubleSide }),
+                    new THREE.MeshStandardMaterial({ color: 0x4d7c0f, roughness: 0.80, side: THREE.DoubleSide }),
+                    new THREE.MeshStandardMaterial({ color: 0x74a828, roughness: 0.68, side: THREE.DoubleSide }),
+                    new THREE.MeshStandardMaterial({ color: 0xa3d139, roughness: 0.58, side: THREE.DoubleSide })
+                ];
+                
+                const STEM_MATS = [
+                    new THREE.MeshStandardMaterial({ color: 0x43270e, roughness: 0.92 }),
+                    new THREE.MeshStandardMaterial({ color: 0x5a3311, roughness: 0.85 }),
+                    new THREE.MeshStandardMaterial({ color: 0x6f431a, roughness: 0.80 }),
+                    new THREE.MeshStandardMaterial({ color: 0x3f240c, roughness: 0.95 })
+                ];
+
+                // Materials cho Hoa nhiều sắc màu
+                const FLOWER_COLORS = [0xff5b82, 0xffa931, 0x61c0bf, 0xa984e5, 0xffd3b6];
+                const FLOWER_MATS_BACK = FLOWER_COLORS.map(c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.7 }));
+                const FLOWER_MATS_FRONT = FLOWER_COLORS.map(c => {
+                    const hsl = {}; new THREE.Color(c).getHSL(hsl);
+                    return new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(hsl.h, hsl.s, hsl.l + 0.15), roughness: 0.6 });
+                });
+                const CENTER_MAT = new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.4 });
+
+                function firstAtOrBelow(arr, value) {
+                    let lo = 0, hi = arr.length;
+                    while (lo < hi) {
+                        const mid = (lo + hi) >> 1;
+                        if (arr[mid] <= value) hi = mid; else lo = mid + 1;
+                    }
+                    return lo;
+                }
+
+                class SwayField {
+                    constructor(geometry, material, items) {
+                        items.sort((a, b) => b.y - a.y);
+                        this.items = items;
+                        this.ys = new Float32Array(items.length);
+                        for (let i = 0; i < items.length; i++) this.ys[i] = items[i].y;
+
+                        this.maxY = items.length ? items[0].y : 0;
+                        this.minY = items.length ? items[items.length - 1].y : 0;
+
+                        this.mesh = new THREE.InstancedMesh(geometry, material, Math.max(1, items.length));
+                        this.mesh.count = items.length;
+                        this.mesh.frustumCulled = false;
+                        this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+                        this._m = new THREE.Matrix4();
+                        this._q = new THREE.Quaternion();
+                        this._e = new THREE.Euler();
+                        this._p = new THREE.Vector3();
+                        this._s = new THREE.Vector3();
+
+                        for (let i = 0; i < items.length; i++) this.write(i, 0);
+                        this.mesh.instanceMatrix.needsUpdate = true;
+                    }
+                    write(i, time) {
+                        const it = this.items[i];
+                        const sway = Math.sin(time * it.spd + it.ph) * it.amp;
+                        this._e.set(it.rx + sway * 0.4, it.ry, it.rz + sway, 'XYZ');
+                        this._q.setFromEuler(this._e);
+                        this._p.set(it.x, it.y, it.z);
+                        if (it.sy !== undefined) {
+                            this._s.set(it.sxz, it.sy, it.sxz);
+                        } else {
+                            this._s.set(it.s, it.s, it.s);
+                        }
+                        this._m.compose(this._p, this._q, this._s);
+                        this.mesh.setMatrixAt(i, this._m);
+                    }
+                    update(topY, bottomY, time) {
+                        const n = this.items.length;
+                        if (!n) return;
+                        const lo = firstAtOrBelow(this.ys, topY);
+                        const hi = firstAtOrBelow(this.ys, bottomY);
+                        if (hi <= lo) return;
+                        for (let i = lo; i < hi; i++) this.write(i, time);
+                        const attr = this.mesh.instanceMatrix;
+                        attr.updateRange.offset = lo * 16;
+                        attr.updateRange.count = (hi - lo) * 16;
+                        attr.needsUpdate = true;
+                    }
+                    dispose() {
+                        this.mesh.parent && this.mesh.parent.remove(this.mesh);
+                        this.mesh.dispose();
+                    }
+                }
+
+                function mulberry32(seed) {
+                    return function () {
+                        seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+                        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+                        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+                    };
+                }
+                const GARDEN_SEED = 20260609;
+
+                // Hàm tạo tổ ong hoạt họa low-poly
+                function makeBeehive() {
+                    const grp = new THREE.Group();
+                    const mat = new THREE.MeshStandardMaterial({color: 0xf59e0b, roughness: 0.8});
+                    const dark = new THREE.MeshStandardMaterial({color: 0x451a03, roughness: 0.9});
+                    
+                    const sizes = [5, 7, 8, 8.5, 7.5, 6, 4];
+                    let y = 0;
+                    for(let i=0; i<sizes.length; i++){
+                        const ring = new THREE.Mesh(new THREE.TorusGeometry(sizes[i], 1.8, 8, 24), mat);
+                        ring.rotation.x = Math.PI/2;
+                        ring.position.y = y;
+                        grp.add(ring);
+                        y -= 3;
+                    }
+                    const cap = new THREE.Mesh(new THREE.SphereGeometry(sizes[0], 16, 8, 0, Math.PI*2, 0, Math.PI/2), mat);
+                    cap.position.y = 1.8;
+                    grp.add(cap);
+                    
+                    const hole = new THREE.Mesh(new THREE.CircleGeometry(3, 16), dark);
+                    hole.position.set(0, -9, sizes[3] + 1.5);
+                    hole.rotation.x = -Math.PI/12;
+                    grp.add(hole);
+                    
+                    const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 12), new THREE.MeshStandardMaterial({color: 0x43270e}));
+                    branch.position.set(0, 6, 0);
+                    grp.add(branch);
+                    
+                    grp.scale.set(0.7, 0.7, 0.7);
+                    return grp;
+                }
+
+                function pickWeighted(rand, weights) {
+                    const r = rand();
+                    let acc = 0;
+                    for (let i = 0; i < weights.length; i++) {
+                        acc += weights[i];
+                        if (r < acc) return i;
+                    }
+                    return weights.length - 1;
+                }
+                
+                const LEAF_COLOR_WEIGHTS = [
+                    [0.46, 0.34, 0.14, 0.06],
+                    [0.24, 0.34, 0.26, 0.16],
+                    [0.10, 0.20, 0.34, 0.36]
+                ];
+
+                const LEFT_PRESETS = [
+                    { inset: 10, z: -80, tier: 0, tube: 3.6, leafStep: 14, leafScale: 0.65, companion: 0.35, flowerStep: 180, waveAmp: 30, waveFreq: 0.009, phase: 0.4 },
+                    { inset: 38, z:   0, tier: 1, tube: 5.8, leafStep: 11, leafScale: 1.05, companion: 0.50, flowerStep: 130, waveAmp: 25, waveFreq: 0.015, phase: 1.3 },
+                    { inset: 72, z:  44, tier: 2, tube: 4.4, leafStep: 15, leafScale: 0.82, companion: 0.40, flowerStep: 190, waveAmp: 38, waveFreq: 0.008, phase: 3.0 },
+                    { inset: 110, z: 20, tier: 3, tube: 3.2, leafStep: 18, leafScale: 0.70, companion: 0.30, flowerStep: 220, waveAmp: 42, waveFreq: 0.012, phase: 4.5 }
+                ];
+                const RIGHT_PRESETS = [
+                    { inset: 12, z: -74, tier: 0, tube: 3.4, leafStep: 15, leafScale: 0.62, companion: 0.32, flowerStep: 200, waveAmp: 24, waveFreq: 0.012, phase: 2.7 },
+                    { inset: 42, z:   6, tier: 1, tube: 5.5, leafStep: 12, leafScale: 0.98, companion: 0.46, flowerStep: 140, waveAmp: 32, waveFreq: 0.011, phase: 5.5 },
+                    { inset: 76, z:  50, tier: 2, tube: 4.0, leafStep: 16, leafScale: 0.76, companion: 0.35, flowerStep: 180, waveAmp: 28, waveFreq: 0.014, phase: 0.8 },
+                    { inset: 115, z: 15, tier: 3, tube: 3.0, leafStep: 20, leafScale: 0.68, companion: 0.28, flowerStep: 230, waveAmp: 40, waveFreq: 0.010, phase: 1.9 }
+                ];
+
+                let vineRoot = null;
+                let fields = [];
+
+                function buildGarden(totalHeight) {
+                    const root = new THREE.Group();
+                    const topY = h / 2 + 1400; 
+                    const bottomY = h / 2 - totalHeight - 600;
+                    const span = topY - bottomY;
+
+                    const rand = mulberry32(GARDEN_SEED);
+
+                    const leafBuckets = Array.from({ length: LEAF_MATS.length * LEAF_GEOS.length }, () => []);
+                    const petioleBucket = [];
+                    
+                    const flowerBackBuckets = Array.from({ length: FLOWER_COLORS.length }, () => []);
+                    const flowerFrontBuckets = Array.from({ length: FLOWER_COLORS.length }, () => []);
+                    const flowerCenterBuckets = [];
+
+                    // Hàm sinh lá với kích thước đã được làm gọn, không còn lá khổng lồ
+                    function spawnLeaf(at, outward, cfg, allowHero) {
+                        const r = rand();
+                        let mul, shapeIdx;
+                        
+                        if (r < 0.36) { mul = 1.1 + rand() * 0.3; shapeIdx = rand() < 0.5 ? 0 : 1; }
+                        else if (r < 0.78) { mul = 0.8 + rand() * 0.3; shapeIdx = rand() < 0.5 ? 0 : 1; }
+                        else { mul = 0.6 + rand() * 0.2; shapeIdx = rand() < 0.5 ? 0 : 1; }
+
+                        const sc = cfg.leafScale * mul;
+                        const colorIdx = pickWeighted(rand, LEAF_COLOR_WEIGHTS[cfg.tier % LEAF_COLOR_WEIGHTS.length]);
+
+                        const droop = Math.PI / 2 + rand() * (Math.PI / 2.5);
+                        const rx = (rand() - 0.5) * 0.6;
+                        const ry = (rand() - 0.5) * 1.3;
+                        const rz = outward > 0 ? droop : -droop;
+
+                        const growDir = new THREE.Vector3(0, 1, 0).applyEuler(new THREE.Euler(rx, ry, rz, 'XYZ'));
+                        const petioleLen = 4 + rand() * 5 + sc * 3.5;
+
+                        const sx = at.x + outward * cfg.tube * 0.85;
+                        const sy = at.y + (rand() - 0.5) * 3;
+                        const sz = at.z + (rand() - 0.5) * 6;
+
+                        const ph = rand() * Math.PI * 2;
+                        const spd = 0.14 + rand() * 0.14;
+                        const amp = (0.032 + rand() * 0.022) / Math.sqrt(Math.max(1, mul));
+
+                        leafBuckets[colorIdx * LEAF_GEOS.length + shapeIdx].push({
+                            x: sx + growDir.x * petioleLen,
+                            y: sy + growDir.y * petioleLen,
+                            z: sz + growDir.z * petioleLen,
+                            rx, ry, rz, s: sc, ph, spd, amp
+                        });
+                        petioleBucket.push({
+                            x: sx, y: sy, z: sz,
+                            rx, ry, rz,
+                            sxz: 0.65 + sc * 0.45, sy: petioleLen,
+                            ph, spd, amp: amp * 0.5
+                        });
+                    }
+                    
+                    // Hàm sinh hoa ngẫu nhiên
+                    function spawnFlower(at, outward, cfg) {
+                        const colorIdx = Math.floor(rand() * FLOWER_COLORS.length);
+                        const sc = cfg.leafScale * (0.8 + rand() * 0.4);
+                        
+                        const rx = (rand() - 0.5) * 0.5;
+                        const ry = (rand() - 0.5) * 0.5;
+                        const rz = outward > 0 ? Math.PI/2 + rand()*0.5 : -Math.PI/2 - rand()*0.5;
+                        
+                        const sx = at.x + outward * (cfg.tube + 2 + rand()*4);
+                        const sy = at.y + (rand() - 0.5) * 4;
+                        const sz = at.z + (rand() - 0.5) * 4;
+                        
+                        const ph = rand() * Math.PI * 2;
+                        const spd = 0.1 + rand() * 0.1;
+                        const amp = 0.02 + rand() * 0.01;
+
+                        const fData = { x: sx, y: sy, z: sz, rx, ry, rz, s: sc, ph, spd, amp };
+                        flowerBackBuckets[colorIdx].push(fData);
+                        flowerFrontBuckets[colorIdx].push(fData);
+                        flowerCenterBuckets.push(fData);
+                    }
+
+                    [
+                        { isLeft: true, presets: LEFT_PRESETS },
+                        { isLeft: false, presets: RIGHT_PRESETS }
+                    ].forEach(({ isLeft, presets: allPresets }) => {
+                        const presets = IS_WEAK ? allPresets.slice(0, 2) : allPresets;
+                        const dir = isLeft ? 1 : -1;
+
+                        presets.forEach((cfg) => {
+                            const baseX = isLeft ? (-w / 2 + cfg.inset) : (w / 2 - cfg.inset);
+
+                            const segments = Math.max(6, Math.round(span / 28));
+                            const pts = [];
+                            for (let i = 0; i <= segments; i++) {
+                                const y = topY - (span * i) / segments;
+                                const x = baseX + Math.sin(y * cfg.waveFreq + cfg.phase) * cfg.waveAmp * dir;
+                                const z = cfg.z + Math.cos(y * cfg.waveFreq * 0.7 + cfg.phase) * 16;
+                                pts.push(new THREE.Vector3(x, y, z));
+                            }
+                            const curve = new THREE.CatmullRomCurve3(pts);
+
+                            const tube = new THREE.TubeGeometry(curve, segments, cfg.tube, 6, false);
+                            root.add(new THREE.Mesh(tube, STEM_MATS[cfg.tier % STEM_MATS.length]));
+                            
+                            // Treo Tổ Ong (Beehives) ngẫu nhiên lên dây leo
+                            if (!IS_WEAK && rand() < 0.1) {
+                                const hiveT = 0.2 + rand() * 0.6; 
+                                const hiveAt = curve.getPointAt(hiveT);
+                                if (hiveAt.y > 0 && hiveAt.y < h/2 + 200) {
+                                    const hive = makeBeehive();
+                                    hive.position.copy(hiveAt);
+                                    hive.position.x += dir * (cfg.tube + 6);
+                                    hive.position.y -= 8;
+                                    hive.position.z += (rand() - 0.5) * 10;
+                                    root.add(hive);
+                                }
+                            }
+
+                            const leafNodes = Math.max(4, Math.floor(span / cfg.leafStep));
+                            const outwardAt = isLeft
+                                ? (i) => (i % 2 === 0 ? 1 : -1)
+                                : (i) => (i % 3 === 0 ? -1 : 1);
+
+                            for (let i = 0; i < leafNodes; i++) {
+                                const t = i / leafNodes;
+                                const at = curve.getPointAt(t);
+                                const outward = outwardAt(i);
+
+                                spawnLeaf(at, outward, cfg, true);
+                                if (rand() < cfg.companion) {
+                                    spawnLeaf(at, -outward, cfg, false);
+                                }
+                                if (at.y > h / 2 - 200 && rand() < 0.6) {
+                                    spawnLeaf(at, outward * 0.8, cfg, true);
+                                }
+                                
+                                // Điểm xuyết Hoa rực rỡ
+                                if (rand() < 0.15) { 
+                                    spawnFlower(at, outward, cfg);
+                                }
+                            }
+                        });
+
+                        const canopyCount = IS_WEAK ? 18 : 35;
+                        for (let k = 0; k < canopyCount; k++) {
+                            const cornerX = isLeft 
+                                ? (-w / 2 + 10 + rand() * 120) 
+                                : (w / 2 - 10 - rand() * 120);
+                            const cornerY = h / 2 + 200 + rand() * 1000;
+                            const cornerZ = (rand() - 0.5) * 100;
+
+                            const dummyAt = new THREE.Vector3(cornerX, cornerY, cornerZ);
+                            spawnLeaf(dummyAt, isLeft ? 1 : -1, {
+                                tube: 4, leafScale: 1.2 + rand() * 0.5, tier: 1
+                            }, true);
+                        }
+                    });
+
+                    fields = [];
+                    // Rendering Lá
+                    for (let c = 0; c < LEAF_MATS.length; c++) {
+                        for (let g = 0; g < LEAF_GEOS.length; g++) {
+                            const items = leafBuckets[c * LEAF_GEOS.length + g];
+                            if (items.length) {
+                                const field = new SwayField(LEAF_GEOS[g], LEAF_MATS[c], items);
+                                root.add(field.mesh);
+                                fields.push(field);
+                            }
+                        }
+                    }
+                    if (petioleBucket.length) {
+                        const petioleField = new SwayField(PETIOLE_GEO, PETIOLE_MAT, petioleBucket);
+                        root.add(petioleField.mesh);
+                        fields.push(petioleField);
+                    }
+                    
+                    // Rendering Hoa
+                    for(let c = 0; c < FLOWER_COLORS.length; c++) {
+                        if(flowerBackBuckets[c].length) {
+                            const field = new SwayField(DAISY_GEO_BACK, FLOWER_MATS_BACK[c], flowerBackBuckets[c]);
+                            root.add(field.mesh);
+                            fields.push(field);
+                        }
+                        if(flowerFrontBuckets[c].length) {
+                            const field = new SwayField(DAISY_GEO_FRONT, FLOWER_MATS_FRONT[c], flowerFrontBuckets[c]);
+                            root.add(field.mesh);
+                            fields.push(field);
+                        }
+                    }
+                    if(flowerCenterBuckets.length) {
+                        const field = new SwayField(CENTER_GEO, CENTER_MAT, flowerCenterBuckets);
+                        root.add(field.mesh);
+                        fields.push(field);
+                    }
+
+                    return root;
+                }
+
+                function refreshGarden() {
+                    if (vineRoot) {
+                        scene.remove(vineRoot);
+                        fields.forEach(f => f.dispose());
+                        fields = [];
+                    }
+                    const totalH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, 2500);
+                    vineRoot = buildGarden(totalH);
+                    scene.add(vineRoot);
+                }
+
+                refreshGarden();
+
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        w = window.innerWidth;
+                        h = window.innerHeight;
+                        camera.left = w / -2;
+                        camera.right = w / 2;
+                        camera.top = h / 2;
+                        camera.bottom = h / -2;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(w, h);
+                        refreshGarden();
+                    }, 200);
+                }, { passive: true });
+
+                tickers.push(() => {
+                    const time = performance.now() * 0.001;
+                    camera.position.y = h / 2 - scrollY;
+
+                    const topVisible = camera.position.y + h / 2 + 500;
+                    const bottomVisible = camera.position.y - h / 2 - 500;
+
+                    for (let i = 0; i < fields.length; i++) {
+                        fields[i].update(topVisible, bottomVisible, time);
+                    }
+
+                    renderer.render(scene, camera);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
